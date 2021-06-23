@@ -68,6 +68,7 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "allauth.socialaccount.providers.twitch",
     "django_celery_beat",
     "rest_framework",
     "rest_framework.authtoken",
@@ -76,10 +77,29 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "glip.users.apps.UsersConfig",
+    "glip.clips.apps.ClipsConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+# Allauth required configs
+
+SOCIALACCOUNT_PROVIDERS = {
+    "twitch": {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        "APP": {
+            "client_id": "u37k0x1ueod81ij9uxzxb42u9u90os",
+            "secret": "yfcg1u80rpdm2mbd8pqv6x8t7jna1f",
+            "key": "testingmybasicwebapp",
+        }
+    }
+}
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+SITE_ID = 1
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
