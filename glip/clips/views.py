@@ -9,17 +9,12 @@ from rest_framework.response import Response
 User = get_user_model()
 
 
-class ClipListView(View):
-    template_name = "pages/clipslist.html"
+class FollowsListView(View):
+    template_name = "pages/followslist.html"
     context_object_name = "clips"
 
-    # def get_context_data(self, **kwargs):
-    #     twitch_id = self.get_user_twitch_id(self.request)
-    #     clips = get_clips(twitch_id)
-    #     return HttpResponse(clips)
-    #
     def get(self, request):
-        template_name = "pages/clipslist.html"
+        template_name = "pages/followslist.html"
         bearer = "3btsxnw43jw95xzf823uwr5wesoui7"
         client_id = "u37k0x1ueod81ij9uxzxb42u9u90os"
         headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
@@ -32,14 +27,11 @@ class ClipListView(View):
         return render(request, template_name, {"follows": follows})
 
 
-clips_view = ClipListView.as_view()
+follows_view = FollowsListView.as_view()
 
 
 @api_view(["GET"])
 def my_view(request):
-    # twitch_id = get_user_twitch_id(request)
-    # clips = get_clips(twitch_id)
-    # return Response(data=clips.json())
     bearer = "3btsxnw43jw95xzf823uwr5wesoui7"
     client_id = "u37k0x1ueod81ij9uxzxb42u9u90os"
     headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
