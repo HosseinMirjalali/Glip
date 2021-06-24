@@ -7,6 +7,8 @@ from django.views import View
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from glip.users.tasks import save_user_followers
+
 env = environ.Env()
 
 User = get_user_model()
@@ -29,6 +31,7 @@ class FollowsListView(View):
         )
         response_data = requests.get(clips_url, headers=headers)
         follows = response_data.json()["data"]
+        save_user_followers(request)
         return render(request, template_name, {"follows": follows})
 
 
