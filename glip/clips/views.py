@@ -22,8 +22,10 @@ class FollowsListView(View):
         client_id = env("client_id")
         headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
         user_twitch_id = SocialAccount.objects.get(user=request.user).uid
-        clips_url = "https://api.twitch.tv/helix/users/follows?from_id={}".format(
-            user_twitch_id
+        clips_url = (
+            "https://api.twitch.tv/helix/users/follows?from_id={}&first=100".format(
+                user_twitch_id
+            )
         )
         response_data = requests.get(clips_url, headers=headers)
         follows = response_data.json()["data"]
@@ -39,7 +41,7 @@ def my_view(request):
     client_id = env("client_id")
     headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
     user_twitch_id = SocialAccount.objects.get(user=request.user).uid
-    clips_url = "https://api.twitch.tv/helix/users/follows?from_id={}".format(
+    clips_url = "https://api.twitch.tv/helix/users/follows?from_id={}&first=100".format(
         user_twitch_id
     )
     response_data = requests.get(clips_url, headers=headers)
