@@ -19,8 +19,10 @@ def get_clips(user_twitch_id):
         user_twitch_id
     )
     response = JsonResponse(requests.get(clips_url, headers=headers))
-    json.dumps(response)
+    print(response)
+    # json.dumps(response)
     data = response.json()
+    print(data)
     if response.status_code >= 400:
         error = data.get("error", "")
         message = data.get("message", "")
@@ -30,9 +32,11 @@ def get_clips(user_twitch_id):
     except IndexError:
         raise ValueError("Invalid data: %s" % data)
     clips = json.loads(data)
+    print(clips)
     return clips
 
 
 def get_user_twitch_id(request):
     user = User.objects.get(request.user)
+    print(user)
     return SocialAccount.objects.get(user=user).uid

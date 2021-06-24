@@ -2,5 +2,13 @@
 {% block title %}List of Followed Channels{% endblock %}
 
 {% block content %}
-User: {{ clips }}
+  {% if follows %}
+    <ul>
+        {% for follow in follows %}
+            <li>{{ follow.to_id }} </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <strong>No channels followed.</strong>
+{% endif %}
 {% endblock content %}
