@@ -87,13 +87,10 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 SOCIALACCOUNT_PROVIDERS = {
     "twitch": {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
         "APP": {
-            "client_id": "u37k0x1ueod81ij9uxzxb42u9u90os",
-            "secret": "yfcg1u80rpdm2mbd8pqv6x8t7jna1f",
-            "key": "testingmybasicwebapp",
+            "client_id": env("client_id"),
+            "secret": env("secret"),
+            "key": env("key"),
         }
     }
 }
