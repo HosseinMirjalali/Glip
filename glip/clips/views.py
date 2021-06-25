@@ -1,6 +1,4 @@
 import environ
-import requests
-from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import get_user_model
 from django.shortcuts import render
 from django.views import View
@@ -8,6 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from glip.users.tasks import save_user_followers
+from glip.users.utils import get_user_follows
 
 env = environ.Env()
 
@@ -20,17 +19,7 @@ class FollowsListView(View):
 
     def get(self, request):
         template_name = "pages/followslist.html"
-        bearer = env("bearer")
-        client_id = env("client_id")
-        headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
-        user_twitch_id = SocialAccount.objects.get(user=request.user).uid
-        clips_url = (
-            "https://api.twitch.tv/helix/users/follows?from_id={}&first=100".format(
-                user_twitch_id
-            )
-        )
-        response_data = requests.get(clips_url, headers=headers)
-        follows = response_data.json()["data"]
+        follows = get_user_follows(request)
         save_user_followers(request)
         return render(request, template_name, {"follows": follows})
 
@@ -40,12 +29,5 @@ follows_view = FollowsListView.as_view()
 
 @api_view(["GET"])
 def my_view(request):
-    bearer = env("bearer")
-    client_id = env("client_id")
-    headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
-    user_twitch_id = SocialAccount.objects.get(user=request.user).uid
-    clips_url = "https://api.twitch.tv/helix/users/follows?from_id={}&first=100".format(
-        user_twitch_id
-    )
-    response_data = requests.get(clips_url, headers=headers)
-    return Response(data=response_data.json())
+    follows = get_user_follows(request)
+    return Response(data=follows)
