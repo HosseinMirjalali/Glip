@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from glip.users.tasks import save_user_followers
-from glip.users.utils import get_user_follows
+from glip.users.utils import get_clips_of_specific_channel, get_user_follows
 
 env = environ.Env()
 
@@ -31,3 +31,9 @@ follows_view = FollowsListView.as_view()
 def my_view(request):
     follows = get_user_follows(request)
     return Response(data=follows)
+
+
+@api_view(["GET"])
+def broadcaster_top_clips_view(request):
+    clips = get_clips_of_specific_channel(request, 26261471)
+    return Response(data=clips)
