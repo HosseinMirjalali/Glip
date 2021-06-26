@@ -1,5 +1,7 @@
 /* These styles are generated from project.scss. */
 
+
+
 .alert-debug {
   color: black;
   background-color: white;
@@ -10,4 +12,25 @@
   color: #b94a48;
   background-color: #f2dede;
   border-color: #eed3d7;
+}
+
+body {
+  margin: 10px;
+}
+
+.container {
+  margin: 20px;
+}
+
+.glip-container {
+  border: 1px solid #6A5ACD;
+  align-items: center;
+}
+
+.glip-row {
+  border: 3px solid #6A5ACD;
+}
+
+.glip-navbar {
+  background-color: #6A5ACD;
 }

@@ -30,6 +30,16 @@ def get_user_follows(request):
     return follows
 
 
+def get_user_info(broadcaster_id):
+    """Get full information of %broadcaster_id% channel"""
+    broadcaster_clip_url = "https://api.twitch.tv/helix/users?id={}".format(
+        broadcaster_id
+    )
+    response_data = requests.get(broadcaster_clip_url, headers=headers)
+    info = response_data.json()["data"]
+    return info
+
+
 def get_clips_of_specific_channel(broadcaster_id):
     """Get 3 most watched clips of a streamer from the past week"""
     broadcaster_clip_url = "https://api.twitch.tv/helix/clips?broadcaster_id={}&first=3&started_at={}".format(
