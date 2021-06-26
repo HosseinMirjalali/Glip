@@ -5,8 +5,7 @@ from django.views import View
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from glip.users.tasks import save_user_followers
-from glip.users.utils import get_clips_of_specific_channel, get_user_follows
+from glip.users.utils import get_clips, get_clips_of_specific_channel, get_user_follows
 
 env = environ.Env()
 
@@ -15,16 +14,31 @@ User = get_user_model()
 
 class FollowsListView(View):
     template_name = "pages/followslist.html"
-    context_object_name = "clips"
 
     def get(self, request):
         template_name = "pages/followslist.html"
         follows = get_user_follows(request)
-        save_user_followers(request)
         return render(request, template_name, {"follows": follows})
 
 
 follows_view = FollowsListView.as_view()
+
+
+class ClipsListView(View):
+    template_name = "pages/clips.html"
+    context_object_name = "clips"
+
+    def get(self, request):
+        template_name = "pages/clips.html"
+        follows = get_user_follows(request)
+        clips_info = []
+        for follow in follows:
+            e = get_clips(follow["to_id"])
+            clips_info.extend(e)
+        return render(request, template_name, {"clips_info": clips_info})
+
+
+clips_view = ClipsListView.as_view()
 
 
 @api_view(["GET"])
@@ -35,5 +49,5 @@ def my_view(request):
 
 @api_view(["GET"])
 def broadcaster_top_clips_view(request):
-    clips = get_clips_of_specific_channel(request, 26261471)
+    clips = get_clips_of_specific_channel(26261471)
     return Response(data=clips)
