@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import environ
 import requests
-from allauth.socialaccount.models import SocialAccount
+from allauth.socialaccount.models import SocialAccount, SocialToken
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -15,6 +15,16 @@ headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
 now = datetime.utcnow().isoformat()[:-3] + "Z"
 last_week = datetime.now() - timedelta(weeks=1)
 formatted_last_week = last_week.isoformat()[:-3] + "Z"
+
+
+def get_user_twitch_token(request):
+    user = request.user
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print(user)
+    user_twitch_token = SocialToken.objects.filter(
+        account__user=user, account__provider="twitch"
+    )
+    return user_twitch_token
 
 
 def get_user_follows(request):

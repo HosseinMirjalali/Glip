@@ -34,3 +34,8 @@ body {
 .glip-navbar {
   background-color: #6A5ACD;
 }
+
+#broadcaster_id {
+  position: absolute;
+  display: none;
+}

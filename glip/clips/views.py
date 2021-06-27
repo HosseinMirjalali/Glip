@@ -54,6 +54,14 @@ class ClipsListView(View):
 clips_view = ClipsListView.as_view()
 
 
+def clip_page(request):
+    template_name = "pages/clip.html"
+    broadcaster_id = request.GET.get("broadcaster_id")
+    first = request.GET.get("first")
+    clips = get_clips(broadcaster_id, first)
+    return render(request, template_name, {"clips": clips})
+
+
 @api_view(["GET"])
 def my_view(request):
     follows = get_user_follows(request)

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}List of Followed Channels{% endblock %}
+
+
+{% block content %}
+  {% if clips %}
+    {% for clip in clips %}
+
+      <div class="row glip-row">
+        <div class="col glip-col">
+          <iframe
+                  src="{{ clip.embed_url }}&parent=localhost"
+                  height="360"
+                  width="640"
+                  allowfullscreen="true">
+          </iframe>
+        </div>
+      </div>
+
+    {% endfor %}
+  {% else %}
+    <strong>No channels followed.</strong>
+  {% endif %}
+
+{% endblock content %}
