@@ -6,29 +6,37 @@
   {% if bulk_info %}
 
     {% for info in bulk_info %}
-      {% if forloop.counter0|divisibleby:3 %}
-        <div class="row text-center"> {% endif %}
-    <div class="col-sm-2" style="cursor: pointer">
-      <div class="card">
-        <img src="{{ info.profile_image_url }}" alt="" class="rounded-circle">
-        <div class="card-content">
-          <br>
-          <a href="https://www.twitch.tv/{{ info.login }}" target="_blank">
-            <h3>{{ info.display_name }}</h3>
-          </a>
-          <p>{{ info.description }}</p>
-          <hr>
-          <p>Total view count: {{ info.view_count }}</p>
-          <form action="{% url 'clips:clip' %}" target="_blank" method="get" id="myForm">
-            <input type="text" value="{{ info.id }}" name="broadcaster_id" size="1" id="broadcaster_id"/>
-            <input type="text" value="3" name="first" size="1"/>
-            <input type="submit" class="btn btn-primary" value="View {{ info.display_name }}'s top clips" name="Submit">
-          </form>
-        </div><!-- card content -->
-      </div><!-- card -->
-    </div><!-- col-md-4 -->
-    {% if forloop.counter|divisibleby:3 or forloop.last %}</div><!-- row closing -->
-      <br>{% endif %}
+      <style>
+        .card-img {
+          width: 100%;
+          height: 15vw;
+          object-fit: cover;
+        }
+
+        .card {
+          margin: 10px;
+        }
+      </style>
+
+      <div class="card-deck">
+        <div class="card text-white bg-dark p-3">
+          <img class="card-img" src="{{ info.offline_image_url }}">
+          <div class="card-img-overlay">
+            <form action="{% url 'clips:clip' %}" target="_blank" method="get" id="myForm">
+              <input type="text" value="{{ info.id }}" name="broadcaster_id" size="1" id="broadcaster_id"/>
+              <div class="form-group">
+                <input type="text" value="3" name="first" size="1"/>
+              </div>
+              <input type="submit" class="btn btn-primary" value=" of {{ info.display_name }}'s top clips"
+                     name="Submit">
+            </form>
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+              content. This content is a little bit longer.</p>
+            <p class="card-text">Last updated 3 mins ago</p>
+          </div>
+        </div>
+      </div>
     {% endfor %}
   {% else %}
     <strong>No channels followed.</strong>

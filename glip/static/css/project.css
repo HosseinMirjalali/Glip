@@ -18,7 +18,7 @@ body {
   margin: 10px;
 }
 
-.container {
+/*.container {
   margin: 20px;
 }
 
@@ -33,9 +33,14 @@ body {
 
 .glip-navbar {
   background-color: #6A5ACD;
-}
+}*/
 
 #broadcaster_id {
+  position: absolute;
+  display: none;
+}
+
+#first {
   position: absolute;
   display: none;
 }
