@@ -4,10 +4,11 @@
 
 {% block content %}
   {% if clips %}
-    {% for clip in clips %}
 
-      <div class="row glip-row">
-        <div class="col glip-col">
+
+    <div class="row glip-row">
+      {% for clip in clips %}
+        <div class="col-lg glip-col">
           <iframe
                   src="{{ clip.embed_url }}&parent=localhost"
                   height="360"
@@ -15,9 +16,9 @@
                   allowfullscreen="true">
           </iframe>
         </div>
-      </div>
+      {% endfor %}
+    </div>
 
-    {% endfor %}
   {% else %}
     <strong>No channels followed.</strong>
   {% endif %}
