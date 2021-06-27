@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from glip.users.utils import (
     get_clips,
     get_clips_of_specific_channel,
+    get_user_bulk_info,
     get_user_follows,
-    get_user_info,
 )
 
 env = environ.Env()
@@ -23,12 +23,13 @@ class FollowsListView(View):
     def get(self, request):
         template_name = "pages/followslist.html"
         follows = get_user_follows(request)
-        users_info = []
+        broadcasters_id = []
         for follow in follows:
-            e = get_user_info(follow["to_id"])
-            follow["profile_image_url"] = e[0]["profile_image_url"]
+            e = follow["to_id"]
+            broadcasters_id.append(e)
+        bulk_info = get_user_bulk_info(broadcasters_id)
         return render(
-            request, template_name, {"follows": follows, "users_info": users_info}
+            request, template_name, {"follows": follows, "bulk_info": bulk_info}
         )
 
 
@@ -63,3 +64,14 @@ def my_view(request):
 def broadcaster_top_clips_view(request):
     clips = get_clips_of_specific_channel(26261471)
     return Response(data=clips)
+
+
+@api_view(["GET"])
+def broadcasters_info(request):
+    follows = get_user_follows(request)
+    broadcasters_id = []
+    for follow in follows:
+        e = follow["to_id"]
+        broadcasters_id.append(e)
+    bulk_info = get_user_bulk_info(broadcasters_id)
+    return Response(data=bulk_info)

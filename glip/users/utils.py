@@ -40,6 +40,14 @@ def get_user_info(broadcaster_id):
     return info
 
 
+def get_user_bulk_info(broadcasters_id):
+    payload = {"id": [broadcasters_id]}
+    broadcaster_clip_url = "https://api.twitch.tv/helix/users?"
+    response_data = requests.get(broadcaster_clip_url, headers=headers, params=payload)
+    bulk_info = response_data.json()["data"]
+    return bulk_info
+
+
 def get_clips_of_specific_channel(broadcaster_id):
     """Get 3 most watched clips of a streamer from the past week"""
     broadcaster_clip_url = "https://api.twitch.tv/helix/clips?broadcaster_id={}&first=3&started_at={}".format(

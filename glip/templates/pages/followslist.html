@@ -3,21 +3,20 @@
 
 {% block content %}
 
+  {% if bulk_info %}
 
-  {% for follow in follows %}
+  {% for info in bulk_info %}
     {% if forloop.counter0|divisibleby:3 %}
       <div class="row text-center"> {% endif %}
   <div class="col-md-4" style="cursor: pointer">
     <div class="card">
-
-      <img src="{{ follow.profile_image_url }}" alt="">
-
+      <img src="{{ info.profile_image_url }}" alt="">
       <div class="card-content">
         <br>
-        {#                              <h4>{{ follow.to_name }}</h4>#}
-        {#                              <hr>#}
-        <h3>{{ follow.to_name }}</h3>
-        <p>You followed {{ follow.to_name }} on {{ follow.followed_at }}</p>
+        <h3>{{ info.display_name }}</h3>
+        <p>{{ info.description }}</p>
+        <hr>
+        <p>Total view count: {{ info.view_count }}</p>
         <br>
       </div><!-- card content -->
     </div><!-- card -->
@@ -25,33 +24,8 @@
   {% if forloop.counter|divisibleby:3 or forloop.last %}</div><!-- row closing -->
     <hr>{% endif %}
   {% endfor %}
-
-
-  {#  {% if follows %}#}
-  {#    {% for follow in follows %}#}
-  {#      <div class="container">#}
-  {#        <div class="row">#}
-  {#          <div class="col-lg-6 mb-4">#}
-  {#            <div class="card">#}
-  {#              <img class="card-img-top"#}
-  {#                   src=""#}
-  {#                   alt="">#}
-  {#              <div class="card-body">#}
-  {#                <h5 class="card-title">{{ follow.to_name }}</h5>#}
-  {#                <p class="card-text">#}
-  {#                  You followed {{ follow.to_login }} on {{ follow.followed_at }}#}
-  {#                </p>#}
-  {#                <a href="https://www.twitch.tv/{{ follow.to_login }}" class="btn btn-outline-primary btn-sm">#}
-  {#                  Go to {{ follow.to_name }}'s Twitch channel.#}
-  {#                </a>#}
-  {#              </div>#}
-  {#            </div>#}
-  {#          </div>#}
-  {#        </div>#}
-  {#      </div>#}
-  {#    {% endfor %}#}
-  {#  {% else %}#}
-  {#    <strong>No channels followed.</strong>#}
-  {#  {% endif %}#}
+  {% else %}
+    <strong>No channels followed.</strong>
+  {% endif %}
 
 {% endblock content %}
