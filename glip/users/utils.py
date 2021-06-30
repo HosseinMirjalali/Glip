@@ -15,6 +15,14 @@ headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
 now = datetime.utcnow().isoformat()[:-3] + "Z"
 last_week = datetime.now() - timedelta(weeks=1)
 formatted_last_week = last_week.isoformat()[:-3] + "Z"
+past_day = datetime.now() - timedelta(days=1)
+formatted_past_day = past_day.isoformat()[:-3] + "Z"
+
+
+def get_formatted_time(time_unit, num):
+    past_timedelta = datetime.now() - timedelta(**{time_unit: num})
+    formatted_time = past_timedelta.isoformat()[:3] + "Z"
+    return formatted_time
 
 
 def get_user_twitch_token(request):
@@ -73,6 +81,20 @@ def get_clips(broadcaster_id, first="1", date=formatted_last_week):
     """Get %first% clips of %broadcaster_id% from the past %date%"""
     broadcaster_clip_url = "https://api.twitch.tv/helix/clips?broadcaster_id={}&first={}&started_at={}".format(
         broadcaster_id, first, date
+    )
+    response_data = requests.get(broadcaster_clip_url, headers=headers)
+    print(response_data)
+    clips = response_data.json()["data"]
+    return clips
+
+
+def get_clips_by_game(game_id, first="30", time_unit="days", num="1"):
+    """Get %first% clips of %game_id% from the past %num% %time_unit%"""
+    # formatted_time = get_formatted_time(time_unit, num)
+    broadcaster_clip_url = (
+        "https://api.twitch.tv/helix/clips?game_id={}&first={}&started_at={}".format(
+            game_id, first, formatted_past_day
+        )
     )
     response_data = requests.get(broadcaster_clip_url, headers=headers)
     print(response_data)

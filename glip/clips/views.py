@@ -7,6 +7,7 @@ from rest_framework.response import Response
 
 from glip.users.utils import (
     get_clips,
+    get_clips_by_game,
     get_clips_of_specific_channel,
     get_user_bulk_info,
     get_user_follows,
@@ -72,6 +73,14 @@ def my_view(request):
 def broadcaster_top_clips_view(request):
     clips = get_clips_of_specific_channel(26261471)
     return Response(data=clips)
+
+
+# @api_view(["GET"])
+def game_top_clips_view(request):
+    template_name = "pages/clip.html"
+    clips = get_clips_by_game(21779, 20)
+    return render(request, template_name, {"clips": clips})
+    # return Response(data=clips)
 
 
 @api_view(["GET"])

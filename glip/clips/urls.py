@@ -6,6 +6,7 @@ from .views import (
     clip_page,
     clips_view,
     follows_view,
+    game_top_clips_view,
     my_view,
 )
 
@@ -17,4 +18,5 @@ urlpatterns = [
     path("api/followed", view=my_view, name="api-followed"),
     path("api/clip", view=broadcaster_top_clips_view, name="api-clip"),
     path("api/bulk", view=broadcasters_info, name="api-bulk-info"),
+    path("gameclips", view=game_top_clips_view, name="game-clips"),
 ]
