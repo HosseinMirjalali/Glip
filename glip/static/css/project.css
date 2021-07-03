@@ -1,7 +1,6 @@
 /* These styles are generated from project.scss. */
 
 
-
 .alert-debug {
   color: black;
   background-color: white;
@@ -15,25 +14,13 @@
 }
 
 body {
-  margin: 10px;
+  /*margin: 10px;*/
+  background-color: #3E4349;
 }
 
-/*.container {
-  margin: 20px;
+.navbar-dark .navbar-brand {
+  color: #6A5ACD;
 }
-
-.glip-container {
-  border: 1px solid #6A5ACD;
-  align-items: center;
-}
-
-.glip-row {
-  border: 3px solid #6A5ACD;
-}
-
-.glip-navbar {
-  background-color: #6A5ACD;
-}*/
 
 #broadcaster_id {
   position: absolute;
@@ -43,4 +30,19 @@ body {
 #first {
   position: absolute;
   display: none;
+}
+
+.card-group .card {
+  background-color: #004B6B;
+  margin: 5px;
+}
+
+h3 {
+  color: #C0C0C0;
+}
+
+.card-group .card .card-content .btn {
+  background-color: #6A5ACD;
+  margin-bottom: 5px;
+  border-color: #69353f;
 }

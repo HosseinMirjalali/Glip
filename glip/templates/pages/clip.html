@@ -3,10 +3,40 @@
 
 
 {% block content %}
+
+  <style>
+    @media only screen and (min-width: 1080px) {
+      iframe {
+        height: 20em;
+      }
+
+      .card {
+        width: 100%;
+      }
+
+      .card .card-body {
+        background-color: #004B6B;
+      }
+    }
+  </style>
   {% if clips %}
 
 
-    <div class="row glip-row">
+    {% for clip in clips %}
+
+      <div class="card">
+        <iframe src="{{ clip.embed_url }}&parent=localhost"
+                allowfullscreen></iframe>
+        <div class="card-body">
+          <h5 class="card-title">{{ clip.title }}</h5>
+          <p class="card-text">Viewed {{ clip.view_count }} times.</p>
+          <a href="{{ clip.url }}" target="_blank" class="btn btn-primary">Watch on Twitch</a>
+        </div>
+      </div>
+    {% endfor %}
+
+
+    {% comment %}    <div class="row glip-row">
       {% for clip in clips %}
         <div class="col-lg glip-col">
           <iframe
@@ -17,7 +47,7 @@
           </iframe>
         </div>
       {% endfor %}
-    </div>
+    </div>{% endcomment %}
 
   {% else %}
     <strong>No clips to show.</strong>
