@@ -7,11 +7,8 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
 
-from glip.clips.views import follows_view
-
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/home.html"), name="old-home"),
-    path("followed", view=follows_view, name="home"),
+    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),

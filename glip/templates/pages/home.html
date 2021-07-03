@@ -1,1 +1,35 @@
 {% extends "base.html" %}
+
+{% block content %}
+  <style>
+    .masthead {
+      height: 100vh;
+      min-height: 500px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  </style>
+
+  <header class="masthead">
+    <div class="container h-100">
+      <div class="row h-100 align-items-center">
+        <div class="col-12 text-center">
+          <h1 class="font-weight-light">Glip</h1>
+          <p class="lead">Made by a bored web developer to help you catch up with your favorite Twitch streamers</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="py-5">
+    <div class="container">
+      <h2 class="font-weight-light">Twitch Clips</h2>
+      <p>You had stuff to do and couldn't watch the stream? Maybe your internet was acting up and you missed it
+        anyway. Just watch the clips to catch up; or, to have the unique experience of watching random rants completely
+        out of context.</p>
+      <div class="btn"  ></div>
+    </div>
+  </section>
+
+{% endblock %}
