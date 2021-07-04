@@ -1,5 +1,7 @@
 import environ
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import View
 from rest_framework.decorators import api_view
@@ -18,7 +20,7 @@ env = environ.Env()
 User = get_user_model()
 
 
-class FollowsListView(View):
+class FollowsListView(LoginRequiredMixin, View):
     template_name = "pages/followslist.html"
 
     def get(self, request):
@@ -37,7 +39,7 @@ class FollowsListView(View):
 follows_view = FollowsListView.as_view()
 
 
-class ClipsListView(View):
+class ClipsListView(LoginRequiredMixin, View):
     template_name = "pages/clips.html"
     context_object_name = "clips"
 
@@ -55,6 +57,7 @@ class ClipsListView(View):
 clips_view = ClipsListView.as_view()
 
 
+@login_required(login_url="/accounts/login/")
 def clip_page(request):
     template_name = "pages/clip.html"
     broadcaster_id = request.GET.get("broadcaster_id")

@@ -46,3 +46,7 @@ h3 {
   margin-bottom: 5px;
   border-color: #69353f;
 }
+
+#sub-btn {
+    white-space: normal;
+}

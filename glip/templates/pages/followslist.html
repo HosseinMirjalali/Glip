@@ -21,8 +21,8 @@
                 <form action="{% url 'clips:clip' %}" target="_blank" method="get" id="myForm">
                   <input type="text" value="{{ info.id }}" name="broadcaster_id" size="1" id="broadcaster_id"/>
                   <input type="hidden" value="20" name="first" size="1"/>
-                  <input type="submit" class="btn btn-primary" value="View {{ info.display_name }}'s top clips"
-                         name="Submit">
+                  <input type="submit" class="btn" value="View {{ info.display_name }}'s top clips"
+                         name="Submit" id="sub-btn">
                 </form>
               </div><!-- card content -->
             </div><!-- card -->

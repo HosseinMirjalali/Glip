@@ -84,6 +84,22 @@
             {# URL provided by django-allauth/account/urls.py #}
             <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
           </li>
+{#          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4"#}
+{#                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#          </button>#}
+{#              <li class="nav-item dropdown">#}
+{#                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"#}
+{#                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                  <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}"#}
+{#                       width="25" height="25" class="rounded-circle" id="avatar_url">#}
+{#                </a>#}
+{#                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">#}
+{#                  <a class="dropdown-item" href="#">Dashboard</a>#}
+{#                  <a class="dropdown-item" href="#">Edit Profile</a>#}
+{#                  <a class="dropdown-item" href="#">Log Out</a>#}
+{#                </div>#}
+{#              </li>#}
         {% else %}
           {# Disabled becuz we sign up/sign in only via Twitch as of now. #}
           {#          <li class="nav-item">#}
