@@ -328,5 +328,4 @@ glip/media/
 
 
 .ipython/
-.env
-.envs/*
+
