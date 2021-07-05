@@ -14,7 +14,7 @@ CELERY_FLOWER_USER=debug
 CELERY_FLOWER_PASSWORD=debug
 
 # Twitch API Keys
-client_id=1
-secret=1
-key=1
-bearer=1
+client_id=u37k0x1ueod81ij9uxzxb42u9u90os
+secret=9k0y3u8l2ya0kics9f3b8f4udfirn9
+key=testingmybasicwebapp
+bearer=6sel7efpvqpwlo5e0qeqtdmpa6ffxw
