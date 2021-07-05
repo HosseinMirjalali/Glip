@@ -6,18 +6,45 @@
   {% if clips %}
 
 
-    <div class="row glip-row">
+    <div class="row">
       {% for clip in clips %}
-        <div class="col-lg glip-col">
-          <iframe
+{#        <div class="col-lg text-center">#}
+          <iframe class="col-md-6 text-center"
                   src="{{ clip.embed_url }}&parent=localhost"
                   height="360"
                   width="640"
                   allowfullscreen="true">
           </iframe>
-        </div>
+{#        </div>#}
       {% endfor %}
     </div>
+
+{% comment %}    <style>
+      .masthead {
+        height: 100vh;
+        min-height: 500px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    </style>
+
+    <header class="masthead">
+      <div class="container h-100">
+        <div class="row h-100 align-items-center">
+{#          <div class="col-12 text-center">#}
+              {% for clip in clips %}
+                  <iframe class="col-6 text-center"
+                          src="{{ clip.embed_url }}&parent=localhost"
+                          height="360"
+                          width="640"
+                          allowfullscreen="true">
+                  </iframe>
+              {% endfor %}
+{#          </div>#}
+        </div>
+      </div>
+    </header>{% endcomment %}
 
   {% else %}
     <strong>No channels followed.</strong>
