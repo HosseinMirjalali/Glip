@@ -45,6 +45,19 @@ def get_user_follows(request):
     )
     response_data = requests.get(follows_url, headers=headers)
     follows = response_data.json()["data"]
+    r = response_data.json()
+    if "cursor" in r["pagination"]:
+        cursor = response_data.json()["pagination"]["cursor"]
+        rest = requests.get(
+            "https://api.twitch.tv/helix/users/follows?after={}&from_id={}".format(
+                cursor, user_twitch_id
+            ),
+            headers=headers,
+        ).json()
+        for r in rest["data"]:
+            follows.append(r)
+    else:
+        pass
     return follows
 
 

@@ -13,7 +13,9 @@
 
   {% if bulk_info %}
 
+    {#    <h1>Total follows: {{ bulk_info|length }} </h1>#}
     <div class="masthead">
+      <p class="text-center">Total follows: {{ bulk_info|length }}</p>
       <div class="row text-center">
         {% for info in bulk_info|dictsort:"display_name" %}
           <div class="col-sm-2">
