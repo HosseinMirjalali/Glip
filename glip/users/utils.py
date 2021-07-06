@@ -36,7 +36,8 @@ def get_user_twitch_token(request):
 
 
 def get_user_follows(request):
-    """Get a list of user's followed channels on Twitch from Twitch API (first 100, no pagination)"""
+    """Get a list of user's followed channels on Twitch from Twitch API, first 200"""
+
     user_twitch_id = SocialAccount.objects.get(user=request.user).uid
     follows_url = (
         "https://api.twitch.tv/helix/users/follows?from_id={}&first=100".format(
@@ -46,6 +47,8 @@ def get_user_follows(request):
     response_data = requests.get(follows_url, headers=headers)
     follows = response_data.json()["data"]
     r = response_data.json()
+    # If condition that looks for the value 'cursor' in the response JSON and if it exists,
+    # makes a second request to Twitch API and retrieves the next 100 follows
     if "cursor" in r["pagination"]:
         cursor = response_data.json()["pagination"]["cursor"]
         rest = requests.get(
@@ -63,6 +66,7 @@ def get_user_follows(request):
 
 def get_user_info(broadcaster_id):
     """Get full information of %broadcaster_id% channel"""
+
     broadcaster_clip_url = "https://api.twitch.tv/helix/users?id={}".format(
         broadcaster_id
     )
@@ -81,6 +85,7 @@ def get_user_bulk_info(broadcasters_id):
 
 def get_clips_of_specific_channel(broadcaster_id):
     """Get 3 most watched clips of a streamer from the past week"""
+
     broadcaster_clip_url = "https://api.twitch.tv/helix/clips?broadcaster_id={}&first=3&started_at={}".format(
         broadcaster_id, formatted_last_week
     )
@@ -92,6 +97,7 @@ def get_clips_of_specific_channel(broadcaster_id):
 
 def get_clips(broadcaster_id, first="1", date=formatted_last_week):
     """Get %first% clips of %broadcaster_id% from the past %date%"""
+
     broadcaster_clip_url = "https://api.twitch.tv/helix/clips?broadcaster_id={}&first={}&started_at={}".format(
         broadcaster_id, first, date
     )
@@ -102,7 +108,10 @@ def get_clips(broadcaster_id, first="1", date=formatted_last_week):
 
 
 def get_clips_by_game(game_id, first="30", time_unit="days", num="1"):
-    """Get %first% clips of %game_id% from the past %num% %time_unit%"""
+    """Get %first% clips of %game_id% from the past %num% %time_unit%
+    TODO
+    """
+
     # formatted_time = get_formatted_time(time_unit, num)
     broadcaster_clip_url = (
         "https://api.twitch.tv/helix/clips?game_id={}&first={}&started_at={}".format(

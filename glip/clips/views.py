@@ -24,6 +24,13 @@ class FollowsListView(LoginRequiredMixin, View):
     template_name = "pages/followslist.html"
 
     def get(self, request):
+        """
+        First gets the list of user follows from Twitch API.
+        Then fills an empty list of the followed IDs.
+        Checks if there are more than 100 followed streamers, calls API twice separately
+        and gets a maximum of 200 full detail streamers and renders the template.
+        """
+
         template_name = "pages/followslist.html"
         follows = get_user_follows(request)
         broadcasters_id = []
@@ -55,6 +62,9 @@ class ClipsListView(LoginRequiredMixin, View):
     context_object_name = "clips"
 
     def get(self, request):
+        """
+        Gets list of followed streamers and recursively calls the API with each followed ID
+        """
         template_name = "pages/clips.html"
         follows = get_user_follows(request)
         clips_info = []
