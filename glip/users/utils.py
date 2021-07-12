@@ -2,21 +2,28 @@ from datetime import datetime, timedelta
 
 import environ
 import requests
-from allauth.socialaccount.models import SocialAccount, SocialToken
+from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
 env = environ.Env()
 
-bearer = env("bearer")
-client_id = env("client_id")
-headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
+# bearer = ""
+
+client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
+# headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
 now = datetime.utcnow().isoformat()[:-3] + "Z"
 last_week = datetime.now() - timedelta(weeks=1)
 formatted_last_week = last_week.isoformat()[:-3] + "Z"
 past_day = datetime.now() - timedelta(days=1)
 formatted_past_day = past_day.isoformat()[:-3] + "Z"
+
+
+def get_token(request):
+    account = SocialAccount.objects.get(user=request.user)
+    st = SocialToken.objects.get(account=account)
+    return st.token
 
 
 def get_formatted_time(time_unit, num):
@@ -37,7 +44,8 @@ def get_user_twitch_token(request):
 
 def get_user_follows(request):
     """Get a list of user's followed channels on Twitch from Twitch API, first 200"""
-
+    bearer = "Bearer {}".format(get_token(request))
+    headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
     user_twitch_id = SocialAccount.objects.get(user=request.user).uid
     follows_url = (
         "https://api.twitch.tv/helix/users/follows?from_id={}&first=100".format(
@@ -64,9 +72,10 @@ def get_user_follows(request):
     return follows
 
 
-def get_user_info(broadcaster_id):
+def get_user_info(broadcaster_id, request):
     """Get full information of %broadcaster_id% channel"""
-
+    bearer = "Bearer {}".format(get_token(request))
+    headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
     broadcaster_clip_url = "https://api.twitch.tv/helix/users?id={}".format(
         broadcaster_id
     )
@@ -75,17 +84,20 @@ def get_user_info(broadcaster_id):
     return info
 
 
-def get_user_bulk_info(broadcasters_id):
+def get_user_bulk_info(broadcasters_id, request):
     payload = {"id": [broadcasters_id]}
+    bearer = "Bearer {}".format(get_token(request))
+    headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
     broadcaster_clip_url = "https://api.twitch.tv/helix/users?"
     response_data = requests.get(broadcaster_clip_url, headers=headers, params=payload)
     bulk_info = response_data.json()["data"]
     return bulk_info
 
 
-def get_clips_of_specific_channel(broadcaster_id):
+def get_clips_of_specific_channel(broadcaster_id, request):
     """Get 3 most watched clips of a streamer from the past week"""
-
+    bearer = "bearer {}".format(get_token(request))
+    headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
     broadcaster_clip_url = "https://api.twitch.tv/helix/clips?broadcaster_id={}&first=3&started_at={}".format(
         broadcaster_id, formatted_last_week
     )
@@ -95,9 +107,10 @@ def get_clips_of_specific_channel(broadcaster_id):
     return clips
 
 
-def get_clips(broadcaster_id, first="1", date=formatted_last_week):
+def get_clips(request, broadcaster_id, first="1", date=formatted_last_week):
     """Get %first% clips of %broadcaster_id% from the past %date%"""
-
+    bearer = "Bearer {}".format(get_token(request))
+    headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
     broadcaster_clip_url = "https://api.twitch.tv/helix/clips?broadcaster_id={}&first={}&started_at={}".format(
         broadcaster_id, first, date
     )
@@ -107,11 +120,12 @@ def get_clips(broadcaster_id, first="1", date=formatted_last_week):
     return clips
 
 
-def get_clips_by_game(game_id, first="30", time_unit="days", num="1"):
+def get_clips_by_game(request, game_id, first="30", time_unit="days", num="1"):
     """Get %first% clips of %game_id% from the past %num% %time_unit%
     TODO
     """
-
+    bearer = "Bearer {}".format(get_token(request))
+    headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
     # formatted_time = get_formatted_time(time_unit, num)
     broadcaster_clip_url = (
         "https://api.twitch.tv/helix/clips?game_id={}&first={}&started_at={}".format(

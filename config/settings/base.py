@@ -85,16 +85,6 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # Allauth required configs
 
-SOCIALACCOUNT_PROVIDERS = {
-    "twitch": {
-        "APP": {
-            "client_id": env("client_id"),
-            "secret": env("secret"),
-            "key": env("key"),
-        }
-    }
-}
-
 SITE_ID = 1
 
 # MIGRATIONS

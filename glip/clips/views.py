@@ -11,6 +11,7 @@ from glip.users.utils import (
     get_clips,
     get_clips_by_game,
     get_clips_of_specific_channel,
+    get_token,
     get_user_bulk_info,
     get_user_follows,
 )
@@ -40,15 +41,15 @@ class FollowsListView(LoginRequiredMixin, View):
             broadcasters_id.append(e)
         if len(broadcasters_id) > 100:
             first_100 = broadcasters_id[:100]
-            fh_info = get_user_bulk_info(first_100)
+            fh_info = get_user_bulk_info(first_100, request)
             for fh in fh_info:
                 bulk_info.append(fh)
             last_100 = broadcasters_id[100:]
-            lh_info = get_user_bulk_info(last_100)
+            lh_info = get_user_bulk_info(last_100, request)
             for lh in lh_info:
                 bulk_info.append(lh)
         else:
-            bulk_info = get_user_bulk_info(broadcasters_id)
+            bulk_info = get_user_bulk_info(broadcasters_id, request)
         return render(
             request, template_name, {"follows": follows, "bulk_info": bulk_info}
         )
@@ -69,7 +70,7 @@ class ClipsListView(LoginRequiredMixin, View):
         follows = get_user_follows(request)
         clips_info = []
         for follow in follows:
-            e = get_clips(follow["to_id"])
+            e = get_clips(follow["to_id"], request)
             clips_info.extend(e)
 
         return render(request, template_name, {"clips_info": clips_info})
@@ -83,7 +84,7 @@ def clip_page(request):
     template_name = "pages/clip.html"
     broadcaster_id = request.GET.get("broadcaster_id")
     first = request.GET.get("first")
-    clips = get_clips(broadcaster_id, first)
+    clips = get_clips(request, broadcaster_id, first)
     return render(request, template_name, {"clips": clips})
 
 
@@ -95,8 +96,14 @@ def my_view(request):
 
 @api_view(["GET"])
 def broadcaster_top_clips_view(request):
-    clips = get_clips_of_specific_channel(26261471)
+    clips = get_clips_of_specific_channel(26261471, request)
     return Response(data=clips)
+
+
+@api_view(["GET"])
+def my_test_view(request):
+    token = get_token(request)
+    return Response(data=token)
 
 
 # @api_view(["GET"])
@@ -114,5 +121,5 @@ def broadcasters_info(request):
     for follow in follows:
         e = follow["to_id"]
         broadcasters_id.append(e)
-    bulk_info = get_user_bulk_info(broadcasters_id)
+    bulk_info = get_user_bulk_info(broadcasters_id, request)
     return Response(data=bulk_info)
