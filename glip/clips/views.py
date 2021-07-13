@@ -12,6 +12,7 @@ from glip.users.utils import (
     get_clips_by_game,
     get_clips_of_specific_channel,
     get_token,
+    get_top_games,
     get_user_bulk_info,
     get_user_follows,
 )
@@ -104,6 +105,12 @@ def broadcaster_top_clips_view(request):
 def my_test_view(request):
     token = get_token(request)
     return Response(data=token)
+
+
+@api_view(["GET"])
+def top_games_view(request):
+    games = get_top_games(request)
+    return Response(data=games)
 
 
 # @api_view(["GET"])
