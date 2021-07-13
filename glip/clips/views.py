@@ -91,48 +91,10 @@ class GamesListView(LoginRequiredMixin, View):
         template_name = "pages/games.html"
         games = get_top_games(request)
 
-        # wordslist = ["expression 1", "my expression", "other", "blah"]
-        # dictionarycleaned = {}
-        #
-        # def match_pattern(wordslist, value):
-        #     new_list = []
-        #     for text in value:
-        #         # temp variable hold latest updated text
-        #         temp = text
-        #         for word in wordslist:
-        #             if word in text:
-        #                 # replace text string with whitespace if word in text
-        #                 temp = temp.replace(word, "")
-        #         new_list.append(temp)
-        #     return new_list
-        #
-        # for k, v in dictionarylst.items():
-        #     dictionarycleaned[k] = match_pattern(wordslist, v)
-
-        # for game in games:
-        #     link_str = game["box_art_url"]
-        #     lookup_dict = {"{width}": "50", "{height}": "50"}
-        #     temp = link_str.split()
-        #     print(temp)
-        #     res = []
-        #     print(res)
-        #     for wrd in temp:
-        #         # searching from lookup_dict
-        #         print(wrd)
-        #         res.append(lookup_dict.get(wrd, wrd))
-        #     res = ' '.join(res)
-        #     print(res)
-        #     game["box_art_url"] = res
-        #     print("@@@@@@@@@@@@@@@@@@@ new @@@@@@@@@@@@@@@@@@@  " + game["box_art_url"])
-
-        # for game in games:
-        # str.replace(game["box_art_url"], "{width}", "50")
-        # game["box_art_url"].replace()
-        # size = {'{width}x{height}': "50x50"}
-        # '{width}x{height}'.format(**size)
-        # for follow in follows:
-        #     e = get_clips(follow["to_id"], request)
-        #     games.extend(e)
+        for game in games:
+            game["box_art_url"] = game["box_art_url"].replace("{width}", "200")
+            game["box_art_url"] = game["box_art_url"].replace("{height}", "200")
+            print(game["box_art_url"])
 
         return render(request, template_name, {"games": games})
 
