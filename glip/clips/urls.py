@@ -6,6 +6,7 @@ from .views import (
     clips_view,
     follows_view,
     game_top_clips_view,
+    games_view,
     my_test_view,
     my_view,
     top_games_view,
@@ -14,6 +15,7 @@ from .views import (
 app_name = "clips"
 urlpatterns = [
     path("followed", view=follows_view, name="followed"),
+    path("games", view=games_view, name="games"),
     path("clips", view=clips_view, name="clips"),
     path("clip/", view=clip_page, name="clip"),
     path("api/followed", view=my_view, name="api-followed"),

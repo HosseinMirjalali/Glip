@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}List of Current Top Games{% endblock %}
+
+{% block content %}
+
+  <style>
+    .masthead {
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
+
+  {% if games %}
+
+    {#    <h1>Total follows: {{ bulk_info|length }} </h1>#}
+    <div class="masthead">
+      <p class="text-center">Top {{ games|length }} games</p>
+      <div class="row text-center">
+        {% for game in games %}
+          <div class="col-sm-2">
+            <div class="card-group">
+              <div class="card">
+                <img src="{{ game.box_art_url }}" alt="" class="rounded-circle">
+                <div class="card-content">
+                  <br>
+                  <a href="https://www.twitch.tv/directory/game/{{ game.name }}" target="_blank">
+                    <h3>{{ game.name }}</h3>
+                  </a>
+{#                  <p>Total view count: {{ info.view_count }}</p>#}
+{#                  <form action="{% url 'clips:clip' %}" target="_blank" method="get" id="myForm">#}
+{#                    <input type="text" value="{{ info.id }}" name="broadcaster_id" size="1" id="broadcaster_id"/>#}
+{#                    <input type="hidden" value="20" name="first" size="1"/>#}
+{#                    <input type="submit" class="btn" value="View {{ info.display_name }}'s top clips"#}
+{#                           name="Submit" id="sub-btn">#}
+{#                  </form>#}
+                </div><!-- card content -->
+              </div><!-- card -->
+            </div>
+          </div><!-- col-md-4 -->
+        {% endfor %}
+      </div><!-- row closing -->
+    </div><!-- masthead closing -->
+
+  {% else %}
+    <strong>No games to show.</strong>
+  {% endif %}
+
+
+
+{% endblock content %}
