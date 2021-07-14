@@ -34,16 +34,6 @@ def get_formatted_time(time_unit, num):
     return formatted_time
 
 
-def get_user_twitch_token(request):
-    user = request.user
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    print(user)
-    user_twitch_token = SocialToken.objects.filter(
-        account__user=user, account__provider="twitch"
-    )
-    return user_twitch_token
-
-
 def get_user_follows(request):
     """Get a list of user's followed channels on Twitch from Twitch API, first 200"""
     bearer = "Bearer {}".format(get_token(request))

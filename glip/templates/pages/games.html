@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}List of Current Top Games{% endblock %}
-
+{#{% load clips_filters %}#}
 {% block content %}
 
   <style>
@@ -27,13 +27,16 @@
                   <a href="https://www.twitch.tv/directory/game/{{ game.name }}" target="_blank">
                     <h3>{{ game.name }}</h3>
                   </a>
-{#                  <p>Total view count: {{ info.view_count }}</p>#}
-{#                  <form action="{% url 'clips:clip' %}" target="_blank" method="get" id="myForm">#}
-{#                    <input type="text" value="{{ info.id }}" name="broadcaster_id" size="1" id="broadcaster_id"/>#}
-{#                    <input type="hidden" value="20" name="first" size="1"/>#}
-{#                    <input type="submit" class="btn" value="View {{ info.display_name }}'s top clips"#}
-{#                           name="Submit" id="sub-btn">#}
-{#                  </form>#}
+{#                  {% if game|check_relationship_exists:request.user %}#}
+{#                    You already follow this game#}
+{#                  {% else %}#}
+                    <a href="{% url 'clips:follow_game' game.id %}" id="{{ game.id }}" class="btn-primary">Follow</a>
+{#                  {% endif %}#}
+                  {#                  <form action="{% url 'clips:follow_game' %}" method="get" id="myForm">#}
+                  {#                    <input type="hidden" value="{{ game.id }}" name="game_id" size="1" id="game_id"/>#}
+                  {#                    <input type="submit" class="btn" value="Follow {{ game.name }}"#}
+                  {#                           name="Submit" id="sub-btn">#}
+                  {#                  </form>#}
                 </div><!-- card content -->
               </div><!-- card -->
             </div>
@@ -46,6 +49,25 @@
     <strong>No games to show.</strong>
   {% endif %}
 
+  <script type="text/javascript">
+    $('.btn-primary').click(function(){
+        var id;
+        id = $(this).attr("id");
+        $.ajax(
+        {
+            type:"GET",
+            url: "http://localhost:8000/clips/follow_game",
+            data:{
+                game_id: id
+            },
+            success: function(data){
+                $('#'+ id).toggleClass("btn-secondary follow-button");
+                $('#followers').html(data + ' followers');
+                console.log(data);
+            }
 
+        })
+    });
+    </script>
 
 {% endblock content %}

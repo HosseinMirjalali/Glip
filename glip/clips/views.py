@@ -2,11 +2,14 @@ import environ
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views import View
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from glip.clips.models import Game, GameFollow
 from glip.users.utils import (
     get_clips,
     get_clips_by_game,
@@ -94,12 +97,42 @@ class GamesListView(LoginRequiredMixin, View):
         for game in games:
             game["box_art_url"] = game["box_art_url"].replace("{width}", "200")
             game["box_art_url"] = game["box_art_url"].replace("{height}", "200")
-            print(game["box_art_url"])
-
-        return render(request, template_name, {"games": games})
+        context = {
+            "followcheck": GameFollow.objects.filter(following=request.user),
+            "games": games,
+        }
+        return render(request, template_name, context)
 
 
 games_view = GamesListView.as_view()
+
+
+@login_required
+def follow_user(request, game_id):
+    game_to_follow = get_object_or_404(Game, pk=game_id)
+    user_profile = request.user
+    data = {}
+    if game_to_follow.objects.filter(id=game_id.id).following.exists():
+        data["message"] = "You are already following this user."
+    else:
+        game_to_follow.objects.filter(game_id.id).add(user_profile)
+        data["message"] = "You are now following {}".format(game_to_follow)
+    return JsonResponse(data, safe=False)
+
+
+@login_required
+def follow_game(request, game_id):
+    # game_id = request.GET.get("game_id")
+    game_to_follow = get_object_or_404(Game, game_id=game_id)
+    user = request.user
+    data = {}
+    if GameFollow.objects.filter(following=user, followed=game_to_follow):
+        data["message"] = "You are already following this game."
+        return redirect(reverse("clips:games"))
+    else:
+        GameFollow.objects.create(following=user, followed=game_to_follow)
+        data["message"] = "You are now following {}".format(game_to_follow.name)
+        return redirect(reverse("clips:games"))
 
 
 @login_required(login_url="/accounts/login/")
