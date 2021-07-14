@@ -15,7 +15,7 @@
 
     {#    <h1>Total follows: {{ bulk_info|length }} </h1>#}
     <div class="masthead">
-      <p class="text-center">Top {{ games|length }} games</p>
+      <p class="text-center">Top {{ games|length }} games by viewer count</p>
       <div class="row text-center">
         {% for game in games %}
           <div class="col-sm-2">
@@ -27,11 +27,15 @@
                   <a href="https://www.twitch.tv/directory/game/{{ game.name }}" target="_blank">
                     <h3>{{ game.name }}</h3>
                   </a>
-{#                  {% if game|check_relationship_exists:request.user %}#}
-{#                    You already follow this game#}
-{#                  {% else %}#}
-                    <a href="{% url 'clips:follow_game' game.id %}" id="{{ game.id }}" class="btn-primary">Follow</a>
-{#                  {% endif %}#}
+                  {#                  {% if game|check_relationship_exists:request.user %}#}
+                  {#                    You already follow this game#}
+                  {#                  {% else %}#}
+                  {% if game.is_followed == True %}
+                    <p class="btn-info">Followed</p>
+                  {% else %}
+                    <a class="btn" href="{% url 'clips:follow_game' game.id %}" id="{{ game.id }}">Follow</a>
+                  {% endif %}
+                  {#                  {% endif %}#}
                   {#                  <form action="{% url 'clips:follow_game' %}" method="get" id="myForm">#}
                   {#                    <input type="hidden" value="{{ game.id }}" name="game_id" size="1" id="game_id"/>#}
                   {#                    <input type="submit" class="btn" value="Follow {{ game.name }}"#}
@@ -50,24 +54,24 @@
   {% endif %}
 
   <script type="text/javascript">
-    $('.btn-primary').click(function(){
-        var id;
-        id = $(this).attr("id");
-        $.ajax(
-        {
-            type:"GET",
-            url: "http://localhost:8000/clips/follow_game",
-            data:{
-                game_id: id
-            },
-            success: function(data){
-                $('#'+ id).toggleClass("btn-secondary follow-button");
-                $('#followers').html(data + ' followers');
-                console.log(data);
-            }
+    $('.btn-primary').click(function () {
+      var id;
+      id = $(this).attr("id");
+      $.ajax(
+              {
+                type: "GET",
+                url: "http://localhost:8000/clips/follow_game",
+                data: {
+                  game_id: id
+                },
+                success: function (data) {
+                  $('#' + id).toggleClass("btn-secondary follow-button");
+                  $('#followers').html(data + ' followers');
+                  console.log(data);
+                }
 
-        })
+              })
     });
-    </script>
+  </script>
 
 {% endblock content %}

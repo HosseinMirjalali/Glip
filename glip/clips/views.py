@@ -93,10 +93,17 @@ class GamesListView(LoginRequiredMixin, View):
         """
         template_name = "pages/games.html"
         games = get_top_games(request)
-
+        followed_games = GameFollow.objects.filter(following=request.user).values_list(
+            "followed__game_id", flat=True
+        )
+        print(followed_games)
         for game in games:
             game["box_art_url"] = game["box_art_url"].replace("{width}", "200")
             game["box_art_url"] = game["box_art_url"].replace("{height}", "200")
+            if game["id"] in followed_games:
+                game["is_followed"] = True
+            else:
+                game["is_followed"] = False
         context = {
             "followcheck": GameFollow.objects.filter(following=request.user),
             "games": games,

@@ -17,6 +17,9 @@ class Game(models.Model):
     name = models.CharField(max_length=255)
     box_art_url = models.TextField()
 
+    def __str__(self):
+        return self.game_id
+
 
 class GameFollow(models.Model):
     following = models.ForeignKey(
