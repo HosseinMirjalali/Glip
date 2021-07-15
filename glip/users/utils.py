@@ -5,7 +5,7 @@ import requests
 from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
 from django.contrib.auth import get_user_model
 
-from glip.clips.models import Game
+from glip.clips.models import Game, GameFollow
 
 User = get_user_model()
 
@@ -112,7 +112,7 @@ def get_clips(request, broadcaster_id, first="1", date=formatted_last_week):
     return clips
 
 
-def get_clips_by_game(request, game_id, first="30", time_unit="days", num="1"):
+def get_clips_by_game(request, game_id, first="3", time_unit="days", num="1"):
     """Get %first% clips of %game_id% from the past %num% %time_unit%
     TODO
     """
@@ -134,21 +134,44 @@ def get_top_games(request):
     bearer = "Bearer {}".format(get_token(request))
     headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
     first = 100
-    # formatted_time = get_formatted_time(time_unit, num)
     top_games_url = "https://api.twitch.tv/helix/games/top?first={}".format(first)
     response_data = requests.get(top_games_url, headers=headers)
     games = response_data.json()["data"]
-    # Game.objects.bulk_create(for g in games: Game(game_id=g["id"], name=g["name"], box_art_url=g["box_art_url"])
-    # )
     objs = [
         Game(game_id=e["id"], name=e["name"], box_art_url=e["box_art_url"])
         for e in games
     ]
     Game.objects.bulk_create(objs, ignore_conflicts=True)
-    # for g in games:
-    #     Game.objects.get_or_create(
-    #         Game(game_id=g["id"], name=g["name"], box_art_url=g["box_art_url"])
-    #     )
-    # map(lambda x: Game.objects.get_or_create(game_id=x), games)
-    # game = [Game()]
     return games
+
+
+# Function not working/implemented yet
+
+# def get_user_games_channels_clips(user_game_follows_clips, user_channel_follows):
+#     chosen_clips = []
+#     game_clips_broadcaster_ids = []
+#     user_channel_follows_id = []
+#     chosen_broadcaster_id = []
+#     for clip in user_game_follows_clips:
+#         game_clips_broadcaster_ids.extend(clip["broadcaster_id"])
+#     for broadcaster in user_channel_follows:
+#         user_channel_follows_id.extend(broadcaster["to_id"])
+#     for broadcaster_id in user_channel_follows:
+#         if broadcaster_id in game_clips_broadcaster_ids:
+#             chosen_broadcaster_id.extend(broadcaster_id)
+#     for clip in user_game_follows_clips:
+#         for chosen in chosen_broadcaster_id:
+#             if chosen in game_clips_broadcaster_ids:
+#                 chosen_clips.extend(clip)
+#     return chosen_clips
+
+
+def get_user_game_follows_clips(request):
+    followed_games_id = GameFollow.objects.filter(following=request.user).values_list(
+        "followed__game_id", flat=True
+    )
+    clips_info = []
+    for game in followed_games_id:
+        e = get_clips_by_game(request, game_id=game)
+        clips_info.extend(e)
+    return clips_info

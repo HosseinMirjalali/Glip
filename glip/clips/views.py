@@ -18,6 +18,7 @@ from glip.users.utils import (
     get_top_games,
     get_user_bulk_info,
     get_user_follows,
+    get_user_game_follows_clips,
 )
 
 env = environ.Env()
@@ -155,6 +156,12 @@ def clip_page(request):
 def my_view(request):
     follows = get_user_follows(request)
     return Response(data=follows)
+
+
+@api_view(["GET"])
+def followed_games_clips(request):
+    clips = get_user_game_follows_clips(request)
+    return Response(data=clips)
 
 
 @api_view(["GET"])
