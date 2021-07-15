@@ -147,23 +147,34 @@ def get_top_games(request):
 
 # Function not working/implemented yet
 
-# def get_user_games_channels_clips(user_game_follows_clips, user_channel_follows):
-#     chosen_clips = []
-#     game_clips_broadcaster_ids = []
-#     user_channel_follows_id = []
-#     chosen_broadcaster_id = []
-#     for clip in user_game_follows_clips:
-#         game_clips_broadcaster_ids.extend(clip["broadcaster_id"])
-#     for broadcaster in user_channel_follows:
-#         user_channel_follows_id.extend(broadcaster["to_id"])
-#     for broadcaster_id in user_channel_follows:
-#         if broadcaster_id in game_clips_broadcaster_ids:
-#             chosen_broadcaster_id.extend(broadcaster_id)
-#     for clip in user_game_follows_clips:
-#         for chosen in chosen_broadcaster_id:
-#             if chosen in game_clips_broadcaster_ids:
-#                 chosen_clips.extend(clip)
-#     return chosen_clips
+
+def get_user_games_channels_clips(user_game_follows_clips, user_channel_follows):
+    print(user_game_follows_clips)
+    chosen_clips = []
+    user_game_follows_clips_broadcasters_id = (
+        []
+    )  # list of broadcaster IDs of user_game_follows_clips
+    user_channel_follows_id = []  # list of IDs of user_channel_follows
+    chosen_broadcaster_id = []
+    for clip in user_game_follows_clips:
+        user_game_follows_clips_broadcasters_id.append(clip["broadcaster_id"])
+    print(
+        "@@@@@@@@@@@@@@@@@@@@ user_game_follows_clips_broadcasters_id @@@@@@@@@@@@@@@@@@@@@@@@@@"
+    )
+    print(user_game_follows_clips_broadcasters_id)
+    for broadcaster in user_channel_follows:
+        user_channel_follows_id.append(broadcaster["to_id"])
+    print("@@@@@@@@@@@@@@@@@@@@ user_channel_follows_id @@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print(user_channel_follows_id)
+    for broadcaster_id in user_channel_follows_id:
+        if broadcaster_id in user_game_follows_clips_broadcasters_id:
+            chosen_broadcaster_id.append(broadcaster_id)
+    print("@@@@@@@@@@@@@@@@@@@@ chosen_broadcaster_id @@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print(chosen_broadcaster_id)
+    for clip in user_game_follows_clips:
+        if clip["broadcaster_id"] in chosen_broadcaster_id:
+            chosen_clips.append(clip)
+    return chosen_clips
 
 
 def get_user_game_follows_clips(request):

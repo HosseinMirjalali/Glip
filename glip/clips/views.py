@@ -19,6 +19,7 @@ from glip.users.utils import (
     get_user_bulk_info,
     get_user_follows,
     get_user_game_follows_clips,
+    get_user_games_channels_clips,
 )
 
 env = environ.Env()
@@ -152,6 +153,15 @@ def clip_page(request):
     return render(request, template_name, {"clips": clips})
 
 
+@login_required(login_url="/accounts/login/")
+def your_clip_page(request):
+    template_name = "pages/clip.html"
+    user_game_follows_clips = get_user_game_follows_clips(request)
+    user_channel_follows = get_user_follows(request)
+    clips = get_user_games_channels_clips(user_game_follows_clips, user_channel_follows)
+    return render(request, template_name, {"clips": clips})
+
+
 @api_view(["GET"])
 def my_view(request):
     follows = get_user_follows(request)
@@ -161,6 +171,14 @@ def my_view(request):
 @api_view(["GET"])
 def followed_games_clips(request):
     clips = get_user_game_follows_clips(request)
+    return Response(data=clips)
+
+
+@api_view(["GET"])
+def chosen_clips(request):
+    user_game_follows_clips = get_user_game_follows_clips(request)
+    user_channel_follows = get_user_follows(request)
+    clips = get_user_games_channels_clips(user_game_follows_clips, user_channel_follows)
     return Response(data=clips)
 
 
