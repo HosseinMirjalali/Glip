@@ -64,6 +64,36 @@ def get_user_follows(request):
     return follows
 
 
+def get_user_follows2(request, user_token):
+    """Get a list of user's followed channels on Twitch from Twitch API, first 200 second iteration"""
+    bearer = "Bearer {}".format(user_token)
+    headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
+    user_twitch_id = SocialAccount.objects.get(user=request.user).uid
+    follows_url = (
+        "https://api.twitch.tv/helix/users/follows?from_id={}&first=100".format(
+            user_twitch_id
+        )
+    )
+    response_data = requests.get(follows_url, headers=headers)
+    follows = response_data.json()["data"]
+    r = response_data.json()
+    # If condition that looks for the value 'cursor' in the response JSON and if it exists,
+    # makes a second request to Twitch API and retrieves the next 100 follows
+    if "cursor" in r["pagination"]:
+        cursor = response_data.json()["pagination"]["cursor"]
+        rest = requests.get(
+            "https://api.twitch.tv/helix/users/follows?after={}&from_id={}".format(
+                cursor, user_twitch_id
+            ),
+            headers=headers,
+        ).json()
+        for r in rest["data"]:
+            follows.append(r)
+    else:
+        pass
+    return follows
+
+
 def get_user_info(broadcaster_id, request):
     """Get full information of %broadcaster_id% channel"""
     bearer = "Bearer {}".format(get_token(request))
@@ -112,11 +142,13 @@ def get_clips(request, broadcaster_id, first="1", date=formatted_last_week):
     return clips
 
 
-def get_clips_by_game(request, game_id, first="3", time_unit="days", num="1"):
+def get_clips_by_game(
+    request, game_id, user_token, first="10", time_unit="days", num="1"
+):
     """Get %first% clips of %game_id% from the past %num% %time_unit%
     TODO
     """
-    bearer = "Bearer {}".format(get_token(request))
+    bearer = "Bearer {}".format(user_token)
     headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
     # formatted_time = get_formatted_time(time_unit, num)
     broadcaster_clip_url = (
@@ -177,12 +209,12 @@ def get_user_games_channels_clips(user_game_follows_clips, user_channel_follows)
     return chosen_clips
 
 
-def get_user_game_follows_clips(request):
+def get_user_game_follows_clips(request, user_token):
     followed_games_id = GameFollow.objects.filter(following=request.user).values_list(
         "followed__game_id", flat=True
     )
     clips_info = []
     for game in followed_games_id:
-        e = get_clips_by_game(request, game_id=game)
+        e = get_clips_by_game(request, game_id=game, user_token=user_token)
         clips_info.extend(e)
     return clips_info
