@@ -131,8 +131,8 @@ def follow_user(request, game_id):
 
 
 @login_required
-def follow_game(request, game_id):
-    # game_id = request.GET.get("game_id")
+def follow_game(request):
+    game_id = request.GET.get("game_id")
     game_to_follow = get_object_or_404(Game, game_id=game_id)
     user = request.user
     data = {}

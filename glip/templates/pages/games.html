@@ -27,20 +27,11 @@
                   <a href="https://www.twitch.tv/directory/game/{{ game.name }}" target="_blank">
                     <h3>{{ game.name }}</h3>
                   </a>
-                  {#                  {% if game|check_relationship_exists:request.user %}#}
-                  {#                    You already follow this game#}
-                  {#                  {% else %}#}
                   {% if game.is_followed == True %}
-                    <p class="btn-info">Followed</p>
+                    <button class="btn" href=" " id="{{ game.id }}" name="myButton">Unfollow</button>
                   {% else %}
-                    <a class="btn" href="{% url 'clips:follow_game' game.id %}" id="{{ game.id }}">Follow</a>
+                    <button class="btn" href=" " id="{{ game.id }}" name="myButton">Follow</button>
                   {% endif %}
-                  {#                  {% endif %}#}
-                  {#                  <form action="{% url 'clips:follow_game' %}" method="get" id="myForm">#}
-                  {#                    <input type="hidden" value="{{ game.id }}" name="game_id" size="1" id="game_id"/>#}
-                  {#                    <input type="submit" class="btn" value="Follow {{ game.name }}"#}
-                  {#                           name="Submit" id="sub-btn">#}
-                  {#                  </form>#}
                 </div><!-- card content -->
               </div><!-- card -->
             </div>
@@ -52,8 +43,33 @@
   {% else %}
     <strong>No games to show.</strong>
   {% endif %}
+  {% block javascript %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  {% endblock %}
 
-  <script type="text/javascript">
+  {% block inline_javascript %}
+    {{ block.super }}
+    <script type="text/javascript">
+      $('.btn').click(function (e) {
+        var id;
+        id = $(this).attr("id");
+        e.preventDefault()
+        const _this = $(this);
+        $.ajax(
+                {
+                  type: "GET",
+                  url: "{% url 'clips:follow_game' %}",
+                  data: {
+                    game_id: id
+                  },
+                  success: function (data) {
+                    _this.text("Unfollow")
+                  }
+                })
+      });
+    </script>
+  {% endblock %}
+  {% comment %}  <script type="text/javascript">
     $('.btn-primary').click(function () {
       var id;
       id = $(this).attr("id");
@@ -72,6 +88,6 @@
 
               })
     });
-  </script>
+  </script>{% endcomment %}
 
 {% endblock content %}
