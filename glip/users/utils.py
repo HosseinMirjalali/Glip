@@ -143,7 +143,7 @@ def get_clips(request, broadcaster_id, first="1", date=formatted_last_week):
 
 
 def get_clips_by_game(
-    request, game_id, user_token, first="10", time_unit="days", num="1"
+    request, game_id, user_token, first="100", time_unit="days", num="1"
 ):
     """Get %first% clips of %game_id% from the past %num% %time_unit%
     TODO
@@ -190,19 +190,11 @@ def get_user_games_channels_clips(user_game_follows_clips, user_channel_follows)
     chosen_broadcaster_id = []
     for clip in user_game_follows_clips:
         user_game_follows_clips_broadcasters_id.append(clip["broadcaster_id"])
-    print(
-        "@@@@@@@@@@@@@@@@@@@@ user_game_follows_clips_broadcasters_id @@@@@@@@@@@@@@@@@@@@@@@@@@"
-    )
-    print(user_game_follows_clips_broadcasters_id)
     for broadcaster in user_channel_follows:
         user_channel_follows_id.append(broadcaster["to_id"])
-    print("@@@@@@@@@@@@@@@@@@@@ user_channel_follows_id @@@@@@@@@@@@@@@@@@@@@@@@@@")
-    print(user_channel_follows_id)
     for broadcaster_id in user_channel_follows_id:
         if broadcaster_id in user_game_follows_clips_broadcasters_id:
             chosen_broadcaster_id.append(broadcaster_id)
-    print("@@@@@@@@@@@@@@@@@@@@ chosen_broadcaster_id @@@@@@@@@@@@@@@@@@@@@@@@@@")
-    print(chosen_broadcaster_id)
     for clip in user_game_follows_clips:
         if clip["broadcaster_id"] in chosen_broadcaster_id:
             chosen_clips.append(clip)
