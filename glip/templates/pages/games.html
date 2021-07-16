@@ -28,9 +28,9 @@
                     <h3>{{ game.name }}</h3>
                   </a>
                   {% if game.is_followed == True %}
-                    <button class="btn" href=" " id="{{ game.id }}" name="myButton">Unfollow</button>
+                    <button value="unfollow" class="btn" id="{{ game.id }}" name="myButton">Unfollow</button>
                   {% else %}
-                    <button class="btn" href=" " id="{{ game.id }}" name="myButton">Follow</button>
+                    <button value="follow" class="btn" id="{{ game.id }}" name="myButton">Follow</button>
                   {% endif %}
                 </div><!-- card content -->
               </div><!-- card -->
@@ -43,6 +43,7 @@
   {% else %}
     <strong>No games to show.</strong>
   {% endif %}
+
   {% block javascript %}
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   {% endblock %}
@@ -69,25 +70,5 @@
       });
     </script>
   {% endblock %}
-  {% comment %}  <script type="text/javascript">
-    $('.btn-primary').click(function () {
-      var id;
-      id = $(this).attr("id");
-      $.ajax(
-              {
-                type: "GET",
-                url: "http://localhost:8000/clips/follow_game",
-                data: {
-                  game_id: id
-                },
-                success: function (data) {
-                  $('#' + id).toggleClass("btn-secondary follow-button");
-                  $('#followers').html(data + ' followers');
-                  console.log(data);
-                }
-
-              })
-    });
-  </script>{% endcomment %}
 
 {% endblock content %}

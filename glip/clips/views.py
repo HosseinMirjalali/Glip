@@ -130,19 +130,13 @@ def follow_user(request, game_id):
     return JsonResponse(data, safe=False)
 
 
-@login_required
+@login_required(login_url="/accounts/login/")
 def follow_game(request):
     game_id = request.GET.get("game_id")
-    game_to_follow = get_object_or_404(Game, game_id=game_id)
+    game_to_follow = Game.objects.get(game_id=game_id)
     user = request.user
-    data = {}
-    if GameFollow.objects.filter(following=user, followed=game_to_follow):
-        data["message"] = "You are already following this game."
-        return redirect(reverse("clips:games"))
-    else:
-        GameFollow.objects.create(following=user, followed=game_to_follow)
-        data["message"] = "You are now following {}".format(game_to_follow.name)
-        return redirect(reverse("clips:games"))
+    GameFollow.objects.get_or_create(following=user, followed=game_to_follow)
+    return redirect(reverse("clips:games"))
 
 
 @login_required(login_url="/accounts/login/")

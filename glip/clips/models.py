@@ -17,9 +17,6 @@ class Game(models.Model):
     name = models.CharField(max_length=255)
     box_art_url = models.TextField()
 
-    def __str__(self):
-        return self.game_id
-
 
 class GameFollow(models.Model):
     following = models.ForeignKey(
@@ -29,6 +26,13 @@ class GameFollow(models.Model):
         Game, related_name="followed_game", on_delete=models.CASCADE
     )
     follow_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["following", "followed"], name="unique_followers"
+            )
+        ]
 
     def __unicode__(self):
         return str(self.follow_time)
