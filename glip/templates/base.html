@@ -63,23 +63,25 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link {% if request.resolver_match.view_name == 'home' %}active{% endif %}"
+             href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {% if request.resolver_match.view_name == 'about' %}active{% endif %}">
           <a class="nav-link" href="{% url 'about' %}">About</a>
         </li>
         {% if request.user.is_authenticated %}
           <li class="nav-item">
             {# URL provided by django-allauth/account/urls.py #}
-            <a class="nav-link" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
+            <a class="nav-link {% if request.resolver_match.view_name == 'users:detail' %}active{% endif %}"
+               href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'clips:your_clips' %}">{% trans "Clips for you" %}</a>
+            <a class="nav-link" href="{% url 'clips:your_clips' %}">{% trans "Clips For You" %}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item {% if request.resolver_match.view_name == 'clips:followed' %}active{% endif %}">
             <a class="nav-link" href="{% url 'clips:followed' %}">{% trans "Channels You Follow" %}</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item {% if request.resolver_match.view_name == 'clips:games' %}active{% endif %}">
             <a class="nav-link" href="{% url 'clips:games' %}">{% trans "Twitch Games" %}</a>
           </li>
           {# Disabled due to the time it takes to query each streamer one by one, waiting for better solution. #}
