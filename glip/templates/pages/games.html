@@ -1,14 +1,38 @@
 {% extends "base.html" %}
-{% block title %}List of Current Top Games{% endblock %}
+{% block title %}Top Games on Twitch{% endblock %}
 {#{% load clips_filters %}#}
 {% block content %}
 
   <style>
     .masthead {
-      height: 100vh;
       background-size: cover;
       background-position: center;
     }
+
+    .card-group .card-transparent {
+      border-radius: 15px;
+      width: 100%;
+      object-fit: cover;
+      margin: 10px;
+      border: 3px solid #6A5ACD;
+    }
+
+    .btn {
+      border: 2px solid #6A5ACD;
+      margin: 10px;
+      color: #C0C0C0;
+    }
+
+    .btn:hover, .btn:focus, .btn:active {
+      color: #fff;
+      background-color: #69353f;
+    }
+
+    h3 {
+      overflow: hidden;
+
+    }
+
   </style>
 
   {% if games %}
@@ -16,16 +40,16 @@
     {#    <h1>Total follows: {{ bulk_info|length }} </h1>#}
     <div class="masthead">
       <p class="text-center">Top {{ games|length }} games by viewer count</p>
-      <div class="row text-center">
+      <div class="row text-center align-self-center">
         {% for game in games %}
           <div class="col-sm-2">
             <div class="card-group">
-              <div class="card">
-                <img src="{{ game.box_art_url }}" alt="" class="rounded-circle">
+              <div class="card-transparent">
+                <img src="{{ game.box_art_url }}" alt="" class="card-img-top img-fluid rounded-circle">
                 <div class="card-content">
                   <br>
                   <a href="https://www.twitch.tv/directory/game/{{ game.name }}" target="_blank">
-                    <h3>{{ game.name }}</h3>
+                    <h3 style="max-height: 2rem">{{ game.name }}</h3>
                   </a>
                   {% if game.is_followed == True %}
                     <button value="unfollow" class="btn" id="{{ game.id }}" name="myButton">Unfollow</button>
@@ -46,6 +70,9 @@
 
   {% block javascript %}
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
   {% endblock %}
 
   {% block inline_javascript %}
