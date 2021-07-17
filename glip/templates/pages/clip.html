@@ -8,14 +8,12 @@
 
     <div class="row">
       {% for clip in clips %}
-{#        <div class="col-lg text-center">#}
           <iframe class="col-md-6 text-center"
                   src="{{ clip.embed_url }}&parent=localhost"
                   height="360"
                   width="640"
                   allowfullscreen="true">
           </iframe>
-{#        </div>#}
       {% endfor %}
     </div>
 
