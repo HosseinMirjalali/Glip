@@ -4,6 +4,7 @@ import environ
 import requests
 from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 
 from glip.clips.models import Game, GameFollow
 
@@ -12,8 +13,11 @@ User = get_user_model()
 env = environ.Env()
 
 # bearer = ""
+try:
+    client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
+except ObjectDoesNotExist:
+    pass
 
-client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
 # headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
 now = datetime.utcnow().isoformat()[:-3] + "Z"
 last_week = datetime.now() - timedelta(weeks=1)
