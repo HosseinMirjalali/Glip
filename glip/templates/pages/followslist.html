@@ -72,10 +72,11 @@
 
   </style>
 
-  {% if bulk_info %}
 
     <div class="masthead">
       <hr>
+      {% if bulk_info %}
+
       <p class="text-center">Total follows: {{ bulk_info|length }}</p>
       <div class="media">
         <img src="{% static 'images/streamer.png' %}" width="64" height="64" class="mr-3" alt="...">
