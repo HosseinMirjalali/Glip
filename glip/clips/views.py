@@ -101,8 +101,8 @@ class GamesListView(LoginRequiredMixin, View):
         )
         print(followed_games)
         for game in games:
-            game["box_art_url"] = game["box_art_url"].replace("{width}", "200")
-            game["box_art_url"] = game["box_art_url"].replace("{height}", "200")
+            game["box_art_url"] = game["box_art_url"].replace("{width}", "285")
+            game["box_art_url"] = game["box_art_url"].replace("{height}", "380")
             if game["id"] in followed_games:
                 game["is_followed"] = True
             else:

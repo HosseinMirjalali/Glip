@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Top Games on Twitch{% endblock %}
 {#{% load clips_filters %}#}
 {% block content %}
@@ -14,18 +15,19 @@
       width: 100%;
       object-fit: cover;
       margin: 10px;
-      border: 3px solid #6A5ACD;
+      border: 3px solid #A16AE8;
     }
 
     .btn {
-      border: 2px solid #6A5ACD;
+      border: 2px solid #A16AE8;
       margin: 10px;
       color: #C0C0C0;
+      transition: all .5s ease-in-out;
     }
 
     .btn:hover, .btn:focus, .btn:active {
       color: #fff;
-      background-color: #69353f;
+      background-color: #603F8B;
     }
 
     h3 {
@@ -33,23 +35,66 @@
 
     }
 
+    .media {
+
+    }
+
+    .mt-0 {
+      margin-top: 10px;
+    }
+
+    .text-center {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      color: #FFFFFF;
+    }
+
+    .lead {
+      color: #A16AE8;
+    }
+
+    .custom-text-h3 {
+      transition: all .2s ease-in-out;
+    }
+
+    .custom-text-h3:hover, .custom-text-h3:focus, .custom-text-h3:active {
+      color: #603F8B;
+    }
+
+    .card-img-top {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+
   </style>
 
   {% if games %}
 
-    {#    <h1>Total follows: {{ bulk_info|length }} </h1>#}
     <div class="masthead">
+      <hr>
       <p class="text-center">Top {{ games|length }} games by viewer count</p>
+      <div class="media">
+        <img src="{% static 'images/controller.png' %}" width="64" height="64" class="mr-3" alt="...">
+        <div class="media-body">
+          <h5 class="mt-0">Games</h5>
+          <p>See which games are the top on Twitch, and follow the ones you like, to see their clips in <a
+                  href="{% url 'clips:your_clips' %}"
+                  class="lead">Clips For You</a></p>
+        </div>
+      </div>
       <div class="row text-center align-self-center">
         {% for game in games %}
           <div class="col-sm-2">
             <div class="card-group">
               <div class="card-transparent">
-                <img src="{{ game.box_art_url }}" alt="" class="card-img-top img-fluid rounded-circle">
+                <img src="{{ game.box_art_url }}" alt="" class="card-img-top">
                 <div class="card-content">
                   <br>
-                  <a href="https://www.twitch.tv/directory/game/{{ game.name }}" target="_blank">
-                    <h3 style="max-height: 2rem">{{ game.name }}</h3>
+                  <a class="text-decoration-none" href="https://www.twitch.tv/directory/game/{{ game.name }}"
+                     target="_blank">
+                    <h3 class="custom-text-h3" style="max-height: 2rem" data-toggle="tooltip" data-placement="top"
+                        title="{{ game.name }}">{{ game.name }}</h3>
                   </a>
                   {% if game.is_followed == True %}
                     <button value="unfollow" class="btn" id="{{ game.id }}" name="myButton">Unfollow</button>
@@ -73,6 +118,9 @@
     <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
   {% endblock %}
 
   {% block inline_javascript %}
@@ -95,6 +143,9 @@
                   }
                 })
       });
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
     </script>
   {% endblock %}
 
