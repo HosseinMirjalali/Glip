@@ -26,6 +26,7 @@
       margin: 10px;
       color: #C0C0C0;
       transition: all .5s ease-in-out;
+      border-radius: 15px;
     }
 
     .btn:hover, .btn:focus, .btn:active {
@@ -52,16 +53,16 @@
       color: #FFFFFF;
     }
 
-    .lead {
-      color: #A16AE8;
-    }
 
     .custom-text-h3 {
       transition: all .2s ease-in-out;
+      color: #FFFFFF;
     }
 
-    .custom-text-h3:hover, .custom-text-h3:focus, .custom-text-h3:active {
-      color: #603F8B;
+    .custom-text-h3:hover, .custom-text-h3:focus, .custom-text-h3:active {;
+      color: #6441A4;
+      transform: scale(1.1);
+      transition: all ease 500ms;
     }
 
     .card-img-top {
@@ -73,9 +74,9 @@
   </style>
 
 
-    <div class="masthead">
-      <hr>
-      {% if bulk_info %}
+  <div class="masthead">
+    <hr>
+    {% if bulk_info %}
 
       <p class="text-center">Total follows: {{ bulk_info|length }}</p>
       <div class="media">
@@ -89,19 +90,23 @@
         {% for info in bulk_info|dictsort:"display_name" %}
           <div class="col-sm-2">
             <div class="card-group">
-              <div class="card-transparent">
+              <div class="card-transparent" style="height: 27rem">
                 <img src="{{ info.profile_image_url }}" alt="" class="card-img-top">
                 <div class="card-content">
                   <br>
-                  <a class="text-decoration-none" href="https://www.twitch.tv/{{ info.login }}"
-                     target="_blank">
-                    <h3 class="custom-text-h3" style="max-height: 2rem" data-toggle="tooltip" data-placement="top"
-                        title="{{ info.display_name }}">{{ info.display_name }}</h3>
-                  </a>
+                  <h3 class="" style="max-height: 2rem"
+                      title=" {{ info.display_name }}">
+                    {{ info.display_name }}
+                    <a class="text-decoration-none custom-text-h3" href="https://www.twitch.tv/{{ info.login }}"
+                       target="_blank">
+                      <i data-toggle="tooltip" data-placement="top" title="Open on Twitch" class="fab fa-twitch"></i>
+                    </a>
+                  </h3>
                   <form action="{% url 'clips:clip' %}" target="_blank" method="get" id="myForm">
                     <input type="text" value="{{ info.id }}" name="broadcaster_id" size="1" id="broadcaster_id"/>
                     <input type="hidden" value="20" name="first" size="1"/>
-                    <input type="submit" class="btn" value="View {{ info.display_name }}'s top clips"
+                    <input type="submit" class="btn"
+                           value="View {{ info.display_name }}'s top clips"
                            name="Submit" id="sub-btn">
                   </form>
                   {% comment %}                  {% if game.is_followed == True %}
@@ -115,7 +120,22 @@
           </div><!-- col-md-4 -->
         {% endfor %}
       </div><!-- row closing -->
-    </div><!-- masthead closing -->
+      </div><!-- masthead closing -->
+      {% block javascript %}
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"></script>
+        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+                integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+                crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
+      {% endblock %}
+      <script>
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+      </script>
 
 
 
@@ -136,11 +156,7 @@
 
 
 
-
-
-
-
-    {% comment %}  <style>
+      {% comment %}  <style>
     .masthead {
       height: 100vh;
       background-size: cover;
@@ -180,9 +196,9 @@
       </div><!-- row closing -->
     </div><!-- masthead closing -->{% endcomment %}
 
-  {% else %}
-    <strong>No channels followed.</strong>
-  {% endif %}
+    {% else %}
+      <strong>No channels followed.</strong>
+    {% endif %}
 
 
 
