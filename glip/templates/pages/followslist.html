@@ -86,12 +86,10 @@
 
       <p class="text-center">Total follows: {{ bulk_info|length }}</p>
       <div class="d-flex justify-content-center">
-        <div class="input-group mb-3"  style="max-width: 50%">
-          <input placeholder="Search a keyword" type="text" class="form-control" aria-label="Default"
-                 aria-describedby="inputGroup-sizing-default" id="search">
-          <div class="input-group-prepend">
-            <input class="input-group-text" type="button" value="Go"
-                   onclick="search(document.getElementById('search').value)">
+        <div class="row pb-4">
+          <div class="col-12">
+            <input type="text" name="searchbox" id="searchbox" class="filterinput form-control"
+                   placeholder="Search streamers...">
           </div>
         </div>
       </div>
@@ -108,7 +106,7 @@
         {% for info in bulk_info|dictsort:"display_name" %}
           <div class="col-sm-2">
             <div class="card-group">
-              <div class="card-transparent" style="height: 27rem">
+              <div class="card-transparent" data-role="game" style="height: 27rem">
                 <img src="{{ info.profile_image_url }}" alt="" class="card-img-top">
                 <div class="card-content">
                   <br>
@@ -150,6 +148,14 @@
         <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
       {% endblock %}
       <script>
+        $(document).ready(function () {
+          $("#searchbox").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $('div[data-role="game"]').filter(function () {
+              $(this).toggle($(this).find('h3').text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
         $(function () {
           $('[data-toggle="tooltip"]').tooltip()
         })
