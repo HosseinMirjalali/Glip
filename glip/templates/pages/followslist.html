@@ -56,12 +56,18 @@
 
     .custom-text-h3 {
       transition: all .2s ease-in-out;
-      color: #FFFFFF;
+      color: #C0C0C0;
+    }
+
+    .fa-twitch:hover, .fa-twitch:focus, .fa-twitch:active {;
+      color: #6441A4;
+      transform: scale(1.2);
+      transition: all ease 500ms;
     }
 
     .custom-text-h3:hover, .custom-text-h3:focus, .custom-text-h3:active {;
       color: #6441A4;
-      transform: scale(1.1);
+      transform: scale(1.2);
       transition: all ease 500ms;
     }
 
@@ -79,6 +85,18 @@
     {% if bulk_info %}
 
       <p class="text-center">Total follows: {{ bulk_info|length }}</p>
+      <div class="d-flex justify-content-center">
+        <div class="input-group mb-3"  style="max-width: 50%">
+          <input placeholder="Search a keyword" type="text" class="form-control" aria-label="Default"
+                 aria-describedby="inputGroup-sizing-default" id="search">
+          <div class="input-group-prepend">
+            <input class="input-group-text" type="button" value="Go"
+                   onclick="search(document.getElementById('search').value)">
+          </div>
+        </div>
+      </div>
+
+
       <div class="media">
         <img src="{% static 'images/streamer.png' %}" width="64" height="64" class="mr-3" alt="...">
         <div class="media-body">
@@ -135,6 +153,10 @@
         $(function () {
           $('[data-toggle="tooltip"]').tooltip()
         })
+
+        function search(string) {
+          window.find(string);
+        }
       </script>
 
 
