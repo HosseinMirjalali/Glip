@@ -109,9 +109,8 @@
         </div>
       </div>
       <div class="row text-center align-self-center">
-        <div class="col-sm-2">
-          {% for game in games %}
-
+        {% for game in games %}
+          <div class="col-sm-2">
             <div class="card-group">
               <div class="card-transparent" data-role="game">
                 <img loading=lazy src="{{ game.box_art_url }}" alt="" class="card-img-top">
@@ -132,9 +131,8 @@
                 </div><!-- card content -->
               </div><!-- card -->
             </div><!-- card-group -->
-          {% endfor %}
-
-        </div><!-- col-sm-2 -->
+          </div><!-- col-sm-2 -->
+        {% endfor %}
       </div><!-- row closing -->
     </div><!-- masthead closing -->
 
