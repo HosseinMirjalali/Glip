@@ -66,6 +66,15 @@
       border-top-right-radius: 15px;
     }
 
+    .input-group-text {
+      border-bottom-right-radius: 50px;
+      border-top-right-radius: 50px;
+    }
+
+    .hide {
+      display: none;
+    }
+
 
   </style>
 
@@ -74,6 +83,22 @@
     <div class="masthead">
       <hr>
       <p class="text-center">Top {{ games|length }} games by viewer count</p>
+      <div class="d-flex justify-content-center">
+        <div class="row pb-4">
+          <div class="col-12">
+            <input type="text" name="searchbox" id="searchbox" class="filterinput form-control"
+                   placeholder="Search game titles...">
+          </div>
+        </div>
+        {% comment %}        <div class="input-group mb-3" style="max-width: 50%">
+          <input placeholder="Search a keyword" type="text" class="form-control" aria-label="Default"
+                 aria-describedby="inputGroup-sizing-default" id="search">
+          <div class="input-group-prepend">
+            <input class="input-group-text" type="button" value="Go"
+                   onclick="search(document.getElementById('search').value)">
+          </div>
+        </div>{% endcomment %}
+      </div>
       <div class="media">
         <img src="{% static 'images/controller.png' %}" width="64" height="64" class="mr-3" alt="...">
         <div class="media-body">
@@ -84,16 +109,18 @@
         </div>
       </div>
       <div class="row text-center align-self-center">
-        {% for game in games %}
-          <div class="col-sm-2">
+        <div class="col-sm-2">
+          {% for game in games %}
+
             <div class="card-group">
-              <div class="card-transparent">
-                <img src="{{ game.box_art_url }}" alt="" class="card-img-top">
+              <div class="card-transparent" data-role="game">
+                <img loading=lazy src="{{ game.box_art_url }}" alt="" class="card-img-top">
                 <div class="card-content">
                   <br>
                   <a class="text-decoration-none" href="https://www.twitch.tv/directory/game/{{ game.name }}"
                      target="_blank">
-                    <h3 class="custom-text-h3" style="max-height: 2rem" data-toggle="tooltip" data-placement="top"
+                    <h3 id="user_name" class="custom-text-h3" style="max-height: 2rem" data-toggle="tooltip"
+                        data-placement="top"
                         title="{{ game.name }}">{{ game.name }}</h3>
                   </a>
                   {% if game.is_followed == True %}
@@ -104,9 +131,10 @@
                   {% endif %}
                 </div><!-- card content -->
               </div><!-- card -->
-            </div>
-          </div><!-- col-md-4 -->
-        {% endfor %}
+            </div><!-- card-group -->
+          {% endfor %}
+
+        </div><!-- col-sm-2 -->
       </div><!-- row closing -->
     </div><!-- masthead closing -->
 
@@ -124,6 +152,7 @@
             crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
   {% endblock %}
+
 
   {% block inline_javascript %}
     {{ block.super }}
@@ -169,6 +198,16 @@
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
       })
+
+      $(document).ready(function () {
+        $("#searchbox").on("keyup", function () {
+          var value = $(this).val().toLowerCase();
+          $('div[data-role="game"]').filter(function () {
+            $(this).toggle($(this).find('h3').text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+      });
+
     </script>
   {% endblock %}
 
