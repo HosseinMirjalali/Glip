@@ -97,9 +97,10 @@
                         title="{{ game.name }}">{{ game.name }}</h3>
                   </a>
                   {% if game.is_followed == True %}
-                    <button value="unfollow" class="btn" id="{{ game.id }}" name="myButton">Unfollow</button>
+                    <button value="unfollow" class="btn btn-unfollow" id="{{ game.id }}" name="myButton">Unfollow
+                    </button>
                   {% else %}
-                    <button value="follow" class="btn" id="{{ game.id }}" name="myButton">Follow</button>
+                    <button value="follow" class="btn btn-follow" id="{{ game.id }}" name="myButton">Follow</button>
                   {% endif %}
                 </div><!-- card content -->
               </div><!-- card -->
@@ -127,7 +128,7 @@
   {% block inline_javascript %}
     {{ block.super }}
     <script type="text/javascript">
-      $('.btn').click(function (e) {
+      $('.btn-follow').click(function (e) {
         var id;
         id = $(this).attr("id");
         e.preventDefault()
@@ -141,6 +142,27 @@
                   },
                   success: function (data) {
                     _this.text("Unfollow")
+                    _this.removeClass('btn-follow').addClass('btn-unfollow');
+                    _this.val("unfollow")
+                  }
+                })
+      });
+      $('.btn-unfollow').click(function (e) {
+        var id;
+        id = $(this).attr("id");
+        e.preventDefault()
+        const _this = $(this);
+        $.ajax(
+                {
+                  type: "GET",
+                  url: "{% url 'clips:unfollow_game' %}",
+                  data: {
+                    game_id: id
+                  },
+                  success: function (data) {
+                    _this.text("Follow")
+                    _this.removeClass('btn-unfollow').addClass('btn-follow');
+                    _this.val("follow")
                   }
                 })
       });

@@ -13,6 +13,7 @@ from .views import (
     my_test_view,
     my_view,
     top_games_view,
+    unfollow_game,
     your_clip_page,
 )
 
@@ -21,6 +22,7 @@ urlpatterns = [
     path("followed", view=follows_view, name="followed"),
     # re_path(r'^follow/(?P<game_id>[\d]+)/$', follow_game, name="follow_game"),
     path("follow_game", view=follow_game, name="follow_game"),
+    path("unfollow_game", view=unfollow_game, name="unfollow_game"),
     path("games", view=games_view, name="games"),
     path("clips", view=clips_view, name="clips"),
     path("clip/", view=clip_page, name="clip"),

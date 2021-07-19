@@ -140,6 +140,18 @@ def follow_game(request):
 
 
 @login_required(login_url="/accounts/login/")
+def unfollow_game(request):
+    game_id = request.GET.get("game_id")
+    game_to_follow = Game.objects.get(game_id=game_id)
+    user = request.user
+    obj = GameFollow.objects.get(following=user, followed=game_to_follow)
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print(obj)
+    obj.delete()
+    return redirect(reverse("clips:games"))
+
+
+@login_required(login_url="/accounts/login/")
 def clip_page(request):
     template_name = "pages/clip.html"
     broadcaster_id = request.GET.get("broadcaster_id")
