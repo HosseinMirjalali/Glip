@@ -1,12 +1,104 @@
 {% extends "base.html" %}
 {% block title %}Clips{% endblock %}
+<style>
 
+</style>
 
 {% block content %}
   {% if clips %}
-
-
     <div class="row">
+      {% for clip in clips %}
+        <div class="col-sm-offset-3">
+
+          {% comment %}<button class="btn btn-default" data-target="#videoModal"
+              data-theVideo="{{ clip.embed_url }}&parent=localhost">
+        <img src="{{ clip.thumbnail_url }}" href="#" class="btn btn-default" data-toggle="modal"
+             data-target="#videoModal" alt="">
+      </button>{% endcomment %}
+
+          <button href="#" class="btn btn-default col-sm-2" data-toggle="modal"
+                  data-target="#videoModal"
+                  data-theVideo="{{ clip.embed_url }}&parent=localhost" alt="">
+            <img style="border-radius: 20px" src="{{ clip.thumbnail_url }}" href="#" class="btn btn-default"
+                 data-toggle="modal"
+                 data-target="#videoModal" alt="">
+          </button>
+
+
+        </div>
+      {% endfor %}
+
+    </div>
+
+    <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal"
+         aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <div>
+              <iframe width="100%" height="350" src="" allowfullscreen="true"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    {% comment %}    <div class="text-center">
+
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalTC">YouTube Modal</button>
+
+    </div>
+
+    <!--Modal: Name-->
+    <div class="modal fade" id="modalTC" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+
+        <!--Content-->
+        <div class="modal-content">
+
+          <!--Body-->
+          <div class="modal-body mb-0 p-0">
+
+            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+              <iframe class="embed-responsive-item"
+                      src="https://clips.twitch.tv/embed?clip=CourageousSecretiveRabbitYouDontSay-2ljQ9sQ8yvnsBCk4&parent=localhost"
+                      allowfullscreen></iframe>
+            </div>
+
+          </div>
+
+                <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <span class="mr-4">Spread the word!</span>
+        <a type="button" class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook"></i></a>
+        <!--Twitter-->
+        <a type="button" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+        <!--Google +-->
+        <a type="button" class="btn-floating btn-sm btn-gplus"><i class="fab fa-google"></i></a>
+        <!--Linkedin-->
+        <a type="button" class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin"></i></a>
+
+        <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+      </div>
+
+        </div>
+        <!--/.Content-->
+
+      </div>
+    </div>
+    <!--Modal: Name-->{% endcomment %}
+
+
+
+
+
+
+    {% comment %}    <div class="row">
       {% for clip in clips %}
           <iframe class="col-md-6 text-center"
                   src="{{ clip.embed_url }}&parent=localhost"
@@ -15,35 +107,40 @@
                   allowfullscreen="true">
           </iframe>
       {% endfor %}
-    </div>
+    </div>{% endcomment %}
     <hr>
 
-{% comment %}    <style>
-      .masthead {
-        height: 100vh;
-        min-height: 500px;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+    {% block javascript %}
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+              integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+              crossorigin="anonymous"></script>
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+              integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+              crossorigin="anonymous"></script>
+      <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
+    {% endblock %}
+    <script>
+      //FUNCTION TO GET AND AUTO PLAY YOUTUBE VIDEO FROM DATATAG
+      function autoPlayYouTubeModal() {
+        var trigger = $("body").find('[data-toggle="modal"]');
+        trigger.click(function () {
+          var theModal = $(this).data("target"),
+                  videoSRC = $(this).attr("data-theVideo"),
+                  videoSRCauto = videoSRC + "";
+          $(theModal + ' iframe').attr('src', videoSRCauto);
+          $(theModal + ' button.close').click(function () {
+            $(theModal + ' iframe').attr('src', videoSRC);
+          });
+        });
       }
-    </style>
 
-    <header class="masthead">
-      <div class="container h-100">
-        <div class="row h-100 align-items-center">
-{#          <div class="col-12 text-center">#}
-              {% for clip in clips %}
-                  <iframe class="col-6 text-center"
-                          src="{{ clip.embed_url }}&parent=localhost"
-                          height="360"
-                          width="640"
-                          allowfullscreen="true">
-                  </iframe>
-              {% endfor %}
-{#          </div>#}
-        </div>
-      </div>
-    </header>{% endcomment %}
+      $(document).ready(function () {
+        autoPlayYouTubeModal();
+      });
+
+    </script>
+
 
   {% else %}
     <strong>No channels followed.</strong>
