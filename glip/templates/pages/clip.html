@@ -17,7 +17,7 @@
           <div class="card text-white bg-dark mb-3" style="max-width: 18rem; height: 100%" data-toggle="modal"
                data-target="#videoModal"
                data-theVideo="{{ clip.embed_url }}&parent=localhost">
-            <img class="card-img-top" src="{{ clip.thumbnail_url }}" alt="" style="opacity: 0.5">
+            <img class="card-img-top" src="{{ clip.thumbnail_url }}" alt="" style="opacity: 0.5; ">
             <a href="#"
                style="position: absolute; bottom: 65px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
                class="stretched-link font-weight-bold">{{ clip.broadcaster_name }}</a>
@@ -26,7 +26,7 @@
               <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem">
                 0:{{ clip.duration }}</p>
             </div>
-            <h5 style="position: absolute; bottom: 15px; left: 9px; font-size: 0.9rem; max-width: 270px;"
+            <h5 style="position: absolute; bottom: 15px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
           </div>
 
