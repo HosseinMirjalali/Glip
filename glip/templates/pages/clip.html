@@ -10,20 +10,18 @@
       {% for clip in clips %}
         <div class="col-sm-offset-3">
 
-          {% comment %}<button class="btn btn-default" data-target="#videoModal"
-              data-theVideo="{{ clip.embed_url }}&parent=localhost">
-        <img src="{{ clip.thumbnail_url }}" href="#" class="btn btn-default" data-toggle="modal"
-             data-target="#videoModal" alt="">
-      </button>{% endcomment %}
-
-          <button href="#" class="btn btn-default col-sm-2" data-toggle="modal"
-                  data-target="#videoModal"
-                  data-theVideo="{{ clip.embed_url }}&parent=localhost" alt="">
-            <img style="border-radius: 20px" src="{{ clip.thumbnail_url }}" href="#" class="btn btn-default"
-                 data-toggle="modal"
-                 data-target="#videoModal" alt="">
-          </button>
-
+          <div class="card text-white bg-dark mb-3" style="max-width: 18rem;" data-toggle="modal"
+               data-target="#videoModal"
+               data-theVideo="{{ clip.embed_url }}&parent=localhost">
+            <div class="card-header card-img-caption">
+              <img class="card-img-top" src="{{ clip.thumbnail_url }}" alt="Card image cap">
+              <a href="#" style="color: #FFFFFF; text-decoration: none"
+                 class="stretched-link">{{ clip.broadcaster_name }}</a>
+              <div><span><i class="fas fa-clock"></i></span>
+                <p class="card-text" style="display:inline">{{ clip.duration }}</p></div>
+              <h5 class="card-title">{{ clip.title }}</h5>
+            </div>
+          </div>
 
         </div>
       {% endfor %}
