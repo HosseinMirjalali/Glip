@@ -126,7 +126,7 @@
       <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
     {% endblock %}
     <script>
-      //FUNCTION TO GET AND AUTO PLAY YOUTUBE VIDEO FROM DATATAG
+      //FUNCTION TO GET AND OPEN TWITCH EMBED CLIP
       function autoPlayYouTubeModal() {
         var trigger = $("body").find('[data-toggle="modal"]');
         trigger.click(function () {
@@ -138,6 +138,11 @@
             $(theModal + ' iframe').attr('src', videoSRC);
           });
         });
+        var modal = $(this).data("target");
+        modal.on('hide.bs.modal', function () {
+          var memory = $(this).html();
+          $(this).html(memory)
+        })
       }
 
       $(document).ready(function () {
