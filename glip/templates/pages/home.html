@@ -13,6 +13,48 @@
     a {
       color: #6A5ACD;
     }
+
+    .readMore:hover, .readMore:focus, .readMore:active {
+      color: #6A5ACD;
+    }
+
+    h3 a {
+      color: #fff;
+      font-size: 1em;
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+      font-family: 'Dosis', sans-serif;
+    }
+
+    /*effect-underline*/
+    a.effect-underline:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      display: inline-block;
+      height: 1em;
+      width: 100%;
+      border-bottom: 1px solid;
+      margin-top: 10px;
+      opacity: 0;
+      -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+      transition: opacity 0.35s, transform 0.35s;
+      -webkit-transform: scale(0, 1);
+      transform: scale(0, 1);
+    }
+
+    a.effect-underline:hover {
+      color: #6A5ACD;
+    }
+
+    a.effect-underline:hover:after {
+      color: #6A5ACD;
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+
   </style>
 
   <header class="masthead">
@@ -22,7 +64,8 @@
           <h1 class="font-weight-light">Glip</h1>
           <p class="lead">A simple tool for watching your favorite streamers' clips</p>
           <br>
-          <a href="{% url 'about' %}" class="lead">Read more...</a>
+          <h3 align="center"><a href="{% url 'about' %}" class="effect-underline text-decoration-none">Read more...</a>
+          </h3>
         </div>
       </div>
     </div>
