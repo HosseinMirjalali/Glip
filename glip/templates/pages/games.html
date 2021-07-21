@@ -66,13 +66,24 @@
       border-top-right-radius: 15px;
     }
 
-    .input-group-text {
-      border-bottom-right-radius: 50px;
-      border-top-right-radius: 50px;
+    .fa-twitch {
+      color: #6441A4;
     }
 
-    .hide {
-      display: none;
+    .fa-film {
+      color: #6A5ACD;
+    }
+
+    .fa-film:hover, .fa-film:focus, .fa-film:active {;
+      color: #603F8B;
+      transform: scale(1.2);
+      transition: all ease 500ms;
+    }
+
+    .fa-twitch:hover, .fa-twitch:focus, .fa-twitch:active {;
+      color: #6441A4;
+      transform: scale(1.2);
+      transition: all ease 500ms;
     }
 
 
@@ -112,7 +123,12 @@
                      target="_blank">
                     <h3 id="user_name" class="custom-text-h3" style="max-height: 2rem" data-toggle="tooltip"
                         data-placement="top"
-                        title="{{ game.name }}">{{ game.name }}</h3>
+                        title="{{ game.name }}">{{ game.name }}
+                    </h3>
+                  </a>
+                  <a class="text-decoration-none custom-text-h3" href="https://www.twitch.tv/{{ game.name }}"
+                     target="_blank">
+                    <i data-toggle="tooltip" data-placement="top" title="Open on Twitch" class="fab fa-twitch"></i>
                   </a>
                   {% if game.is_followed == True %}
                     <button value="unfollow" class="btn btn-unfollow" id="{{ game.id }}" name="myButton">Unfollow
@@ -120,6 +136,11 @@
                   {% else %}
                     <button value="follow" class="btn btn-follow" id="{{ game.id }}" name="myButton">Follow</button>
                   {% endif %}
+                  <a class="text-decoration-none custom-text-h3" href="{% url 'clips:gameclip' %}?game_id={{ game.id }}"
+                     target="_blank">
+                    <i data-toggle="tooltip" data-placement="top" title="Watch this game's top clips"
+                       class="fas fa-film"></i>
+                  </a>
                 </div><!-- card content -->
               </div><!-- card -->
             </div><!-- card-group -->

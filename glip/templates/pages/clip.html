@@ -11,13 +11,13 @@
 {% block content %}
   {% if clips %}
     <div class="row">
-      {% for clip in clips %}
+      {% for clip in clips|dictsortreversed:"view_count" %}
         <div class="col-sm-offset-3" style="padding: 10px">
 
           <div class="card text-white bg-dark mb-3" style="max-width: 18rem; height: 100%" data-toggle="modal"
                data-target="#videoModal"
                data-theVideo="{{ clip.embed_url }}&parent=localhost">
-            <img class="card-img-top" src="{{ clip.thumbnail_url }}" alt="" style="opacity: 0.5; ">
+            <img loading=lazy class="card-img-top" src="{{ clip.thumbnail_url }}" alt="" style="opacity: 0.5; ">
             <a href="#"
                style="position: absolute; bottom: 65px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
                class="stretched-link font-weight-bold">{{ clip.broadcaster_name }}</a>
@@ -26,14 +26,19 @@
               <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem">
                 0:{{ clip.duration }}</p>
             </div>
+            <div style="position: absolute; top: 8px; left: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.74);"
+                 class="text-wrapper">
+              <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem"><i class="fas fa-eye"></i>
+                {{ clip.view_count }}</p>
+            </div>
             <h5 style="position: absolute; bottom: 15px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
           </div>
 
         </div>
       {% endfor %}
-
     </div>
+    <button id="loadmore">Load More...</button>
 
     <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal"
          aria-hidden="true">
@@ -49,70 +54,6 @@
       </div>
     </div>
 
-
-
-
-    {% comment %}    <div class="text-center">
-
-      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalTC">YouTube Modal</button>
-
-    </div>
-
-    <!--Modal: Name-->
-    <div class="modal fade" id="modalTC" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-
-        <!--Content-->
-        <div class="modal-content">
-
-          <!--Body-->
-          <div class="modal-body mb-0 p-0">
-
-            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-              <iframe class="embed-responsive-item"
-                      src="https://clips.twitch.tv/embed?clip=CourageousSecretiveRabbitYouDontSay-2ljQ9sQ8yvnsBCk4&parent=localhost"
-                      allowfullscreen></iframe>
-            </div>
-
-          </div>
-
-                <!--Footer-->
-      <div class="modal-footer justify-content-center">
-        <span class="mr-4">Spread the word!</span>
-        <a type="button" class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook"></i></a>
-        <!--Twitter-->
-        <a type="button" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
-        <!--Google +-->
-        <a type="button" class="btn-floating btn-sm btn-gplus"><i class="fab fa-google"></i></a>
-        <!--Linkedin-->
-        <a type="button" class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin"></i></a>
-
-        <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
-
-      </div>
-
-        </div>
-        <!--/.Content-->
-
-      </div>
-    </div>
-    <!--Modal: Name-->{% endcomment %}
-
-
-
-
-
-
-    {% comment %}    <div class="row">
-      {% for clip in clips %}
-          <iframe class="col-md-6 text-center"
-                  src="{{ clip.embed_url }}&parent=localhost"
-                  height="360"
-                  width="640"
-                  allowfullscreen="true">
-          </iframe>
-      {% endfor %}
-    </div>{% endcomment %}
     <hr>
 
     {% block javascript %}
@@ -147,6 +88,20 @@
 
       $(document).ready(function () {
         autoPlayYouTubeModal();
+      });
+
+      $(function () {
+        $("div").slice(0, 4).show();
+        $("#loadMore").on('click', function (e) {
+          e.preventDefault();
+          $("div:hidden").slice(0, 4).slideDown();
+          if ($("div:hidden").length == 0) {
+            $("#load").fadeOut('slow');
+          }
+          $('html,body').animate({
+            scrollTop: $(this).offset().top
+          }, 1500);
+        });
       });
 
     </script>

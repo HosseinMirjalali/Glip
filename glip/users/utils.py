@@ -161,6 +161,8 @@ def get_clips_by_game(
     response_data = requests.get(broadcaster_clip_url, headers=headers)
     print(response_data)
     clips = response_data.json()["data"]
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print(clips)
     return clips
 
 

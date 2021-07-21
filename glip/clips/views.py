@@ -161,6 +161,17 @@ def clip_page(request):
 
 
 @login_required(login_url="/accounts/login/")
+def game_clip_page(request):
+    template_name = "pages/clip.html"
+    game_id = request.GET.get("game_id")
+    # first = request.GET.get("first")
+    user_token = get_token(request)
+    clips = get_clips_by_game(request, game_id, user_token=user_token)
+    print(clips)
+    return render(request, template_name, {"clips": clips})
+
+
+@login_required(login_url="/accounts/login/")
 def your_clip_page(request):
     template_name = "pages/clip.html"
     user_token = get_token(request)
