@@ -14,10 +14,10 @@
       {% for clip in clips|dictsortreversed:"view_count" %}
         <div class="col-sm-offset-3" style="padding: 10px">
 
-          <div class="card text-white bg-dark mb-3" style="max-width: 18rem; height: 100%" data-toggle="modal"
+          <div class="card text-white bg-dark mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
                data-target="#videoModal"
                data-theVideo="{{ clip.embed_url }}&parent=localhost">
-            <img loading=lazy class="card-img-top" src="{{ clip.thumbnail_url }}" alt="" style="opacity: 0.5; ">
+            <img loading=lazy class="card-img-top" src="{{ clip.thumbnail_url }}" alt="" style="opacity: 0.5; height: 100%;">
             <div href="#"
                  style="position: absolute; bottom: 65px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
                  class="stretched-link font-weight-bold">{{ clip.broadcaster_name }}</div>
@@ -32,7 +32,7 @@
                       class="fas fa-eye"></i>
                 {{ clip.view_count }}</p>
             </div>
-            <a class="stretched-link" href="#" style="color: #83577500; "></a>
+            <a class="stretched-link" href="javascript:void(0);" style="color: #83577500; "></a>
             <h5 style="position: absolute; bottom: 15px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
           </div>
