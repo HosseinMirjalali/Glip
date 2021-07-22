@@ -12,15 +12,15 @@
   {% if clips %}
     <div class="row">
       {% for clip in clips|dictsortreversed:"view_count" %}
-        <div class="col-sm-offset-3" style="padding: 10px">
+        <div class="col-sm-offset-3 clip-card" style="padding: 10px">
 
           <div class="card text-white bg-dark mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
                data-target="#videoModal"
                data-theVideo="{{ clip.embed_url }}&parent=localhost">
-            <img loading=lazy class="card-img-top" src="{{ clip.thumbnail_url }}" alt="" style="opacity: 0.5; height: 100%;">
+            <img loading=lazy class="card-img-top clip-card-img" src="{{ clip.thumbnail_url }}" alt="" style="opacity: 0.5; height: 100%;">
             <div href="#"
                  style="position: absolute; bottom: 65px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
-                 class="stretched-link font-weight-bold">{{ clip.broadcaster_name }}</div>
+                 class="stretched-link font-weight-bold card-my-div">{{ clip.broadcaster_name }}</div>
             <div style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
                  class="text-wrapper">
               <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem">
@@ -40,7 +40,6 @@
         </div>
       {% endfor %}
     </div>
-    <button id="loadmore">Load More...</button>
 
     <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal"
          aria-hidden="true">
