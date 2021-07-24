@@ -30,10 +30,12 @@
   <section class="py-5">
     <div class="container">
       <h2 class="font-weight-light">Your login process</h2>
-      <p>You login on Twitch website and your credentials are handled by Twitch, not this website; therefore, I don't
-        really get to know your information. However, once you successfully log in on Twitch, I will receive from
+      <p>You login on Twitch website and your credentials are handled by Twitch, not this website. Once you successfully
+        log in on Twitch, I will receive from
         Twitch, your username (your public name), your email, and your avatar. They all can be seen on <a
                 href="{% url 'users:detail' request.user.username %}" class="lead">My Profile</a> after you log in.
+        Please, make sure you are Twitch's website when you are logging in, by checking the url
+        (https://www.twitch.tv/).
       </p>
       <div class="btn"></div>
     </div>
