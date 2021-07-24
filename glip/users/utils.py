@@ -131,7 +131,7 @@ def get_clips_of_specific_channel(broadcaster_id, request):
     return clips
 
 
-def get_clips(request, broadcaster_id, first="1", date=formatted_last_week):
+def get_clips(request, broadcaster_id, first="1", date=formatted_past_day):
     """Get %first% clips of %broadcaster_id% from the past %date%"""
     bearer = "Bearer {}".format(get_token(request))
     headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
