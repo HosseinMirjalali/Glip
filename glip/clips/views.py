@@ -1,4 +1,9 @@
+import time
+from concurrent.futures import as_completed
+from datetime import datetime, timedelta
+
 import environ
+from allauth.socialaccount.models import SocialApp
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -6,6 +11,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
+from requests_futures.sessions import FuturesSession
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -26,6 +32,10 @@ from glip.users.utils import (
 env = environ.Env()
 
 User = get_user_model()
+
+past_day = datetime.now() - timedelta(days=1)
+formatted_past_day = past_day.isoformat()[:-3] + "Z"
+client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
 
 
 class FollowsListView(LoginRequiredMixin, View):
@@ -236,3 +246,40 @@ def broadcasters_info(request):
         broadcasters_id.append(e)
     bulk_info = get_user_bulk_info(broadcasters_id, request)
     return Response(data=bulk_info)
+
+
+def futures_followed_clips(request):
+    starting_time = time.time()
+    session = FuturesSession()
+    followed_ids = []
+    clips_data = []
+
+    user_token = get_token(request)
+    bearer = "Bearer {}".format(user_token)
+    headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
+    follows = get_user_follows2(request, user_token)
+
+    for follow in follows:
+        followed_ids.append(follow["to_id"])
+
+    futures = [
+        session.get(
+            f"https://api.twitch.tv/helix/clips?broadcaster_id={i}&first=3&started_at={formatted_past_day}",
+            headers=headers,
+        )
+        for i in followed_ids
+    ]
+
+    for future in as_completed(futures):
+        resp = future.result()
+        for i in resp.json()["data"]:
+            clips_data.append(i)
+
+    # for future in as_completed(futures):
+    #     resp = future.result()
+    #     clips_data.append(resp.json()["data"][0])
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    total_time = time.time() - starting_time
+    print(total_time)
+    print(len(clips_data))
+    return render(request, "pages/clip.html", {"clips": clips_data})
