@@ -1,9 +1,11 @@
+from concurrent.futures import as_completed
 from datetime import datetime, timedelta
 
 import environ
 import requests
 from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
 from django.contrib.auth import get_user_model
+from requests_futures.sessions import FuturesSession
 
 from glip.clips.models import Game, GameFollow
 
@@ -214,3 +216,27 @@ def get_user_game_follows_clips(request, user_token):
         e = get_clips_by_game(request, game_id=game, user_token=user_token)
         clips_info.extend(e)
     return clips_info
+
+
+def get_followed_games_clips_async(request, user_token):
+    session = FuturesSession()
+    bearer = "Bearer {}".format(user_token)
+    headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
+    followed_games_id = GameFollow.objects.filter(following=request.user).values_list(
+        "followed__game_id", flat=True
+    )
+    clips_data = []
+    futures = [
+        session.get(
+            f"https://api.twitch.tv/helix/clips?game_id={i}&first=100&started_at={formatted_past_day}",
+            headers=headers,
+        )
+        for i in followed_games_id
+    ]
+    for future in as_completed(futures):
+        resp = future.result()
+        print(resp.json())
+        for i in resp.json()["data"]:
+            clips_data.append(i)
+
+    return clips_data

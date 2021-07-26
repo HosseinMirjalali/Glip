@@ -1,4 +1,3 @@
-import time
 from concurrent.futures import as_completed
 from datetime import datetime, timedelta
 
@@ -20,6 +19,7 @@ from glip.users.utils import (
     get_clips,
     get_clips_by_game,
     get_clips_of_specific_channel,
+    get_followed_games_clips_async,
     get_token,
     get_top_games,
     get_user_bulk_info,
@@ -197,10 +197,12 @@ def my_view(request):
     return Response(data=follows)
 
 
-@api_view(["GET"])
-def followed_games_clips(request):
-    clips = get_user_game_follows_clips(request)
-    return Response(data=clips)
+# TODO delete non-async api fetch functions/views
+# @api_view(["GET"])
+# def followed_games_clips(request):
+#     user_token = get_token(request)
+#     clips = get_user_game_follows_clips(request, user_token)
+#     return Response(data=clips)
 
 
 @api_view(["GET"])
@@ -249,7 +251,6 @@ def broadcasters_info(request):
 
 
 def futures_followed_clips(request):
-    starting_time = time.time()
     session = FuturesSession()
     followed_ids = []
     clips_data = []
@@ -275,11 +276,11 @@ def futures_followed_clips(request):
         for i in resp.json()["data"]:
             clips_data.append(i)
 
-    # for future in as_completed(futures):
-    #     resp = future.result()
-    #     clips_data.append(resp.json()["data"][0])
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    total_time = time.time() - starting_time
-    print(total_time)
-    print(len(clips_data))
     return render(request, "pages/clip.html", {"clips": clips_data})
+
+
+@api_view(["GET"])
+def followed_games_clips(request):
+    user_token = get_token(request)
+    clips = get_followed_games_clips_async(request, user_token)
+    return Response(data=clips)
