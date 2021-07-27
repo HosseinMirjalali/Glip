@@ -92,3 +92,18 @@ input[type="color"]:focus,
   box-shadow: 0 1px 1px rgba(106, 90, 205, 1) inset, 0 0 8px rgba(106, 90, 205, 1);
   outline: 0 none;
 }
+
+
+.copyToClipBoard {
+  border: 2px solid #A16AE8; !important;
+  margin: 10px; !important;
+  color: #C0C0C0; !important;
+  transition: all .5s ease-in-out; !important;
+  border-radius: 15px; !important;
+}
+
+.copyToClipBoard:hover, .copyToClipBoard:focus, .copyToClipBoard:active {
+  color: #fff; !important;
+  background-color: #603F8B; !important;
+  border-color: #603F8B;
+}
