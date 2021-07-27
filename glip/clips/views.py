@@ -185,7 +185,7 @@ def game_clip_page(request):
 def your_clip_page(request):
     template_name = "pages/clip.html"
     user_token = get_token(request)
-    user_game_follows_clips = get_user_game_follows_clips(request, user_token)
+    user_game_follows_clips = get_followed_games_clips_async(request, user_token)
     user_channel_follows = get_user_follows2(request, user_token)
     clips = get_user_games_channels_clips(user_game_follows_clips, user_channel_follows)
     return render(request, template_name, {"clips": clips})
