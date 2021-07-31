@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 import environ
 import requests
-from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
+from allauth.socialaccount.models import SocialAccount, SocialToken
 from django.contrib.auth import get_user_model
 from requests_futures.sessions import FuturesSession
 
@@ -15,8 +15,8 @@ env = environ.Env()
 
 # bearer = ""
 # change comment based on env
-# client_id = env("TWITCH_CLIENT_ID")
-client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
+client_id = env("TWITCH_CLIENT_ID")
+# client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
 
 # headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
 now = datetime.utcnow().isoformat()[:-3] + "Z"

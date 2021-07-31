@@ -31,7 +31,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: "Host(`glipit.tv`) || Host(`www.glipit.tv`)"
+      rule: "Host(`glipsite.com`) || Host(`www.glipsite.com`)"
       entryPoints:
         - web-secure
       middlewares:
@@ -42,7 +42,7 @@ http:
         certResolver: letsencrypt
 
     flower-secure-router:
-      rule: "Host(`glipit.tv`)"
+      rule: "Host(`glipsite.com`)"
       entryPoints:
         - flower
       service: flower

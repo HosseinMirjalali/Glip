@@ -35,3 +35,4 @@ REDIS_URL=redis://redis:6379/0
 # Flower
 CELERY_FLOWER_USER=debug
 CELERY_FLOWER_PASSWORD=debug
+TWITCH_CLIENT_ID=u37k0x1ueod81ij9uxzxb42u9u90os
