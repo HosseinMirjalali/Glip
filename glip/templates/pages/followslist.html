@@ -102,6 +102,21 @@
           <p>See the streamers you have followed on Twitch and watch their top clips from the past 24 hours</p>
         </div>
       </div>
+
+
+      {#      Newer small picture-only cards      #}
+      {#      <div class="row mt-5 justify-content-center">#}
+      {#        {% for info in bulk_info|dictsort:"display_name" %}#}
+      {#          <div class="card card-custom mx-2 mb-3">#}
+      {#            <a href="{% url 'clips:clip' %}?broadcaster_id={{ info.id }}&first=100">#}
+      {#              <img src="{{ info.profile_image_url }}"#}
+      {#                   alt="" class="card-img">#}
+      {#            </a>#}
+      {#          </div>#}
+      {#        {% endfor %}#}
+      {#      </div>#}
+
+
       <div class="row text-center align-self-center">
         {% for info in bulk_info|dictsort:"display_name" %}
           <div class="col-sm-2">
