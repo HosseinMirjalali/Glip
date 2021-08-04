@@ -25,11 +25,11 @@
       </div>
     </div>
     <br>
-    <div class="row">
+    <div class="row mt-5 justify-content-center">
       {% for clip in clips|dictsortreversed:"view_count" %}
-        <div class="col-sm-offset-3 clip-card" style="padding: 10px">
+        <div class="col-sm-offset-3 clip-card " style="padding: 10px">
 
-          <div class="card text-white bg-dark mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
+          <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
                data-target="#videoModal"
                data-theVideo="{{ clip.embed_url }}&parent=localhost">
             <img loading=lazy class="card-img-top clip-card-img" src="{{ clip.thumbnail_url }}" alt=""
