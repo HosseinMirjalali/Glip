@@ -135,6 +135,11 @@ input[type="color"]:focus,
   /*-moz-transform: scale(1.05);*/
   /*-webkit-transform: scale(1.05);*/
   /*transform: scale(1.05);*/
+  border-radius: 30px; !important;
+}
+
+.card {
+  border-radius: 30px; !important;
 }
 
 .mt-0 {
@@ -142,12 +147,12 @@ input[type="color"]:focus,
 }
 
 .followslist-icon-twitch {
-  top: 0px;
+  top: 6px;
   left: 2px;
 }
 
 .followslist-icon-film {
-  top: 0px;
+  top: 6px;
   right: 2px;
 }
 
@@ -166,7 +171,12 @@ input[type="color"]:focus,
 }
 
 .customShadowBox {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.2);
   padding: 150px 150px;
   position: absolute;
+  border-radius: 30px;
+}
+
+.cardImage {
+  border-radius: 30px;
 }
