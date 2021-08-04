@@ -7,6 +7,8 @@
     top: 8px;
     left: 16px;
   }
+
+
 </style>
 
 {% block content %}
@@ -25,11 +27,11 @@
       </div>
     </div>
     <br>
-    <div class="row">
+    <div class="row mt-5 justify-content-center">
       {% for clip in clips|dictsortreversed:"view_count" %}
-        <div class="col-sm-offset-3 clip-card" style="padding: 10px">
+        <div class="col-sm-offset-3 clip-card " style="padding: 10px">
 
-          <div class="card text-white bg-dark mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
+          <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
                data-target="#videoModal"
                data-theVideo="{{ clip.embed_url }}&parent=localhost">
             <img loading=lazy class="card-img-top clip-card-img" src="{{ clip.thumbnail_url }}" alt=""
@@ -125,7 +127,58 @@
 
 
   {% else %}
-    <strong>No channels followed.</strong>
+    <style>
+      .masthead {
+        height: 100vh;
+        min-height: 500px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      a {
+        color: #6A5ACD;
+      }
+
+      .twitchLink {
+        color: #a970ff;
+      }
+
+      hr {
+        color: #6A5ACD;
+      }
+    </style>
+    <div class="masthead justify-content-center text-center">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <strong>No clips to show <br>
+        Sadge :(</strong>
+      <br>
+      <hr>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <p>Depending on where you were when you requested to watch some clips, you could be seeing this page due to
+        various reasons:</p>
+      <br>
+      <p>The streamer has not broadcast in the past 24 hours, or there are simply no clips by
+        them. </p>
+      <br>
+      <p>You have not followed enough streamers on <a href="https://www.twitch.tv/"
+                                                      class="lead text-decoration-none twitchLink">Twitch</a> and/or <a
+              href="{% url 'clips:games' %}"
+              class="lead text-decoration-none">Games</a> on Glip.</p>
+      <br>
+      <p></p>
+    </div>
   {% endif %}
 
 {% endblock content %}
