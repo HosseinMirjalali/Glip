@@ -4,7 +4,7 @@
 DJANGO_SETTINGS_MODULE=config.settings.production
 DJANGO_SECRET_KEY=QPsBkyfArDRGJRgEECafC86NnuiVp7pzyckgcnqOG8k14opnz1QtMg0E3FQGkPqy
 DJANGO_ADMIN_URL=rhsP3x7ZfpMLeh8E96H2mfvj5wtFEs5W/
-DJANGO_ALLOWED_HOSTS=.glipit.tv
+DJANGO_ALLOWED_HOSTS=.glipsite.com,www.glipsite.com
 
 # Security
 # ------------------------------------------------------------------------------
