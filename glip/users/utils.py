@@ -1,5 +1,5 @@
 from concurrent.futures import as_completed
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, tzinfo
 
 import environ
 import requests
@@ -8,7 +8,23 @@ from django.contrib.auth import get_user_model
 from requests_futures.sessions import FuturesSession
 
 from glip.clips.models import Game, GameFollow
+from glip.users.views import get_new_access_from_refresh
 
+ZERO = timedelta(0)
+
+
+class UTC(tzinfo):
+    def utcoffset(self, dt):
+        return ZERO
+
+    def tzname(self, dt):
+        return "UTC"
+
+    def dst(self, dt):
+        return ZERO
+
+
+utc = UTC()
 User = get_user_model()
 
 env = environ.Env()
@@ -19,6 +35,7 @@ client_id = env("TWITCH_CLIENT_ID")
 # client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
 
 # headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
+pnow = datetime.now(utc)
 now = datetime.utcnow().isoformat()[:-3] + "Z"
 last_week = datetime.now() - timedelta(weeks=1)
 formatted_last_week = last_week.isoformat()[:-3] + "Z"
@@ -141,7 +158,13 @@ def get_clips(request, broadcaster_id, first="1", date=formatted_past_day):
         broadcaster_id, first, date
     )
     response_data = requests.get(broadcaster_clip_url, headers=headers)
-    print(response_data)
+    if (
+        response_data.status_code >= 400
+    ):  # If the request gives error 401 due to expired token, it refreshes
+        get_new_access_from_refresh(request)
+        bearer = "Bearer {}".format(get_token(request))
+        headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
+        response_data = requests.get(broadcaster_clip_url, headers=headers)
     clips = response_data.json()["data"]
     return clips
 
@@ -161,10 +184,15 @@ def get_clips_by_game(
         )
     )
     response_data = requests.get(broadcaster_clip_url, headers=headers)
-    print(response_data)
     clips = response_data.json()["data"]
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    print(clips)
+    if (
+        response_data.status_code >= 400
+    ):  # If the request gives error 401 due to expired token, it refreshes
+        get_new_access_from_refresh(request)
+        bearer = "Bearer {}".format(get_token(request))
+        headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
+        response_data = requests.get(broadcaster_clip_url, headers=headers)
+        clips = response_data.json()["data"]
     return clips
 
 
@@ -174,6 +202,20 @@ def get_top_games(request):
     first = 100
     top_games_url = "https://api.twitch.tv/helix/games/top?first={}".format(first)
     response_data = requests.get(top_games_url, headers=headers)
+    if (
+        response_data.status_code >= 400
+    ):  # If the request gives error 401 due to expired token, it refreshes
+        get_new_access_from_refresh(request)
+        bearer = "Bearer {}".format(get_token(request))
+        headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
+        response_data = requests.get(top_games_url, headers=headers)
+    # try:
+    #     game_info = data.get("data", [])
+    # except IndexError:
+    #     raise OAuth2Error("Invalid data from Twitch API: %s" % data)
+    #
+    # if "box_art_url" not in game_info:
+    #     raise OAuth2Error("Invalid data from Twitch API: %s" % game_info)
     games = response_data.json()["data"]
     objs = [
         Game(game_id=e["id"], name=e["name"], box_art_url=e["box_art_url"])
@@ -181,9 +223,6 @@ def get_top_games(request):
     ]
     Game.objects.bulk_create(objs, ignore_conflicts=True)
     return games
-
-
-# Function not working/implemented yet
 
 
 def get_user_games_channels_clips(user_game_follows_clips, user_channel_follows):
@@ -220,8 +259,7 @@ def get_user_game_follows_clips(request, user_token):
 
 def get_followed_games_clips_async(request, user_token):
     session = FuturesSession()
-    bearer = "Bearer {}".format(user_token)
-    headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
+    headers = {"Authorization": "Bearer {}".format(user_token), "Client-ID": client_id}
     followed_games_id = GameFollow.objects.filter(following=request.user).values_list(
         "followed__game_id", flat=True
     )
