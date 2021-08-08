@@ -27,7 +27,6 @@ from glip.users.utils import (
     get_user_game_follows_clips,
     get_user_games_channels_clips,
 )
-from glip.users.views import get_new_access_from_refresh
 
 ZERO = timedelta(0)
 
@@ -201,7 +200,6 @@ def game_clip_page(request):
 
 @login_required(login_url="/accounts/login/")
 def your_clip_page(request):
-    get_new_access_from_refresh(request)
     template_name = "pages/clip.html"
     user_token = get_token(request)
     user_game_follows_clips = get_followed_games_clips_async(request, user_token)
