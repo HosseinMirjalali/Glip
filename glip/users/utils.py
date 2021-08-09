@@ -127,14 +127,56 @@ def get_user_info(broadcaster_id, request):
     return info
 
 
+def user_login_maker(bulk_id_for_live):
+    query_ids: str = ""
+    if len(bulk_id_for_live) == 1:
+        query_ids = "?id=" + bulk_id_for_live
+    for single_id in bulk_id_for_live:
+        query_ids = "?id=" + bulk_id_for_live[0]
+        bulk_id_for_live.pop(0)
+        query_ids.join(single_id)
+    print("/////////////////////////////////////////////////////")
+    print(query_ids)
+    return query_ids
+
+
 def get_user_bulk_info(broadcasters_id, request):
     payload = {"id": [broadcasters_id]}
+    payload2 = {"user_id": [broadcasters_id]}
     bearer = "Bearer {}".format(get_token(request))
     headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
-    broadcaster_clip_url = "https://api.twitch.tv/helix/users?"
-    response_data = requests.get(broadcaster_clip_url, headers=headers, params=payload)
-    bulk_info = response_data.json()["data"]
-    return bulk_info
+    broadcaster_info_url = "https://api.twitch.tv/helix/users?"
+    # streams_data_url = "https://api.twitch.tv/helix/streams?user_login="
+    response_data = requests.get(broadcaster_info_url, headers=headers, params=payload)
+    # print(response_data.json())
+    bulk_info_pre_live = response_data.json()["data"]
+    live_data = requests.get(
+        "https://api.twitch.tv/helix/streams?", headers=headers, params=payload2
+    )
+    # print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    # print(live_data)
+    live_data2 = live_data.json()
+    for data in live_data2["data"]:
+        for infor in bulk_info_pre_live:
+            if data["user_id"] == infor["id"]:
+                infor["type"] = data["type"]
+                infor["title"] = data["title"]
+                infor["viewer_count"] = data["viewer_count"]
+                infor["game_name"] = data["game_name"]
+                print(infor)
+    # futures = [
+    #     session.get(
+    #         'https://api.twitch.tv/helix/streams?user_login=' + i["login"], headers=headers
+    #     )
+    #     for i in bulk_info_pre_live
+    # ]
+    # for future in as_completed(futures):
+    #     resp = future.result()
+    #     print(resp.json())
+    #     for i in resp.json()["data"]:
+    #         bulk_info.append(i)
+
+    return bulk_info_pre_live
 
 
 def get_clips_of_specific_channel(broadcaster_id, request):
