@@ -135,11 +135,13 @@ input[type="color"]:focus,
   /*-moz-transform: scale(1.05);*/
   /*-webkit-transform: scale(1.05);*/
   /*transform: scale(1.05);*/
-  border-radius: 30px; !important;
+  /*  border-radius: 30px;*/
+  /*!important;*/
 }
 
 .card {
-  border-radius: 30px; !important;
+  border-radius: 5px;
+!important;
 }
 
 .mt-0 {
@@ -156,27 +158,91 @@ input[type="color"]:focus,
   right: 2px;
 }
 
-.followslist-icon-twitch, .followslist-icon-film {
+/*.followslist-icon-twitch, .followslist-icon-film {
   font-size: 1.4rem;
   position: absolute;
   color: #BF00FF;
   background-color: rgba(0, 0, 0, 0.6);
-  padding: 1px 5px;
-  border-radius: 50%/50%;
-  /*padding: 5px 5px;*/
+  padding: 1px 3px;
+  border-radius: 2px;
+  !*padding: 5px 5px;*!
+  z-index: 99999;
 }
 
 .followslist-icon-twitch:hover, .followslist-icon-twitch:focus, .followslist-icon-twitch:active, .followslist-icon-film:hover, .followslist-icon-film:focus, .followslist-icon-film:active {
   color: #603F8B;
+}*/
+
+.followslist-icon-twitch, .followslist-icon-film {
+  color: #BF00FF;
+  z-index: 999999; !important;
+}
+
+.followslist-icon-twitch:hover, .followslist-icon-film:hover {
+  color: #BF00FF;
 }
 
 .customShadowBox {
   background-color: rgba(0, 0, 0, 0.2);
   padding: 150px 150px;
   position: absolute;
-  border-radius: 30px;
+  border-radius: 5px;
 }
 
 .cardImage {
-  border-radius: 30px;
+  border-radius: 5px;
+}
+
+.liveDot {
+  color: #FF0000;
+}
+
+.go-corner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 0 32px;
+  transition: transform 0.25s ease-out;
+}
+
+.go-arrow {
+  margin-top: -4px;
+  margin-right: -4px;
+  color: white;
+}
+
+.go-corner-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 32px 0;
+  transition: transform 0.25s ease-out;
+}
+
+.go-arrow-left {
+  margin-top: -4px;
+  margin-right: -4px;
+  color: white;
+}
+
+.go-corner:hover, .go-corner-left:hover {
+  transform: scale(1.2);
+}
+
+.card1 {
+  overflow: hidden;
 }
