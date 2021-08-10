@@ -49,6 +49,16 @@ def get_token(request):
     return st.token
 
 
+def validate_token(token):
+    """Takes a user token and validates it, can be used to determine whether refresh is required"""
+    validation_url = "https://id.twitch.tv/oauth2/validate"
+    headers = {"Authorization": "Bearer {}".format(token)}
+    response_data = requests.get(validation_url, headers=headers)
+    if response_data.status_code >= 400:
+        return False
+    return True
+
+
 def get_formatted_time(time_unit, num):
     past_timedelta = datetime.now() - timedelta(**{time_unit: num})
     formatted_time = past_timedelta.isoformat()[:3] + "Z"
@@ -57,7 +67,13 @@ def get_formatted_time(time_unit, num):
 
 def get_user_follows(request):
     """Get a list of user's followed channels on Twitch from Twitch API, first 200"""
-    bearer = "Bearer {}".format(get_token(request))
+    user_token = get_token(request)
+    if validate_token(token=user_token):
+        pass
+    else:
+        get_new_access_from_refresh(request)
+        user_token = get_token(request)
+    bearer = "Bearer {}".format(user_token)
     headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
     user_twitch_id = SocialAccount.objects.get(user=request.user).uid
     follows_url = (
@@ -87,6 +103,11 @@ def get_user_follows(request):
 
 def get_user_follows2(request, user_token):
     """Get a list of user's followed channels on Twitch from Twitch API, first 200 second iteration"""
+    if validate_token(token=user_token):
+        pass
+    else:
+        get_new_access_from_refresh(request)
+        user_token = get_token(request)
     bearer = "Bearer {}".format(user_token)
     headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
     user_twitch_id = SocialAccount.objects.get(user=request.user).uid
@@ -268,7 +289,6 @@ def get_top_games(request):
 
 
 def get_user_games_channels_clips(user_game_follows_clips, user_channel_follows):
-    print(user_game_follows_clips)
     chosen_clips = []
     user_game_follows_clips_broadcasters_id = (
         []
@@ -315,7 +335,6 @@ def get_followed_games_clips_async(request, user_token):
     ]
     for future in as_completed(futures):
         resp = future.result()
-        print(resp.json())
         for i in resp.json()["data"]:
             clips_data.append(i)
 
