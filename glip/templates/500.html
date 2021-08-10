@@ -1,11 +1,48 @@
 {% extends "base.html" %}
 
-{% block title %}Server Error{% endblock %}
-
 {% block content %}
-<h1>Ooops!!! 500</h1>
+  <style>
+    .masthead {
+      height: 100vh;
+      min-height: 500px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-<h3>Looks like something went wrong!</h3>
+    a {
+      color: #6A5ACD;
+    }
+  </style>
 
-<p>We track these errors automatically, but if the problem persists feel free to contact us. In the meantime, try refreshing.</p>
-{% endblock content %}
+  <header class="masthead">
+    <div class="container h-100">
+      <div class="row h-100 align-items-center">
+        <div class="col-12 text-center">
+          <h1 class="font-weight-light">Server ran into a problem :(</h1>
+          <p class="lead">This is most probably due to an issue on our side</p>
+          <p>But if you see this page after coming back to the website after a few hours, please try to logout and login
+            back again, and that might help.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+{#  <section class="py-5">#}
+{#    <div class="container">#}
+{#      <h2 class="font-weight-light">Your login process</h2>#}
+{#      <p>#}
+{##}
+{#      </p>#}
+{#      <div class="btn"></div>#}
+{#    </div>#}
+{#    <div class="container">#}
+{#      <h2 class="font-weight-light">Clips For You</h2>#}
+{#      <p>#}
+{##}
+{#      </p>#}
+{#    </div>#}
+{#  </section>#}
+  <hr>
+
+{% endblock %}
