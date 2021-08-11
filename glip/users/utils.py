@@ -54,7 +54,7 @@ def validate_token(token):
     validation_url = "https://id.twitch.tv/oauth2/validate"
     headers = {"Authorization": "Bearer {}".format(token)}
     response_data = requests.get(validation_url, headers=headers)
-    if response_data.status_code >= 400:
+    if response_data.status_code == 401:
         return False
     return True
 
