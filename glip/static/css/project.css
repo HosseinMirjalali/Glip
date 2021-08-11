@@ -213,8 +213,8 @@ input[type="color"]:focus,
 }
 
 .go-arrow {
-  margin-top: -4px;
-  margin-right: -4px;
+  margin-top: -5px;
+  margin-right: -5px;
   color: white;
 }
 
@@ -234,8 +234,8 @@ input[type="color"]:focus,
 }
 
 .go-arrow-left {
-  margin-top: -4px;
-  margin-right: -4px;
+  margin-top: -5px;
+  margin-right: -5px;
   color: white;
 }
 
