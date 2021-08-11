@@ -203,7 +203,7 @@ def game_clip_page(request):
 def your_clip_page(request):
     template_name = "pages/clip.html"
     user_token = get_token(request)
-    if validate_token(token=user_token):
+    if validate_token(token=user_token) is True:
         pass
     else:
         get_new_access_from_refresh(request)
