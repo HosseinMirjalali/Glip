@@ -246,3 +246,20 @@ input[type="color"]:focus,
 .card1 {
   overflow: hidden;
 }
+
+body {
+  --focus: hsl(210, 90%, 50%);
+  --shadow-1: hsla(236, 50%, 50%, .3);
+
+}
+
+.modal-body {
+
+  border-radius: 0;
+
+  color: hsl(220, 50%, 90%);
+  background: linear-gradient(to right, hsl(248, 30%, 20%), hsl(261, 43%, 45%));
+  box-shadow: var(--m-shadow, .4rem .4rem 10.2rem .2rem) var(--shadow-1);
+
+  overflow: hidden;
+}
