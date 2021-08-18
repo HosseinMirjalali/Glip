@@ -77,7 +77,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "glip.users.apps.UsersConfig",
-    "glip.clips.apps.ClipsConfig"
+    "glip.clips.apps.ClipsConfig",
+    "glip.comments.apps.CommentsConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
