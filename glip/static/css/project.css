@@ -175,7 +175,8 @@ input[type="color"]:focus,
 
 .followslist-icon-twitch, .followslist-icon-film {
   color: #BF00FF;
-  z-index: 999999; !important;
+  z-index: 999999;
+!important;
 }
 
 .followslist-icon-twitch:hover, .followslist-icon-film:hover {
@@ -254,12 +255,39 @@ body {
 }
 
 .modal-body {
-
-  border-radius: 0;
-
   color: hsl(220, 50%, 90%);
   background: linear-gradient(to right, hsl(248, 30%, 20%), hsl(261, 43%, 45%));
   box-shadow: var(--m-shadow, .4rem .4rem 10.2rem .2rem) var(--shadow-1);
+  /*overflow: hidden;*/
+}
 
-  overflow: hidden;
+.modal, .modal-dialog, .modal-content, .modal-body, .embed-responsive {
+  min-width: 66.66666666666667vw;
+  min-height: 76.19047619047619vh;
+}
+
+.modal-footer {
+  color: hsl(220, 50%, 90%);
+  background: linear-gradient(to right, hsl(248, 30%, 20%), hsl(261, 43%, 45%));
+}
+
+.closeBtn {
+  border: 2px solid #A16AE8;
+!important;
+  margin: 10px;
+!important;
+  color: #C0C0C0;
+!important;
+  transition: all .5s ease-in-out;
+!important;
+  border-radius: 15px;
+!important;
+}
+
+.closeBtn:hover, .closeBtn:focus, .closeBtn:active {
+  color: hsl(220, 50%, 90%);
+!important;
+  background-color: #603F8B;
+!important;
+  border-color: #603F8B;
 }
