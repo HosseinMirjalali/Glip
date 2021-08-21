@@ -246,6 +246,7 @@ input[type="color"]:focus,
 
 .card1 {
   overflow: hidden;
+  background-color: rgba(0,0,0,.0001) !important;
 }
 
 body {
@@ -265,6 +266,11 @@ body {
   min-width: 66.66666666666667vw;
   min-height: 76.19047619047619vh;
 }
+
+.modal-content {
+  background-color: rgba(0,0,0,.0001) !important;
+}
+
 
 .modal-footer {
   color: hsl(220, 50%, 90%);
