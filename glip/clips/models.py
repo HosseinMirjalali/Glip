@@ -49,3 +49,23 @@ class ChannelFollow(models.Model):
 
     def __unicode__(self):
         return str(self.follow_time)
+
+
+class Clip(models.Model):
+    clip_twitch_id = models.CharField(max_length=255, unique=True)
+    url = models.URLField()
+    embed_url = models.URLField()
+    broadcaster_id = models.CharField(max_length=50)
+    broadcaster_name = models.CharField(max_length=250)
+    creator_id = models.CharField(max_length=50)
+    creator_name = models.CharField(max_length=250)
+    video_id = models.CharField(max_length=50)
+    game_id = models.CharField(max_length=50)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, blank=True, null=True)
+    language = models.CharField(max_length=5)
+    title = models.CharField(max_length=255)
+    twitch_view_count = models.CharField(max_length=15)
+    glip_view_count = models.CharField(max_length=15, blank=True, null=True)
+    created_at = models.DateTimeField()
+    thumbnail_url = models.URLField()
+    duration = models.CharField(max_length=10)
