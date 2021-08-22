@@ -14,7 +14,7 @@ from requests_futures.sessions import FuturesSession
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from glip.clips.models import Game, GameFollow
+from glip.games.models import Game, GameFollow
 from glip.users.utils import (
     get_clips,
     get_clips_by_game,

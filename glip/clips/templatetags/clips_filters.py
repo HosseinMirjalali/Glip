@@ -1,6 +1,6 @@
 from django import template
 
-from glip.clips.models import Game, GameFollow
+from glip.games.models import Game, GameFollow
 
 register = template.Library()
 
