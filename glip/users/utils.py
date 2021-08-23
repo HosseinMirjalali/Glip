@@ -7,7 +7,7 @@ from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
 from django.contrib.auth import get_user_model
 from requests_futures.sessions import FuturesSession
 
-from glip.clips.models import Game, GameFollow
+from glip.games.models import Game, GameFollow
 from glip.users.views import get_new_access_from_refresh
 
 ZERO = timedelta(0)
