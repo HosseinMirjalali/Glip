@@ -1,5 +1,5 @@
 from concurrent.futures import as_completed
-from datetime import datetime, timedelta, tzinfo
+from datetime import datetime, timedelta
 
 import environ
 from allauth.socialaccount.models import SocialApp
@@ -25,26 +25,10 @@ from glip.users.utils import (
 )
 from glip.users.views import get_new_access_from_refresh
 
-ZERO = timedelta(0)
-
-
-class UTC(tzinfo):
-    def utcoffset(self, dt):
-        return ZERO
-
-    def tzname(self, dt):
-        return "UTC"
-
-    def dst(self, dt):
-        return ZERO
-
-
-utc = UTC()
 env = environ.Env()
 
 User = get_user_model()
 
-pnow = datetime.now(utc)
 past_day = datetime.now() - timedelta(days=1)
 formatted_past_day = past_day.isoformat()[:-3] + "Z"
 client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
