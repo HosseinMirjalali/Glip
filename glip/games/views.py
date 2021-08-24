@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 import environ
-from allauth.socialaccount.models import SocialApp
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -18,7 +17,7 @@ User = get_user_model()
 
 past_day = datetime.now() - timedelta(days=1)
 formatted_past_day = past_day.isoformat()[:-3] + "Z"
-client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
+client_id = env("TWITCH_CLIENT_ID")
 
 
 class GamesListView(LoginRequiredMixin, View):
