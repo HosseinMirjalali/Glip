@@ -2,7 +2,7 @@ import environ
 from django.contrib.auth import get_user_model
 
 from config import celery_app
-from glip.clips.models import Channels
+from glip.channels.models import Channel
 from glip.users.utils import get_user_follows
 
 User = get_user_model()
@@ -22,7 +22,7 @@ def save_user_followers(request):
     user = User.objects.get(username=request.user.username)
     for i in follows:
         user.follows = i["to_id"]
-        c = Channels(
+        c = Channel(
             twitch_id=i["to_id"],
             twitch_login=i["to_login"],
             twitch_name=i["to_name"],

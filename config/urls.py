@@ -17,6 +17,8 @@ urlpatterns = [
     # User management
     path("users/", include("glip.users.urls", namespace="users")),
     path("clips/", include("glip.clips.urls", namespace="clips")),
+    path("games/", include("glip.games.urls", namespace="games")),
+    path("channels/", include("glip.channels.urls", namespace="channels")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

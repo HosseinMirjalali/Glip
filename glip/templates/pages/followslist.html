@@ -65,7 +65,7 @@
           <div class="card card1 card-followslist mx-2 mb-3" data-role="game">
             <div class="customShadowBox"></div>
             <a target="_blank"
-               href="{% url 'clips:clip' %}?broadcaster_id={{ info.id }}&first=100"></a>
+               href="{% url 'channels:clip' %}?broadcaster_id={{ info.id }}&first=100"></a>
             <img src="{{ info.profile_image_url }}"
                  alt="" class="cardImage">
             <h3 class="cardText">
@@ -74,7 +74,7 @@
             <div class="go-corner-left" href="#">
               <div class="go-arrow-left">
                 <a class="text-decoration-none followslist-icon-film"
-                   href="{% url 'clips:clip' %}?broadcaster_id={{ info.id }}&first=100"
+                   href="{% url 'channels:clip' %}?broadcaster_id={{ info.id }}&first=100"
                    target="_blank">
                   <i data-toggle="tooltip" data-placement="top" title="Watch {{ info.display_name }}'s top clips"
                      class="fas fa-film"></i>
