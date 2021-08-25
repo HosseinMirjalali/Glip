@@ -126,7 +126,8 @@
                         title="{{ game.name }}">{{ game.name }}
                     </h3>
                   </a>
-                  <a class="text-decoration-none custom-text-h3" href="https://www.twitch.tv/directory/game/{{ game.name }}"
+                  <a class="text-decoration-none custom-text-h3"
+                     href="https://www.twitch.tv/directory/game/{{ game.name }}"
                      target="_blank">
                     <i data-toggle="tooltip" data-placement="top" title="Open on Twitch" class="fab fa-twitch"></i>
                   </a>
@@ -152,6 +153,9 @@
   {% else %}
     <strong>No games to show.</strong>
   {% endif %}
+
+  <!-- Back to top button -->
+  <a id="button"></a>
 
   {% block javascript %}
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -217,6 +221,21 @@
             $(this).toggle($(this).find('h3').text().toLowerCase().indexOf(value) > -1)
           });
         });
+      });
+
+      var btn = $('#button');
+
+      $(window).scroll(function () {
+        if ($(window).scrollTop() > 300) {
+          btn.addClass('show');
+        } else {
+          btn.removeClass('show');
+        }
+      });
+
+      btn.on('click', function (e) {
+        e.preventDefault();
+        $('html, body').animate({scrollTop: 0}, '300');
       });
 
     </script>

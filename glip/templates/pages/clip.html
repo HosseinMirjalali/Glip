@@ -90,7 +90,8 @@
             <!--Linkedin-->
             <a type="button" class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>{% endcomment %}
 
-            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4 closeBtn" data-dismiss="modal">Close
+            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4 closeBtn" data-dismiss="modal">
+              Close
             </button>
 
           </div>
@@ -115,6 +116,9 @@
         </div>
       </div>
     </div>{% endcomment %}
+
+    <!-- Back to top button -->
+    <a id="button"></a>
 
     <hr>
 
@@ -166,9 +170,26 @@
         });
       });
 
+
       $('#videoModal').on('hidden.bs.modal', function (e) {
         // do something...
         $('#videoModal iframe').attr("src", $("#videoModal iframe").attr("src"));
+      });
+
+
+      var btn = $('#button');
+
+      $(window).scroll(function () {
+        if ($(window).scrollTop() > 300) {
+          btn.addClass('show');
+        } else {
+          btn.removeClass('show');
+        }
+      });
+
+      btn.on('click', function (e) {
+        e.preventDefault();
+        $('html, body').animate({scrollTop: 0}, '300');
       });
 
     </script>
