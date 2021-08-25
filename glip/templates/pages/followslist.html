@@ -154,6 +154,11 @@
       {#        {% endfor %}#}
       {#      </div><!-- row closing -->#}
       </div><!-- masthead closing -->
+
+
+      <!-- Back to top button -->
+      <a id="button"></a>
+
       {% block javascript %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -180,6 +185,23 @@
         function search(string) {
           window.find(string);
         }
+
+
+        var btn = $('#button');
+
+        $(window).scroll(function () {
+          if ($(window).scrollTop() > 300) {
+            btn.addClass('show');
+          } else {
+            btn.removeClass('show');
+          }
+        });
+
+        btn.on('click', function (e) {
+          e.preventDefault();
+          $('html, body').animate({scrollTop: 0}, '300');
+        });
+
       </script>
 
 
