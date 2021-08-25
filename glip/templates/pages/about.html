@@ -20,7 +20,8 @@
       <div class="row h-100 align-items-center">
         <div class="col-12 text-center">
           <h1 class="font-weight-light">Glip</h1>
-          <p class="lead">Made by a bored web developer to help you catch up with your favorite Twitch streamers</p>
+          <p class="lead">A simple hub to help you catch up with your favorite Twitch clips and your favorite
+            streamers</p>
           <p>👇</p>
         </div>
       </div>
@@ -40,6 +41,15 @@
       <hr>
     </div>
     <div class="container">
+      <h2 class="font-weight-light">Work in Progress</h2>
+      <p>
+        This website is still a work in progress. You will notice differences if you use the website regularly, since
+        I add new features, update visuals, etc. on a daily basis. If something new is lowering the quality of your
+        experience, please let me know. The cost of servers are currently all paid from my own pocket, so you
+        might not be able to access the website, since I might shut them down to make the costs manageable.
+      </p>
+    </div>
+    <div class="container">
       <h2 class="font-weight-light">Clips For You</h2>
       <p>
         There you will find clips that are chosen for you with regards to who you follow on Twitch, and which games you
@@ -55,14 +65,32 @@
       <hr>
     </div>
     <div class="container">
-      <h2 class="font-weight-light">Work in Progress</h2>
+      <h2 class="font-weight-light">Channels You Follow</h2>
       <p>
-        This website is still a work in progress. You will notice differences if you use the website regularly, since
-        I add new features, update visuals, etc. on a daily basis. If something new is lowering the quality of your
-        experience, please let me know. The cost of servers are currently all paid from my own pocket, so you
-        might not be able to access the website, since I might shut them down to make the costs manageable.
+        See all the streamers you have followed on Twitch. This is fetched from Twitch API and is publicly available to
+        anyone who can use Twitch API. The more streamers you follow, the more clips you see in
+        <a href="{% url 'clips:your_clips' %}" class="lead">Clips For You</a>.
+        You can watch their top clips (up to 100) from the past 24 hours by clicking on <span
+              class="fas fa-film followslist-icon-film"></span> icon.
+        You will see a <span class="liveDot">Live</span> icon if the streamer is online, and by clicking on that
+        or <i class="fab fa-twitch followslist-icon-twitch"></i> icon, you will be redirected to their Twitch page.
       </p>
+      <hr>
     </div>
+    <div class="container">
+      <h2 class="font-weight-light">Twitch Games</h2>
+      <p>
+        In this page you will see the current top 100 games on Twitch based on their view count. You can follow a game
+        to see the clips of that game in <a href="{% url 'clips:your_clips' %}" class="lead">Clips For You</a>. If at
+        any point, you don't want to see that game's clips anymore, you can always unfollow them.
+        You can watch each game's top 100 clips from the past 24 hours by clicking on <span
+              class="fas fa-film followslist-icon-film"></span> icon.
+        Also, by clicking on <i class="fab fa-twitch followslist-icon-twitch"></i> icon, you will be redirected to that
+        game's Twitch page.
+      </p>
+      <hr>
+    </div>
+
   </section>
   <hr>
 
