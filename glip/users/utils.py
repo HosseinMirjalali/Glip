@@ -29,12 +29,8 @@ User = get_user_model()
 
 env = environ.Env()
 
-# bearer = ""
-# change comment based on env
-# client_id = env("TWITCH_CLIENT_ID")
-client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
+client_id = env("TWITCH_CLIENT_ID")
 
-# headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
 pnow = datetime.now(utc)
 now = datetime.utcnow().isoformat()[:-3] + "Z"
 last_week = datetime.now() - timedelta(weeks=1)

@@ -18,7 +18,7 @@ User = get_user_model()
 
 past_day = datetime.now() - timedelta(days=1)
 formatted_past_day = past_day.isoformat()[:-3] + "Z"
-client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
+client_id = env("TWITCH_CLIENT_ID")
 
 
 class GamesListView(LoginRequiredMixin, View):
