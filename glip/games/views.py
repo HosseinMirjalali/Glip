@@ -58,7 +58,7 @@ def follow_game(request):
     game_to_follow = Game.objects.get(game_id=game_id)
     user = request.user
     GameFollow.objects.get_or_create(following=user, followed=game_to_follow)
-    return redirect(reverse("clips:games"))
+    return redirect(reverse("games:games"))
 
 
 @login_required(login_url="/accounts/login/")
@@ -70,7 +70,7 @@ def unfollow_game(request):
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@")
     print(obj)
     obj.delete()
-    return redirect(reverse("clips:games"))
+    return redirect(reverse("games:games"))
 
 
 @login_required(login_url="/accounts/login/")
