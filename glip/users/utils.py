@@ -29,18 +29,21 @@ User = get_user_model()
 
 env = environ.Env()
 
-# bearer = ""
-# change comment based on env
 client_id = env("TWITCH_CLIENT_ID")
-# client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
 
-# headers = {"Authorization": "Bearer {}".format(bearer), "Client-ID": client_id}
+
 pnow = datetime.now(utc)
 now = datetime.utcnow().isoformat()[:-3] + "Z"
 last_week = datetime.now() - timedelta(weeks=1)
 formatted_last_week = last_week.isoformat()[:-3] + "Z"
 past_day = datetime.now() - timedelta(days=1)
-formatted_past_day = past_day.isoformat()[:-3] + "Z"
+
+
+def get_past_day():
+    return datetime.now() - timedelta(days=1)
+
+
+formatted_past_day = get_past_day().isoformat()[:-3] + "Z"
 
 
 def get_token(request):
@@ -227,8 +230,9 @@ def get_clips(request, broadcaster_id, first="1", date=formatted_past_day):
     """Get %first% clips of %broadcaster_id% from the past %date%"""
     bearer = "Bearer {}".format(get_token(request))
     headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
+    formatted_past_24h = get_past_day().isoformat()[:-3] + "Z"
     broadcaster_clip_url = "https://api.twitch.tv/helix/clips?broadcaster_id={}&first={}&started_at={}".format(
-        broadcaster_id, first, date
+        broadcaster_id, first, formatted_past_24h
     )
     response_data = requests.get(broadcaster_clip_url, headers=headers)
     if (
@@ -250,10 +254,10 @@ def get_clips_by_game(
     """
     bearer = "Bearer {}".format(user_token)
     headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
-    # formatted_time = get_formatted_time(time_unit, num)
+    formatted_past_24h = get_past_day().isoformat()[:-3] + "Z"
     broadcaster_clip_url = (
         "https://api.twitch.tv/helix/clips?game_id={}&first={}&started_at={}".format(
-            game_id, first, formatted_past_day
+            game_id, first, formatted_past_24h
         )
     )
     response_data = requests.get(broadcaster_clip_url, headers=headers)
@@ -331,6 +335,7 @@ def get_user_game_follows_clips(request, user_token):
 
 def get_followed_games_clips_async(request, user_token):
     session = FuturesSession()
+    formatted_past_24h = get_past_day().isoformat()[:-3] + "Z"
     headers = {"Authorization": "Bearer {}".format(user_token), "Client-ID": client_id}
     followed_games_id = GameFollow.objects.filter(following=request.user).values_list(
         "followed__game_id", flat=True
@@ -338,7 +343,7 @@ def get_followed_games_clips_async(request, user_token):
     clips_data = []
     futures = [
         session.get(
-            f"https://api.twitch.tv/helix/clips?game_id={i}&first=100&started_at={formatted_past_day}",
+            f"https://api.twitch.tv/helix/clips?game_id={i}&first=100&started_at={formatted_past_24h}",
             headers=headers,
         )
         for i in followed_games_id

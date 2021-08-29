@@ -16,7 +16,7 @@ from glip.users.utils import (
     get_user_follows,
     get_user_follows2,
     get_user_games_channels_clips,
-    validate_token,
+    validate_token, get_past_day,
 )
 from glip.users.views import get_new_access_from_refresh
 
@@ -28,7 +28,6 @@ past_day = datetime.now() - timedelta(days=1)
 formatted_past_day = past_day.isoformat()[:-3] + "Z"
 
 client_id = env("TWITCH_CLIENT_ID")
-# client_id = SocialApp.objects.get(provider__iexact="twitch").client_id
 
 
 class ClipsListView(LoginRequiredMixin, View):
@@ -76,13 +75,14 @@ def futures_followed_clips(request):
     bearer = "Bearer {}".format(user_token)
     headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
     follows = get_user_follows2(request, user_token)
+    formatted_past_24h = get_past_day().isoformat()[:-3] + "Z"
 
     for follow in follows:
         followed_ids.append(follow["to_id"])
 
     futures = [
         session.get(
-            f"https://api.twitch.tv/helix/clips?broadcaster_id={i}&first=3&started_at={formatted_past_day}",
+            f"https://api.twitch.tv/helix/clips?broadcaster_id={i}&first=3&started_at={formatted_past_24h}",
             headers=headers,
         )
         for i in followed_ids
