@@ -8,6 +8,7 @@ import environ
 import requests
 
 from glip.clips.models import Clip
+from glip.clips.utils import update_view_counts
 from glip.games.models import Game
 
 env = environ.Env()
@@ -39,6 +40,7 @@ def get_and_save_games_clips(game_id):
     )
     response_data = requests.get(game_clip_url, headers=headers)
     clips = response_data.json()["data"]
+    update_view_counts(clips)
     objs = [
         Clip(clip_twitch_id=c["id"],
              url=c["url"],
@@ -60,7 +62,6 @@ def get_and_save_games_clips(game_id):
         for c in clips
     ]
     Clip.objects.bulk_create(objs, ignore_conflicts=True)
-
     g = Game.objects.get(game_id=game_id)
     g.last_queried_clips = datetime.now()
     g.save()

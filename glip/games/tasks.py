@@ -1,4 +1,3 @@
-
 import environ
 from django.contrib.auth import get_user_model
 from future.backports.datetime import timedelta, timezone, datetime

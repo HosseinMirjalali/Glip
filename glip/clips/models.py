@@ -7,7 +7,7 @@ User = get_user_model()
 
 
 class Clip(models.Model):
-    clip_twitch_id = models.CharField(max_length=255, unique=True)
+    clip_twitch_id = models.CharField(max_length=255, unique=True, primary_key=True)
     url = models.URLField()
     embed_url = models.URLField()
     broadcaster_id = models.CharField(max_length=50)
