@@ -8,6 +8,7 @@ class Game(models.Model):
     game_id = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     box_art_url = models.TextField()
+    last_queried_clips = models.DateTimeField(blank=True, null=True)
 
 
 class GameFollow(models.Model):

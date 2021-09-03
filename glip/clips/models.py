@@ -7,7 +7,7 @@ User = get_user_model()
 
 
 class Clip(models.Model):
-    clip_twitch_id = models.CharField(max_length=255, unique=True)
+    clip_twitch_id = models.CharField(max_length=255, unique=True, primary_key=True)
     url = models.URLField()
     embed_url = models.URLField()
     broadcaster_id = models.CharField(max_length=50)
@@ -19,7 +19,7 @@ class Clip(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, blank=True, null=True)
     language = models.CharField(max_length=5)
     title = models.CharField(max_length=255)
-    twitch_view_count = models.CharField(max_length=15)
+    twitch_view_count = models.DecimalField(max_digits=10, decimal_places=0)
     glip_view_count = models.CharField(max_length=15, blank=True, null=True)
     created_at = models.DateTimeField()
     thumbnail_url = models.URLField()

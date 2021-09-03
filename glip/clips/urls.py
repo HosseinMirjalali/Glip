@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import clips_view, futures_followed_clips, your_clip_page
+from .views import clips_view, futures_followed_clips, your_clip_page, new_your_clips_local
 
 app_name = "clips"
 urlpatterns = [
@@ -8,4 +8,5 @@ urlpatterns = [
     path("clips", view=clips_view, name="clips"),
     path("future", view=futures_followed_clips, name="future"),
     path("yourclips/", view=your_clip_page, name="your_clips"),
+    path("yourclipsnew/", view=new_your_clips_local, name="new_your_clips"),
 ]

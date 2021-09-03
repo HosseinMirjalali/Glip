@@ -7,6 +7,7 @@ from allauth.socialaccount.models import SocialAccount, SocialToken
 from django.contrib.auth import get_user_model
 from requests_futures.sessions import FuturesSession
 
+from glip.clips.models import Clip
 from glip.games.models import Game, GameFollow
 from glip.users.views import get_new_access_from_refresh
 
@@ -295,7 +296,8 @@ def get_top_games(request):
     #     raise OAuth2Error("Invalid data from Twitch API: %s" % game_info)
     games = response_data.json()["data"]
     objs = [
-        Game(game_id=e["id"], name=e["name"], box_art_url=e["box_art_url"])
+        Game(game_id=e["id"], name=e["name"], box_art_url=e["box_art_url"],
+             last_queried_clips=datetime.now() - timedelta(minutes=5))
         for e in games
     ]
     Game.objects.bulk_create(objs, ignore_conflicts=True)

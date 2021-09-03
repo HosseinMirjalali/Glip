@@ -1,3 +1,4 @@
+import json
 from concurrent.futures import as_completed
 from datetime import datetime, timedelta
 
@@ -5,10 +6,13 @@ import environ
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render
 from django.views import View
 from requests_futures.sessions import FuturesSession
 
+from glip.clips.models import Clip
+from glip.games.models import GameFollow
 from glip.users.utils import (
     get_clips,
     get_followed_games_clips_async,
@@ -63,6 +67,30 @@ def your_clip_page(request):
     user_game_follows_clips = get_followed_games_clips_async(request, user_token)
     user_channel_follows = get_user_follows2(request, user_token)
     clips = get_user_games_channels_clips(user_game_follows_clips, user_channel_follows)
+    return render(request, template_name, {"clips": clips})
+
+
+@login_required(login_url="/accounts/login/")
+def new_your_clips_local(request):
+    template_name = "pages/new_clip.html"
+    user_token = get_token(request)
+    if validate_token(token=user_token) is True:
+        pass
+    else:
+        get_new_access_from_refresh(request)
+        user_token = get_token(request)
+    followed_games_id = GameFollow.objects.filter(following=request.user).values_list(
+        "followed__game_id", flat=True
+    )
+    user_channel_follows_id = []
+    user_channel_follows = get_user_follows2(request, user_token)
+    for broadcaster in user_channel_follows:
+        user_channel_follows_id.append(broadcaster["to_id"])
+
+    games_id_dic = []
+    for game_id in followed_games_id:
+        games_id_dic.append(game_id)
+    clips = Clip.objects.filter(twitch_game_id__in=games_id_dic).filter(broadcaster_id__in=user_channel_follows_id)
     return render(request, template_name, {"clips": clips})
 
 
