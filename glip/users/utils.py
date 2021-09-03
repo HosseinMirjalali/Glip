@@ -335,7 +335,6 @@ def get_user_game_follows_clips(request, user_token):
 
 
 def get_followed_games_clips_async(request, user_token):
-    Clip.objects.all().delete()
     session = FuturesSession()
     formatted_past_24h = get_past_day().isoformat()[:-3] + "Z"
     headers = {"Authorization": "Bearer {}".format(user_token), "Client-ID": client_id}
