@@ -16,8 +16,13 @@ def save_game_clips():
     time_threshold = datetime.now() - timedelta(minutes=5)
     not_updated_games = Game.objects.filter(last_queried_clips__lt=time_threshold)
     not_updated_games_ids = []
+    count = 0
     for game in not_updated_games:
         not_updated_games_ids.append(game.game_id)
     if len(not_updated_games_ids) > 0:
         for game_id in not_updated_games_ids:
+            count += 1
             get_and_save_games_clips(game_id)
+            if count >= 5:
+                break
+    return True
