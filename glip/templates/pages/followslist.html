@@ -74,7 +74,7 @@
             <div class="go-corner-left" href="#">
               <div class="go-arrow-left">
                 <a class="text-decoration-none followslist-icon-film"
-                   href="{% url 'channels:clip' %}?broadcaster_id={{ info.id }}&first=100"
+                   href="{% url 'channels:clip' %}?broadcaster_id={{ info.id }}&first=100&name={{ info.display_name }}"
                    target="_blank">
                   <i data-toggle="tooltip" data-placement="top" title="Watch {{ info.display_name }}'s top clips"
                      class="fas fa-film"></i>

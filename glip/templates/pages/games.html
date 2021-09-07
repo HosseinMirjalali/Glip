@@ -137,7 +137,7 @@
                   {% else %}
                     <button value="follow" class="btn btn-follow" id="{{ game.id }}" name="myButton">Follow</button>
                   {% endif %}
-                  <a class="text-decoration-none custom-text-h3" href="{% url 'games:gameclip' %}?game_id={{ game.id }}"
+                  <a class="text-decoration-none custom-text-h3" href="{% url 'games:gameclip' %}?game_id={{ game.id }}&name={{ game.name }}"
                      target="_blank">
                     <i data-toggle="tooltip" data-placement="top" title="Watch this game's top clips"
                        class="fas fa-film"></i>

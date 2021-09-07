@@ -74,7 +74,13 @@ def follow_user(request, game_id):
 @login_required(login_url="/accounts/login/")
 def clip_page(request):
     template_name = "pages/clip.html"
+    broadcaster_name = request.GET.get("name")
+    if broadcaster_name:
+        template_info = "Top clips of %s from the past 24 hours" % broadcaster_name
+    else:
+        template_info = "Top clips of the Twitch streamer you selected"
     broadcaster_id = request.GET.get("broadcaster_id")
     first = request.GET.get("first")
     clips = get_clips(request, broadcaster_id, first)
-    return render(request, template_name, {"clips": clips})
+    context = {"clips": clips, "template_info": template_info}
+    return render(request, template_name, context)
