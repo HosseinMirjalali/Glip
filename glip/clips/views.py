@@ -58,6 +58,7 @@ clips_view = ClipsListView.as_view()
 @login_required(login_url="/accounts/login/")
 def your_clip_page(request):
     template_name = "pages/clip.html"
+    template_info = "Best clips of Twitch streamers and games you follow"
     user_token = get_token(request)
     if validate_token(token=user_token) is True:
         pass
@@ -67,12 +68,14 @@ def your_clip_page(request):
     user_game_follows_clips = get_followed_games_clips_async(request, user_token)
     user_channel_follows = get_user_follows2(request, user_token)
     clips = get_user_games_channels_clips(user_game_follows_clips, user_channel_follows)
-    return render(request, template_name, {"clips": clips})
+    context = {"clips": clips, "template_info": template_info}
+    return render(request, template_name, context)
 
 
 @login_required(login_url="/accounts/login/")
 def new_your_clips_local(request):
     template_name = "pages/new_clip.html"
+    template_info = "Best clips of Twitch streamers and games you follow"
     user_token = get_token(request)
     if validate_token(token=user_token) is True:
         pass
@@ -96,15 +99,19 @@ def new_your_clips_local(request):
         games_id_dic.append(game_id)
     clips = Clip.objects.filter(twitch_game_id__in=games_id_dic).filter(
         broadcaster_id__in=user_channel_follows_id).filter(created_at__range=[start, end])
-    return render(request, template_name, {"clips": clips})
+    context = {"clips": clips, "template_info": template_info}
+    return render(request, template_name, context)
 
 
 def feed_view(request):
     template_name = "pages/new_clip.html"
+    template_info = "Most watched clips of the past 24 hours"
     start = datetime.now() - timedelta(hours=24)
     end = datetime.now()
     clips = Clip.objects.filter(created_at__range=[start, end]).order_by('-twitch_view_count')[:100]
-    return render(request, template_name, {"clips": clips})
+    context = {"clips": clips, "template_info": template_info}
+
+    return render(request, template_name, context)
 
 
 def futures_followed_clips(request):
