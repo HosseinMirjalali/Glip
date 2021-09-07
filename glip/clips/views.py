@@ -1,6 +1,6 @@
 import json
 from concurrent.futures import as_completed
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 import environ
 from django.contrib.auth import get_user_model
@@ -79,6 +79,10 @@ def new_your_clips_local(request):
     else:
         get_new_access_from_refresh(request)
         user_token = get_token(request)
+    time_threshold = datetime.now() - timedelta(hours=24)
+    start = datetime.now() - timedelta(hours=24)
+    end = datetime.now()
+    new_end = end + timedelta(days=1)
     followed_games_id = GameFollow.objects.filter(following=request.user).values_list(
         "followed__game_id", flat=True
     )
@@ -90,7 +94,16 @@ def new_your_clips_local(request):
     games_id_dic = []
     for game_id in followed_games_id:
         games_id_dic.append(game_id)
-    clips = Clip.objects.filter(twitch_game_id__in=games_id_dic).filter(broadcaster_id__in=user_channel_follows_id)
+    clips = Clip.objects.filter(twitch_game_id__in=games_id_dic).filter(
+        broadcaster_id__in=user_channel_follows_id).filter(created_at__range=[start, end])
+    return render(request, template_name, {"clips": clips})
+
+
+def feed_view(request):
+    template_name = "pages/new_clip.html"
+    start = datetime.now() - timedelta(hours=24)
+    end = datetime.now()
+    clips = Clip.objects.filter(created_at__range=[start, end]).order_by('-twitch_view_count')[:100]
     return render(request, template_name, {"clips": clips})
 
 
