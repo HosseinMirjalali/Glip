@@ -14,11 +14,8 @@ User = get_user_model()
 
 env = environ.Env()
 time_threshold = datetime.now() - timedelta(minutes=5)
+
 LOCK_EXPIRE = 60 * 10  # Lock expires in 10 minutes
-
-
-def past_x_hours(x):
-    return datetime.now() - timedelta(hours=x)
 
 
 @contextmanager
@@ -78,12 +75,16 @@ def save_clips_with_lock(self):
 
 
 @celery_app.task()
-def get_feed(past_x: int):
-    not_updated_games = Game.objects.filter(last_queried_clips__lt=past_x_hours(past_x)).order_by('-game_id')[:1]
+def get_feed():
+    not_updated_games = Game.objects.filter(last_queried_clips__lt=time_threshold)
     not_updated_games_ids = []
+    count = 0
     for game in not_updated_games:
         not_updated_games_ids.append(game.game_id)
     if len(not_updated_games_ids) > 0:
         for game_id in not_updated_games_ids:
+            count += 1
             get_and_save_games_clips(game_id)
+            if count >= 1:
+                break
     return True
