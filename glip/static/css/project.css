@@ -14,8 +14,8 @@
 }
 
 body {
-  /*margin: 10px;*/
-  background-color: #3E4349;
+  margin: 0;
+  background-color: #212529;
 }
 
 .navbar-dark .navbar-brand {
@@ -262,7 +262,7 @@ body {
   /*overflow: hidden;*/
 }
 
-.modal, .modal-dialog, .modal-content, .modal-body, .embed-responsive {
+.modal, .modal-dialog, .modal-content, .modal-body, .embed-responsive .embed-responsive-item {
   min-width: 66.66666666666667vw;
   min-height: 76.19047619047619vh;
 }
@@ -275,6 +275,7 @@ body {
 .modal-footer {
   color: hsl(220, 50%, 90%);
   background: linear-gradient(to right, hsl(248, 30%, 20%), hsl(261, 43%, 45%));
+  min-width: 66.66666666666667vw;
 }
 
 .closeBtn {
