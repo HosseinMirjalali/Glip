@@ -1,13 +1,10 @@
-import json
 from concurrent.futures import as_completed
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
 import environ
-from allauth.socialaccount.models import SocialApp
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render
 from django.views import View
 from requests_futures.sessions import FuturesSession
@@ -17,11 +14,12 @@ from glip.games.models import GameFollow
 from glip.users.utils import (
     get_clips,
     get_followed_games_clips_async,
+    get_past_day,
     get_token,
     get_user_follows,
     get_user_follows2,
     get_user_games_channels_clips,
-    validate_token, get_past_day,
+    validate_token,
 )
 from glip.users.views import get_new_access_from_refresh
 
@@ -82,10 +80,10 @@ def new_your_clips_local(request):
     else:
         get_new_access_from_refresh(request)
         user_token = get_token(request)
-    time_threshold = datetime.now() - timedelta(hours=24)
+    # time_threshold = datetime.now() - timedelta(hours=24)
     start = datetime.now() - timedelta(hours=24)
     end = datetime.now()
-    new_end = end + timedelta(days=1)
+    # new_end = end + timedelta(days=1)
     followed_games_id = GameFollow.objects.filter(following=request.user).values_list(
         "followed__game_id", flat=True
     )
@@ -97,8 +95,11 @@ def new_your_clips_local(request):
     games_id_dic = []
     for game_id in followed_games_id:
         games_id_dic.append(game_id)
-    clips = Clip.objects.filter(twitch_game_id__in=games_id_dic).filter(
-        broadcaster_id__in=user_channel_follows_id).filter(created_at__range=[start, end])
+    clips = (
+        Clip.objects.filter(twitch_game_id__in=games_id_dic)
+        .filter(broadcaster_id__in=user_channel_follows_id)
+        .filter(created_at__range=[start, end])
+    )
     context = {"clips": clips, "template_info": template_info}
     return render(request, template_name, context)
 
@@ -108,7 +109,9 @@ def feed_view(request):
     template_info = "Most watched clips of the past 24 hours"
     start = datetime.now() - timedelta(hours=24)
     end = datetime.now()
-    clips = Clip.objects.filter(created_at__range=[start, end]).order_by('-twitch_view_count')[:100]
+    clips = Clip.objects.filter(created_at__range=[start, end]).order_by(
+        "-twitch_view_count"
+    )[:100]
     context = {"clips": clips, "template_info": template_info}
 
     return render(request, template_name, context)

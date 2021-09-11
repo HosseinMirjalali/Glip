@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 import environ
-from allauth.socialaccount.models import SocialApp
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin

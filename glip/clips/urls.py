@@ -1,6 +1,12 @@
 from django.urls import path
 
-from .views import clips_view, futures_followed_clips, your_clip_page, new_your_clips_local, feed_view
+from .views import (
+    clips_view,
+    feed_view,
+    futures_followed_clips,
+    new_your_clips_local,
+    your_clip_page,
+)
 
 app_name = "clips"
 urlpatterns = [
