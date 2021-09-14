@@ -36,7 +36,7 @@
 
           <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
                data-target="#videoModal"
-               data-theVideo="{{ clip.embed_url }}&parent=localhost">
+               data-theVideo="{{ clip.embed_url }}&parent=localhost" onclick="autoPlayTwitchModal()">
             <img loading=lazy class="card-img-top clip-card-img" src="{{ clip.thumbnail_url }}" alt=""
                  style="opacity: 0.5; height: 100%;">
             <div href="#"
@@ -77,7 +77,7 @@
 
             <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
               <iframe class="embed-responsive-item" src=""
-                      allowfullscreen="true"></iframe>
+                      allowfullscreen="true" id="twitchplayer"></iframe>
             </div>
 
           </div>
@@ -140,7 +140,7 @@
     </div>
 
     <div id="loadmore-box" class="d-flex justify-content-center align-items-center">
-      <button class="btn btn-primary" id="loadbtn">
+      <button class="btn" id="loadbtn">
         Load More
       </button>
     </div>
@@ -148,7 +148,7 @@
 
 
     {% block javascript %}
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
       <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
               integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
               crossorigin="anonymous"></script>
@@ -159,6 +159,7 @@
     {% endblock %}
     <script>
 
+
       const card_group = document.getElementById('cardGroup')
       const loadbtn = document.getElementById('loadbtn')
       const spinner_box = document.getElementById('spinner-box')
@@ -166,71 +167,57 @@
       let visible = 6
 
 
-      const handleGetData = () => {
+      const getClips = () => {
         $.ajax({
           type: "GET",
-          url: `{% url 'clips:clips-json' %}`,
+          url: "{% url 'clips:clips-json' %}",
           data: {
             upper: visible
           },
           success: function (response) {
             max_size = response.max
             const data = response.data
-            spinner_box.classList.remove('not-visible')
-            setTimeout(() => {
-              spinner_box.classList.add('not-visible')
-              data.map(clips => {
-                console.log(clips.clip_twitch_id)
-                card_group.innerHTML += `
+            data.map(clips => {
+              card_group.innerHTML += `
                                       <div class="clip-card " style="padding: 10px">
 
                                         <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
                                              data-target="#videoModal"
-                                             data-theVideo="${ clips.embed_url }&parent=localhost">
-                                          <img loading=lazy class="card-img-top clip-card-img" src="${ clips.thumbnail_url }" alt=""
+                                             data-theVideo="${clips.embed_url}&parent=localhost" onclick="autoPlayTwitchModal()">
+                                          <img loading=lazy class="card-img-top clip-card-img" src="${clips.thumbnail_url}" alt=""
                                                style="opacity: 0.5; height: 100%;">
                                           <div href="#"
                                                style="position: absolute; bottom: 65px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
-                                               class="stretched-link font-weight-bold card-my-div">${ clips.broadcaster_name }</div>
+                                               class="stretched-link font-weight-bold card-my-div">${clips.broadcaster_name}</div>
                                           <div style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
                                                class="text-wrapper">
                                             <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem">
-                                              0:${ clips.duration }</p>
+                                              0:${clips.duration}</p>
                                           </div>
                                           <div style="position: absolute; top: 8px; left: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
                                                class="text-wrapper">
                                             <p class="card-text font-weight-bold" style="padding: 0px 5px; font-size: 0.9rem"><i
                                                     class="fas fa-eye"></i>
-                                              ${ clips.twitch_view_count }</p>
+                                              ${clips.twitch_view_count}</p>
                                           </div>
                                           <a class="stretched-link" href="javascript:void(0);" style="color: #83577500; "></a>
                                           <h5 style="position: absolute; bottom: 15px; left: 9px; font-size: 0.9rem; max-width: 95%;"
-                                              class="card-title font-weight-bold text-truncate">${ clips.title }</h5>
+                                              class="card-title font-weight-bold text-truncate">${clips.title}</h5>
                                         </div>
 
                                       </div>
                                       `
-              })
-            }, 1000)
-            data.map(comment => {
-              console.log()
-            })
-            if (max_size) {
-              console.log('done')
-              loadmore_box.innerHTML = "<h4>No more clips to load</h4>"
-            }
+            });
           },
           error: function (error) {
             console.log(error)
           }
-
-        })
+        });
       }
-      handleGetData()
 
       loadbtn.addEventListener('click', () => {
         visible += 3
-        handleGetData()
+        getClips()
       })
 
       //FUNCTION TO GET AND OPEN TWITCH EMBED CLIP
@@ -249,7 +236,7 @@
         modal.on('hide.bs.modal', function () {
           var memory = $(this).html();
           $(this).html(memory)
-        })
+        });
       }
 
       $(document).ready(function () {
