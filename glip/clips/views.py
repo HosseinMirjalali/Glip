@@ -5,6 +5,7 @@ import environ
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.views import View
 from requests_futures.sessions import FuturesSession
@@ -97,21 +98,21 @@ def new_your_clips_local(request):
         games_id_dic.append(game_id)
     clips = (
         Clip.objects.filter(twitch_game_id__in=games_id_dic)
-        .filter(broadcaster_id__in=user_channel_follows_id)
-        .filter(created_at__range=[start, end])
+            .filter(broadcaster_id__in=user_channel_follows_id)
+            .filter(created_at__range=[start, end])
     )
     context = {"clips": clips, "template_info": template_info}
     return render(request, template_name, context)
 
 
 def feed_view(request):
-    template_name = "pages/new_clip.html"
+    template_name = "pages/homepage.html"
     template_info = "Most watched clips of the past 24 hours"
     start = datetime.now() - timedelta(hours=24)
     end = datetime.now()
     clips = Clip.objects.filter(created_at__range=[start, end]).order_by(
         "-twitch_view_count"
-    )[:100]
+    )[:3]
     context = {"clips": clips, "template_info": template_info}
 
     return render(request, template_name, context)
@@ -145,3 +146,25 @@ def futures_followed_clips(request):
             clips_data.append(i)
 
     return render(request, "pages/clip.html", {"clips": clips_data})
+
+
+class ClipsJsonListView(View):
+    def get(self, request, *args, **kwargs):
+        start = datetime.now() - timedelta(hours=24)
+        end = datetime.now()
+        print(kwargs)
+        upper = kwargs.get('num_pics')
+        upper = int(request.GET.get("upper"))
+        lower = upper - 3
+        # clips = list(Clip.objects.values(created_at__range=[start, end]).order_by(
+        #     "-twitch_view_count")[lower:upper])
+        clips = list(Clip.objects.filter(created_at__range=[start, end]).values().order_by("-twitch_view_count")[lower:upper])
+        pics_size = len(Clip.objects.all())
+        size = True if upper >= pics_size else False
+        return JsonResponse({'data': clips, 'max': size}, safe=False)
+
+
+clips_json = ClipsJsonListView.as_view()
+
+
+
