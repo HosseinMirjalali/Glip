@@ -10,6 +10,9 @@ class Game(models.Model):
     box_art_url = models.TextField()
     last_queried_clips = models.DateTimeField(blank=True, null=True)
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class GameFollow(models.Model):
     following = models.ForeignKey(

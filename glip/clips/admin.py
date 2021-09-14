@@ -4,7 +4,8 @@ from glip.clips.models import Clip
 
 
 class ClipAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('game', 'clip_twitch_id', 'title',)
+    search_fields = ['game__name', 'twitch_game_id']
 
 
 admin.site.register(Clip, ClipAdmin)
