@@ -9,6 +9,10 @@ class Game(models.Model):
     name = models.CharField(max_length=255)
     box_art_url = models.TextField()
     last_queried_clips = models.DateTimeField(blank=True, null=True)
+    last_tried_query = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class GameFollow(models.Model):

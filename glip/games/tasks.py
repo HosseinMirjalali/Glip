@@ -1,14 +1,15 @@
+import time
+from contextlib import contextmanager
+from hashlib import md5
+
 import environ
 from django.contrib.auth import get_user_model
-from future.backports.datetime import timedelta, timezone, datetime
+from django.core.cache import cache
+from future.backports.datetime import datetime, timedelta
 
 from config import celery_app
 from glip.games.models import Game
 from glip.games.utils import get_and_save_games_clips
-from contextlib import contextmanager
-import time
-from django.core.cache import cache
-from hashlib import md5
 
 User = get_user_model()
 
@@ -20,6 +21,11 @@ LOCK_EXPIRE = 60 * 10  # Lock expires in 10 minutes
 
 def past_x_hours(x):
     return datetime.now() - timedelta(hours=x)
+
+
+def past_x_minutes(x):
+    return datetime.now() - timedelta(minutes=x)
+
 
 @contextmanager
 def memcache_lock(lock_id, oid):
@@ -60,10 +66,12 @@ def save_clips_with_lock(self):
     # The cache key consists of the task name and the MD5 digest
     # of the feed URL.
     feed_url_hexdigest = md5().hexdigest()
-    lock_id = '{0}-lock-{1}'.format(self.name, feed_url_hexdigest)
+    lock_id = "{0}-lock-{1}".format(self.name, feed_url_hexdigest)
     with memcache_lock(lock_id, self.app.oid) as acquired:
         if acquired:
-            not_updated_games = Game.objects.filter(last_queried_clips__lt=time_threshold)
+            not_updated_games = Game.objects.filter(
+                last_queried_clips__lt=time_threshold
+            )
             not_updated_games_ids = []
             count = 0
             for game in not_updated_games:
@@ -79,7 +87,12 @@ def save_clips_with_lock(self):
 
 @celery_app.task()
 def get_feed(past_x: int):
-    not_updated_games = Game.objects.filter(last_queried_clips__lt=past_x_hours(past_x)).order_by('-game_id')[:1]
+    # Game.objects.all().update(last_tried_query=datetime.now())
+    not_updated_games = Game.objects.filter(
+        last_queried_clips__lt=past_x_hours(past_x)
+    ).filter(
+        last_tried_query__lt=past_x_minutes(30)
+    ).order_by("id")[:1]
     not_updated_games_ids = []
     count = 0
     for game in not_updated_games:
@@ -91,3 +104,8 @@ def get_feed(past_x: int):
             if count >= 1:
                 break
     return True
+
+
+@celery_app.task()
+def purge_other_tasks():
+    celery_app.control.purge()

@@ -1,9 +1,6 @@
-from allauth.socialaccount.models import SocialApp
-from django.core.exceptions import ObjectDoesNotExist
-from requests_futures.sessions import FuturesSession
 from datetime import datetime, timedelta
+
 import environ
-import requests
 
 from glip.clips.models import Clip
 from glip.games.models import Game
@@ -18,5 +15,14 @@ def get_past_day():
 
 def update_view_counts(clips: dict):
     for clip in clips:
-        Clip.objects.filter(clip_twitch_id=clip["id"]).update(twitch_view_count=clip["view_count"])
+        Clip.objects.filter(clip_twitch_id=clip["id"]).update(
+            twitch_view_count=clip["view_count"],
+            title=clip["title"]
+        )
     pass
+
+
+def update_last_tried_date(game_id):
+    game = Game.objects.get(game_id=game_id)
+    game.last_tried_query = datetime.now()
+    game.save()
