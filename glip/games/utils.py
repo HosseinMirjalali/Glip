@@ -6,7 +6,7 @@ from allauth.socialaccount.models import SocialApp
 from django.core.exceptions import ObjectDoesNotExist
 
 from glip.clips.models import Clip
-from glip.clips.utils import update_view_counts, update_last_tried_date
+from glip.clips.utils import update_last_tried_date, update_view_counts
 from glip.games.models import Game
 
 env = environ.Env()
@@ -67,7 +67,9 @@ def get_and_save_games_clips(game_id):
         ]
     except ObjectDoesNotExist:
         update_last_tried_date(game_id)
-        print(f"@@@@@@@@@ Game field in Clip failed due to game id {game_id} not being found in Game table. @@@@@@@@@")
+        print(
+            f"@@@@@@@@@ Game field in Clip failed due to game id {game_id} not being found in Game table. @@@@@@@@@"
+        )
         return game_id
     Clip.objects.bulk_create(objs, ignore_conflicts=True)
     update_view_counts(clips)

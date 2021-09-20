@@ -12,7 +12,7 @@ class Game(models.Model):
     last_tried_query = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class GameFollow(models.Model):
