@@ -23,6 +23,10 @@ def past_x_hours(x):
     return datetime.now() - timedelta(hours=x)
 
 
+def past_x_minutes(x):
+    return datetime.now() - timedelta(minutes=x)
+
+
 @contextmanager
 def memcache_lock(lock_id, oid):
     timeout_at = time.monotonic() + LOCK_EXPIRE - 3
@@ -83,9 +87,12 @@ def save_clips_with_lock(self):
 
 @celery_app.task()
 def get_feed(past_x: int):
+    # Game.objects.all().update(last_tried_query=datetime.now())
     not_updated_games = Game.objects.filter(
         last_queried_clips__lt=past_x_hours(past_x)
-    ).order_by("-game_id")[:1]
+    ).filter(
+        last_tried_query__lt=past_x_minutes(30)
+    ).order_by("id")[:1]
     not_updated_games_ids = []
     count = 0
     for game in not_updated_games:
@@ -97,3 +104,8 @@ def get_feed(past_x: int):
             if count >= 1:
                 break
     return True
+
+
+@celery_app.task()
+def purge_other_tasks():
+    celery_app.control.purge()
