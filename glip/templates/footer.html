@@ -4,36 +4,200 @@
     position: center;
   }
 
-{% comment %}  .page-footer {
-    background-color: #343a40;
-  }{% endcomment %}
-
   .fa-twitter {
     color: #1DA1F2;
-    font-size: 3rem;
   }
 
-  .fa-linkedin {
+  .fa-linkedin-in {
     color: #2867b2;
-    font-size: 2rem;
-  }
-
-  .fa-envelope-open-text {
-    color: #A16AE8;
-    font-size: 2rem;
   }
 
   .fa-github {
     color: #333;
-    font-size: 2rem;
-  }
-
-  .mya {
-    color: #6A5ACD;
   }
 
 </style>
-<footer class="page-footer font-small teal pt-4 text-white">
+<!-- Footer -->
+<footer
+        class="text-center text-lg-start text-white"
+>
+  <!-- Grid container -->
+  <div class="container p-4 pb-0">
+    <!-- Section: Links -->
+    <section class="">
+      <!--Grid row-->
+      <div class="row">
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Disclaimer</h5>
+
+          <p>
+            Glip is an independent entity. The public clips data are sourced from Twitch, but the presentation is not
+            controlled by them. Usage of the name Twitch and logo <i class="fab fa-twitch"></i> is for context, not
+            claiming any ownership. It remains the property of the copyright holder.
+          </p>
+          <p>
+            Icons made by <a href="https://smashicons.com/" title="Smashicons">Smashicons</a> from <a
+                href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+          </p>
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Donation</h5>
+
+          <p>
+            You can donate to me to help fund my project. It will allow me to run the website on better servers, spend
+            more time developing, add more features, and overall give you a better experience.
+          </p>
+          <p>My BTC wallet address: bc1q9fuc7vmnl7ay4yey6gugxm6yny6y4s2jn5dm3m</p>
+          <p>My ETH wallet address: 0x0f1b09A6Fd7373aa88a61d8E942A40ef9E8A1d42</p>
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Contact Me</h5>
+
+          <p>I would love to hear your feedbacks. Whether you don't like something about the website's looks, or you
+            think
+            I can improve any part of the experience, please message me.
+            <br>
+            P.S. I am also open for hire so if you're an employer and want to talk more, please don't hesitate.
+          </p>
+        </div>
+        <!--Grid column-->
+
+        {% comment %}<!--Grid column-->
+        <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Links</h5>
+
+          <ul class="list-unstyled mb-0">
+            <li>
+              <a href="#!" class="text-white">Link 1</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white">Link 2</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white">Link 3</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white">Link 4</a>
+            </li>
+          </ul>
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Links</h5>
+
+          <ul class="list-unstyled mb-0">
+            <li>
+              <a href="#!" class="text-white">Link 1</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white">Link 2</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white">Link 3</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white">Link 4</a>
+            </li>
+          </ul>
+        </div>
+        <!--Grid column-->
+      </div>{% endcomment %}
+      <!--Grid row-->
+      </div>
+    </section>
+    <!-- Section: Links -->
+
+    <hr class="mb-4"/>
+
+    <!-- Section: CTA -->
+    <section class="">
+      <p class="d-flex justify-content-center align-items-center">
+        <span class="me-3">Register for free:</span>
+        <a href="{% url 'account_login' %}" type="button" class="btn btn-outline-light btn-rounded ctaButton" role="button">
+          Sign up!
+        </a>
+      </p>
+    </section>
+    <!-- Section: CTA -->
+
+    <hr class="mb-4"/>
+
+    <!-- Section: Social media -->
+    <section class="mb-4 text-center">
+      {% comment %}        <!-- Facebook -->
+        <a
+                class="btn btn-outline-light btn-floating m-1"
+                href="#!"
+                role="button"
+        ><i class="fab fa-facebook-f"></i
+        ></a>{% endcomment %}
+
+      <!-- Twitter -->
+      <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://www.twitter.com/hossein_mirj"
+              role="button"
+      ><i class="fab fa-twitter"></i></a>
+
+      {% comment %}        <!-- Google -->
+        <a
+                class="btn btn-outline-light btn-floating m-1"
+                href="#!"
+                role="button"
+        ><i class="fab fa-google"></i
+        ></a>{% endcomment %}
+
+      {% comment %}        <!-- Instagram -->
+        <a
+                class="btn btn-outline-light btn-floating m-1"
+                href="#!"
+                role="button"
+        ><i class="fab fa-instagram"></i
+        ></a>{% endcomment %}
+
+      <!-- Linkedin -->
+      <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://www.linkedin.com/in/hossein-mirjalali/"
+              role="button"
+      ><i class="fab fa-linkedin-in"></i></a>
+
+      <!-- Github -->
+      <a
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://github.com/HosseinMirjalali"
+              role="button"
+      ><i class="fab fa-github"></i
+      ></a>
+    </section>
+    <!-- Section: Social media -->
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div
+          class="text-center p-3"
+          style="background-color: rgba(0, 0, 0, 0.2)"
+  >
+    © 2021 Copyright:
+    <a class="text-white" href="https://glipsite.com/"
+    >glipsite.com</a
+    >
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+{% comment %}<footer class="page-footer font-small teal pt-4 text-white">
 
   <!-- Footer Text -->
   <div class="container-fluid text-center text-md-left">
@@ -124,5 +288,5 @@
     }
   </script>
 
-</footer>
+</footer>{% endcomment %}
 <!-- Footer -->

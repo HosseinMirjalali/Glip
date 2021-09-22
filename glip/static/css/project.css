@@ -94,7 +94,7 @@ input[type="color"]:focus,
 }
 
 
-.copyToClipBoard, #loadbtn {
+.copyToClipBoard, #loadbtn, .ctaButton {
   border: 2px solid #A16AE8;
 !important;
   margin: 10px;
@@ -413,4 +413,13 @@ a.effect-underline:hover:after {
   opacity: 1;
   -webkit-transform: scale(1);
   transform: scale(1);
+}
+
+.ctaButton {
+  color: #fff;
+!important;
+}
+
+.ctaButton:hover, .ctaButton:focus, .ctaButton:active {
+
 }
