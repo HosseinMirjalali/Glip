@@ -358,3 +358,59 @@ body {
 /*    border-radius: 4px;*/
 /*    background-color: #2196f3;*/
 /*}*/
+
+.homeText {
+  border-width: 1px 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  position: relative;
+  top: -350px;
+  height: 150px; /* or some other number */
+}
+
+a {
+  color: #6A5ACD;
+}
+
+.readMore:hover, .readMore:focus, .readMore:active {
+  color: #6A5ACD;
+}
+
+h3 a {
+  color: #fff;
+  font-size: 1em;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  font-family: 'Dosis', sans-serif;
+}
+
+/*effect-underline*/
+a.effect-underline:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  display: inline-block;
+  height: 1em;
+  width: 100%;
+  border-bottom: 1px solid;
+  margin-top: 10px;
+  opacity: 0;
+  -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+  transition: opacity 0.35s, transform 0.35s;
+  -webkit-transform: scale(0, 1);
+  transform: scale(0, 1);
+}
+
+a.effect-underline:hover {
+  color: #A16AE8;
+}
+
+a.effect-underline:hover:after {
+  color: #A16AE8;
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}

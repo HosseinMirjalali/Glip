@@ -98,8 +98,8 @@ def new_your_clips_local(request):
         games_id_dic.append(game_id)
     clips = (
         Clip.objects.filter(twitch_game_id__in=games_id_dic)
-            .filter(broadcaster_id__in=user_channel_follows_id)
-            .filter(created_at__range=[start, end])
+        .filter(broadcaster_id__in=user_channel_follows_id)
+        .filter(created_at__range=[start, end])
     )
     context = {"clips": clips, "template_info": template_info}
     return render(request, template_name, context)
@@ -112,7 +112,7 @@ def feed_view(request):
     end = datetime.now()
     clips = Clip.objects.filter(created_at__range=[start, end]).order_by(
         "-twitch_view_count"
-    )[:3]
+    )[:20]
     context = {"clips": clips, "template_info": template_info}
 
     return render(request, template_name, context)
@@ -153,18 +153,19 @@ class ClipsJsonListView(View):
         start = datetime.now() - timedelta(hours=24)
         end = datetime.now()
         print(kwargs)
-        upper = kwargs.get('num_pics')
+        upper = kwargs.get("num_pics")
         upper = int(request.GET.get("upper"))
         lower = upper - 3
         # clips = list(Clip.objects.values(created_at__range=[start, end]).order_by(
         #     "-twitch_view_count")[lower:upper])
-        clips = list(Clip.objects.filter(created_at__range=[start, end]).values().order_by("-twitch_view_count")[lower:upper])
+        clips = list(
+            Clip.objects.filter(created_at__range=[start, end])
+            .values()
+            .order_by("-twitch_view_count")[lower:upper]
+        )
         pics_size = len(Clip.objects.all())
         size = True if upper >= pics_size else False
-        return JsonResponse({'data': clips, 'max': size}, safe=False)
+        return JsonResponse({"data": clips, "max": size}, safe=False)
 
 
 clips_json = ClipsJsonListView.as_view()
-
-
-

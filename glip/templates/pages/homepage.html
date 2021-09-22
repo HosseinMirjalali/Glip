@@ -11,32 +11,32 @@
 
 </style>
 {% block content %}
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <path fill="#A16AE8" fill-opacity="1"
+          d="M0,128L60,112C120,96,240,64,360,48C480,32,600,32,720,58.7C840,85,960,139,1080,176C1200,213,1320,235,1380,245.3L1440,256L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
+  </svg>
+
+  <div class="homeText">
+    <h1>All Twitch clips in one place</h1>
+    <br>
+    <br>
+    <h2>Top clips of Twitch from the past 24 hours in your personal feed</h2>
+    <br>
+    <br>
+    <h3 align="center"><a href="{% url 'about' %}" class="effect-underline text-decoration-none">Read more...</a>
+    </h3>
+  </div>
+
   {% if clips %}
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="d-flex">
-      <img src="{% static 'images/video-clip.png' %}" width="64" height="64" class="mr-3" alt="...">
-      <div class="media-body">
-        <h5 class="mt-0">Clips</h5>
-        {% if template_info %}
-          {{ template_info }}
-        {% else %}
-          <p>See the clips you have chosen to see</p>
-        {% endif %}
-      </div>
-    </div>
-    <br>
+    <p class="text-center">Today's top clips</p>
     <div class="card-group justify-content-center" id="cardGroup">
       {% for clip in clips|dictsortreversed:"twitch_view_count" %}
         <div class="clip-card " style="padding: 10px">
 
           <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
                data-target="#videoModal"
-               data-theVideo="{{ clip.embed_url }}&parent=localhost" onclick="autoPlayTwitchModal()">
+               data-theVideo="{{ clip.embed_url }}&parent=localhost"
+               onClick='autoPlayTwitchModal(" {{ clip.embed_url }}&parent=localhost ")'>
             <img loading=lazy class="card-img-top clip-card-img" src="{{ clip.thumbnail_url }}" alt=""
                  style="opacity: 0.5; height: 100%;">
             <div href="#"
@@ -61,6 +61,7 @@
         </div>
       {% endfor %}
     </div>
+    <br>
 
 
 
@@ -88,11 +89,6 @@
             <!--Twitter-->
             <a href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
                type="button" target="_blank" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
-            {% comment %}<!--Google +-->
-            <a type="button" class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus-g"></i></a>
-            <!--Linkedin-->
-            <a type="button" class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>{% endcomment %}
-
             <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4 closeBtn" data-dismiss="modal">
               Close
             </button>
@@ -106,27 +102,8 @@
     </div>
     <!--Modal: Name-->
 
-    {% comment %}<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal"
-         aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-body">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <div>
-              <iframe width="100%" height="350" src="" allowfullscreen="true"></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>{% endcomment %}
-
     <!-- Back to top button -->
     <a id="button"></a>
-
-
-
-
-
 
 
     <style>
@@ -164,7 +141,7 @@
       const loadbtn = document.getElementById('loadbtn')
       const spinner_box = document.getElementById('spinner-box')
       const loadmore_box = document.getElementById('loadmore-box')
-      let visible = 6
+      let visible = 23
 
 
       const getClips = () => {
@@ -178,12 +155,12 @@
             max_size = response.max
             const data = response.data
             data.map(clips => {
-              card_group.innerHTML += `
+              card_group.insertAdjacentHTML('beforeend',`
                                       <div class="clip-card " style="padding: 10px">
 
                                         <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
                                              data-target="#videoModal"
-                                             data-theVideo="${clips.embed_url}&parent=localhost" onclick="autoPlayTwitchModal()">
+                                             data-theVideo="${clips.embed_url}&parent=localhost" onClick='autoPlayTwitchModal(" ${clips.embed_url}&parent=localhost ")'>
                                           <img loading=lazy class="card-img-top clip-card-img" src="${clips.thumbnail_url}" alt=""
                                                style="opacity: 0.5; height: 100%;">
                                           <div href="#"
@@ -206,7 +183,7 @@
                                         </div>
 
                                       </div>
-                                      `
+                                      `)
             });
           },
           error: function (error) {
@@ -221,23 +198,24 @@
       })
 
       //FUNCTION TO GET AND OPEN TWITCH EMBED CLIP
-      function autoPlayTwitchModal() {
+      function autoPlayTwitchModal(src) {
+        console.log(src)
+        {% comment %}        theSrc = src += "&parent=localhost"{% endcomment %}
         var trigger = $("body").find('[data-toggle="modal"]');
         trigger.click(function () {
           var theModal = $(this).data("target"),
                   videoSRC = $(this).attr("data-theVideo"),
                   videoSRCauto = videoSRC + "";
-          $(theModal + ' iframe').attr('src', videoSRCauto);
+          $(theModal + ' iframe').attr('src', src);
           $(theModal + ' button.close').click(function () {
             $(theModal + ' iframe').attr('src', videoSRC);
           });
         });
-        var modal = $(this).data("target");
-        modal.on('hide.bs.modal', function () {
-          var memory = $(this).html();
-          $(this).html(memory)
-        });
       }
+
+      $('#videoModal').on('hidden.bs.modal', function (e) {
+        $('#twitchplayer').attr('src', '')
+      });
 
       $(document).ready(function () {
         autoPlayTwitchModal();
@@ -256,13 +234,6 @@
           }, 1500);
         });
       });
-
-
-      $('#videoModal').on('hidden.bs.modal', function (e) {
-        // do something...
-        $('#videoModal iframe').attr("src", $("#videoModal iframe").attr("src"));
-      });
-
 
       var btn = $('#button');
 
