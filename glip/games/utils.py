@@ -82,6 +82,10 @@ def get_and_save_games_clips(game_id):
 
 
 def get_all_top_games():
+    """
+    Actually gets top 200 games
+    :return: top current 200 games on Twitch
+    """
     try:
         bearer = SocialApp.objects.get(provider__iexact="twitch").key
     except ObjectDoesNotExist:

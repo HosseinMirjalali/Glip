@@ -116,16 +116,6 @@ def get_and_set_top_games():
     games = get_all_top_games()
     TopGame.objects.all().delete()
     order = 1
-    # objs = [
-    #     TopGame(
-    #         id=e["id"],
-    #         name=e["name"],
-    #         box_art_url=e["box_art_url"],
-    #         order=order
-    #     )
-    #     for e in games
-    # ]
-
     objs = []
     for g in games:
         objs.append(
@@ -134,5 +124,4 @@ def get_and_set_top_games():
             )
         )
         order += 1
-
     TopGame.objects.bulk_create(objs, ignore_conflicts=True)
