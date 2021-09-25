@@ -111,11 +111,11 @@
                   class="lead">Clips For You</a></p>
         </div>
       </div>
-      <div class="row text-center align-self-center">
+      <div class="row mt-5 text-center align-self-center">
         {% for game in games %}
           <div class="col-sm-2">
             <div class="card-group">
-              <div class="card-transparent" data-role="game">
+              <div class="card-transparent mx-2 mb-3" data-role="game">
                 <img loading=lazy src="{{ game.box_art_url }}" alt="" class="card-img-top">
                 <div class="card-content">
                   <br>
@@ -129,17 +129,22 @@
                   <a class="text-decoration-none custom-text-h3"
                      href="https://www.twitch.tv/directory/game/{{ game.name }}"
                      target="_blank">
-                    <i data-toggle="tooltip" data-placement="top" title="Open on Twitch" class="fab fa-twitch"></i>
+                    <i data-toggle="tooltip" data-placement="top" title="Go to {{ game.name }} Twitch page" class="fab fa-twitch"></i>
                   </a>
-                  {% if game.is_followed == True %}
-                    <button value="unfollow" class="btn btn-unfollow" id="{{ game.id }}" name="myButton">Unfollow
-                    </button>
+                  {% if request.user.is_authenticated %}
+                    {% if game.is_followed == True %}
+                      <button value="unfollow" class="btn btn-unfollow" id="{{ game.id }}" name="myButton">Unfollow
+                      </button>
+                    {% else %}
+                      <button value="follow" class="btn btn-follow" id="{{ game.id }}" name="myButton">Follow</button>
+                    {% endif %}
                   {% else %}
-                    <button value="follow" class="btn btn-follow" id="{{ game.id }}" name="myButton">Follow</button>
+                    <button value="follow" class="btn btn-followdisabled" style="cursor:default;" name="myButton">Login to Follow</button>
                   {% endif %}
-                  <a class="text-decoration-none custom-text-h3" href="{% url 'games:gameclip' %}?game_id={{ game.id }}&name={{ game.name }}"
+                  <a class="text-decoration-none custom-text-h3"
+                     href="{% url 'games:gameclip' %}?game_id={{ game.id }}&name={{ game.name }}"
                      target="_blank">
-                    <i data-toggle="tooltip" data-placement="top" title="Watch this game's top clips"
+                    <i data-toggle="tooltip" data-placement="top" title="Watch {{ game.name }} clips"
                        class="fas fa-film"></i>
                   </a>
                 </div><!-- card content -->

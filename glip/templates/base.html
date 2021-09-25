@@ -68,6 +68,12 @@
             <a class="nav-link {% if request.resolver_match.view_name == 'home' %}active{% endif %}"
                href="{% url 'home' %}">Home</a>
           </li>
+        {% if not request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.view_name == 'games:topgames' %}active{% endif %}"
+               href="{% url 'games:topgames' %}">Top Games</a>
+          </li>
+        {% endif %}
           <li class="nav-item">
             <a class="nav-link {% if request.resolver_match.view_name == 'about' %}active{% endif %}"
                href="{% url 'about' %}">About</a>

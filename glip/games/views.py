@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
 
-from glip.games.models import Game, GameFollow
+from glip.games.models import Game, GameFollow, TopGame
 from glip.users.utils import get_clips_by_game, get_token, get_top_games
 
 env = environ.Env()
@@ -85,3 +85,19 @@ def game_clip_page(request):
     clips = get_clips_by_game(request, game_id, user_token=user_token)
     context = {"clips": clips, "template_info": template_info}
     return render(request, template_name, context)
+
+
+class NoAuthGamesListView(View):
+    context_object_name = "noauthgames"
+
+    def get(self, request):
+        template_name = "pages/games.html"
+        games = TopGame.objects.all().values()
+        games_dict = {"games": games}
+        for game in games:
+            game["box_art_url"] = game["box_art_url"].replace("{width}", "285")
+            game["box_art_url"] = game["box_art_url"].replace("{height}", "380")
+        return render(request, template_name, context=games_dict)
+
+
+noauthgameslist = NoAuthGamesListView.as_view()
