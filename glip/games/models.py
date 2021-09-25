@@ -33,3 +33,10 @@ class GameFollow(models.Model):
 
     def __unicode__(self):
         return str(self.follow_time)
+
+
+class TopGame(models.Model):
+    id = models.CharField(max_length=255, unique=True, primary_key=True)
+    name = models.CharField(max_length=255)
+    box_art_url = models.TextField()
+    order = models.BigIntegerField(blank=True, null=True)

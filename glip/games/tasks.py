@@ -8,8 +8,8 @@ from django.core.cache import cache
 from future.backports.datetime import datetime, timedelta
 
 from config import celery_app
-from glip.games.models import Game
-from glip.games.utils import get_and_save_games_clips
+from glip.games.models import Game, TopGame
+from glip.games.utils import get_all_top_games, get_and_save_games_clips
 
 User = get_user_model()
 
@@ -109,3 +109,30 @@ def get_feed(past_x: int):
 @celery_app.task()
 def purge_other_tasks():
     celery_app.control.purge()
+
+
+@celery_app.task()
+def get_and_set_top_games():
+    games = get_all_top_games()
+    TopGame.objects.all().delete()
+    order = 1
+    # objs = [
+    #     TopGame(
+    #         id=e["id"],
+    #         name=e["name"],
+    #         box_art_url=e["box_art_url"],
+    #         order=order
+    #     )
+    #     for e in games
+    # ]
+
+    objs = []
+    for g in games:
+        objs.append(
+            TopGame(
+                id=g["id"], name=g["name"], box_art_url=g["box_art_url"], order=order
+            )
+        )
+        order += 1
+
+    TopGame.objects.bulk_create(objs, ignore_conflicts=True)
