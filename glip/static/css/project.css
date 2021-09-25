@@ -14,8 +14,8 @@
 }
 
 body {
-  /*margin: 10px;*/
-  background-color: #3E4349;
+  margin: 0;
+  background-color: #212529;
 }
 
 .navbar-dark .navbar-brand {
@@ -94,7 +94,7 @@ input[type="color"]:focus,
 }
 
 
-.copyToClipBoard {
+.copyToClipBoard, #loadbtn, .ctaButton {
   border: 2px solid #A16AE8;
 !important;
   margin: 10px;
@@ -107,7 +107,7 @@ input[type="color"]:focus,
 !important;
 }
 
-.copyToClipBoard:hover, .copyToClipBoard:focus, .copyToClipBoard:active {
+.copyToClipBoard:hover, .copyToClipBoard:focus, .copyToClipBoard:active, #loadbtn:hover, #loadbtn:focus, #loadbtn:active {
   color: #fff;
 !important;
   background-color: #603F8B;
@@ -262,7 +262,7 @@ body {
   /*overflow: hidden;*/
 }
 
-.modal, .modal-dialog, .modal-content, .modal-body, .embed-responsive {
+.modal, .modal-dialog, .modal-content, .modal-body, .embed-responsive .embed-responsive-item {
   min-width: 66.66666666666667vw;
   min-height: 76.19047619047619vh;
 }
@@ -275,6 +275,7 @@ body {
 .modal-footer {
   color: hsl(220, 50%, 90%);
   background: linear-gradient(to right, hsl(248, 30%, 20%), hsl(261, 43%, 45%));
+  min-width: 66.66666666666667vw;
 }
 
 .closeBtn {
@@ -344,4 +345,81 @@ body {
 #button.show {
   opacity: 1;
   visibility: visible;
+}
+
+/*#loadmore {*/
+/*    margin: 50px auto 0px;*/
+/*    display: table;*/
+/*    border: none;*/
+/*    padding: 10px 20px;*/
+/*    font-size: 18px;*/
+/*    cursor: pointer;*/
+/*    color: #fff;*/
+/*    border-radius: 4px;*/
+/*    background-color: #2196f3;*/
+/*}*/
+
+.homeText {
+  border-width: 1px 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  position: relative;
+  top: -350px;
+  height: 150px; /* or some other number */
+}
+
+a {
+  color: #6A5ACD;
+}
+
+.readMore:hover, .readMore:focus, .readMore:active {
+  color: #6A5ACD;
+}
+
+h3 a {
+  color: #fff;
+  font-size: 1em;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  font-family: 'Dosis', sans-serif;
+}
+
+/*effect-underline*/
+a.effect-underline:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  display: inline-block;
+  height: 1em;
+  width: 100%;
+  border-bottom: 1px solid;
+  margin-top: 10px;
+  opacity: 0;
+  -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+  transition: opacity 0.35s, transform 0.35s;
+  -webkit-transform: scale(0, 1);
+  transform: scale(0, 1);
+}
+
+a.effect-underline:hover {
+  color: #A16AE8;
+}
+
+a.effect-underline:hover:after {
+  color: #A16AE8;
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
+.ctaButton {
+  color: #fff;
+!important;
+}
+
+.ctaButton:hover, .ctaButton:focus, .ctaButton:active {
+
 }
