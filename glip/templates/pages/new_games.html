@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Top Games on Twitch{% endblock %}
+{#{% load clips_filters %}#}
+{% block content %}
+
+  <style>
+    .masthead {
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-group .card-transparent {
+      border-radius: 15px;
+      width: 100%;
+      object-fit: cover;
+      margin: 10px;
+      border: 3px solid #A16AE8;
+    }
+
+    .btn {
+      border: 2px solid #A16AE8;
+      margin: 10px;
+      color: #C0C0C0;
+      transition: all .5s ease-in-out;
+    }
+
+    .btn:hover, .btn:focus, .btn:active {
+      color: #fff;
+      background-color: #603F8B;
+    }
+
+    h3 {
+      overflow: hidden;
+
+    }
+
+    .media {
+
+    }
+
+    .mt-0 {
+      margin-top: 10px;
+    }
+
+    .text-center {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      color: #FFFFFF;
+    }
+
+    .lead {
+      color: #A16AE8;
+    }
+
+    .custom-text-h3 {
+      transition: all .2s ease-in-out;
+    }
+
+    .custom-text-h3:hover, .custom-text-h3:focus, .custom-text-h3:active {
+      color: #603F8B;
+    }
+
+    .card-img-top {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .fa-twitch {
+      color: #6441A4;
+    }
+
+    .fa-film {
+      color: #6A5ACD;
+    }
+
+    .fa-film:hover, .fa-film:focus, .fa-film:active {;
+      color: #603F8B;
+      transform: scale(1.2);
+      transition: all ease 500ms;
+    }
+
+    .fa-twitch:hover, .fa-twitch:focus, .fa-twitch:active {;
+      color: #6441A4;
+      transform: scale(1.2);
+      transition: all ease 500ms;
+    }
+
+
+  </style>
+
+  {% if games %}
+
+    <div class="masthead">
+      <hr>
+      <p class="text-center">Top {{ games|length }} games by viewer count</p>
+      <div class="d-flex justify-content-center">
+        <div class="row pb-4">
+          <div class="col-12">
+            <input type="text" name="searchbox" id="searchbox" class="filterinput form-control"
+                   placeholder="Search game titles...">
+          </div>
+        </div>
+      </div>
+      <div class="d-flex">
+        <img src="{% static 'images/controller.png' %}" width="64" height="64" class="mr-3" alt="...">
+        <div class="media-body">
+          <h5 class="mt-0">Games</h5>
+          <p>See which games are the top on Twitch, and follow the ones you like, to see their clips in <a
+                  href="{% url 'clips:your_clips' %}"
+                  class="lead">Clips For You</a></p>
+        </div>
+      </div>
+      <div class="row mt-5 text-center align-self-center">
+        {% for game in games %}
+          <div class="col-sm-2">
+            <div class="card-group">
+              <div class="card-transparent mx-2 mb-3" data-role="game">
+                <img loading=lazy src="{{ game.box_art_url }}" alt="" class="card-img-top">
+                <div class="card-content">
+                  <br>
+                  <a class="text-decoration-none" href="https://www.twitch.tv/directory/game/{{ game.name }}"
+                     target="_blank">
+                    <h3 id="user_name" class="custom-text-h3" style="max-height: 2rem" data-toggle="tooltip"
+                        data-placement="top"
+                        title="{{ game.name }}">{{ game.name }}
+                    </h3>
+                  </a>
+                  <a class="text-decoration-none custom-text-h3"
+                     href="https://www.twitch.tv/directory/game/{{ game.name }}"
+                     target="_blank">
+                    <i data-toggle="tooltip" data-placement="top" title="Go to {{ game.name }} Twitch page" class="fab fa-twitch"></i>
+                  </a>
+                  {% if request.user.is_authenticated %}
+                    {% if game.is_followed == True %}
+                      <button value="unfollow" class="btn btn-unfollow" id="{{ game.id }}" name="myButton">Unfollow
+                      </button>
+                    {% else %}
+                      <button value="follow" class="btn btn-follow" id="{{ game.id }}" name="myButton">Follow</button>
+                    {% endif %}
+                  {% else %}
+                    <button value="follow" class="btn btn-followdisabled" style="cursor:default;" name="myButton">Login to Follow</button>
+                  {% endif %}
+                  <a class="text-decoration-none custom-text-h3"
+                     href="{% url 'games:localgameclip' %}?name={{ game.name }}"
+                     target="_blank">
+                    <i data-toggle="tooltip" data-placement="top" title="Watch {{ game.name }} clips"
+                       class="fas fa-film"></i>
+                  </a>
+                </div><!-- card content -->
+              </div><!-- card -->
+            </div><!-- card-group -->
+          </div><!-- col-sm-2 -->
+        {% endfor %}
+      </div><!-- row closing -->
+    </div><!-- masthead closing -->
+
+  {% else %}
+    <strong>No games to show.</strong>
+  {% endif %}
+
+  <!-- Back to top button -->
+  <a id="button"></a>
+
+  {% block javascript %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
+  {% endblock %}
+
+
+  {% block inline_javascript %}
+    {{ block.super }}
+    <script type="text/javascript">
+      $('.btn-follow').click(function (e) {
+        var id;
+        id = $(this).attr("id");
+        e.preventDefault()
+        const _this = $(this);
+        $.ajax(
+                {
+                  type: "GET",
+                  url: "{% url 'games:follow_game' %}",
+                  data: {
+                    game_id: id
+                  },
+                  success: function (data) {
+                    _this.text("Unfollow")
+                    _this.removeClass('btn-follow').addClass('btn-unfollow');
+                    _this.val("unfollow")
+                  }
+                })
+      });
+      $('.btn-unfollow').click(function (e) {
+        var id;
+        id = $(this).attr("id");
+        e.preventDefault()
+        const _this = $(this);
+        $.ajax(
+                {
+                  type: "GET",
+                  url: "{% url 'games:unfollow_game' %}",
+                  data: {
+                    game_id: id
+                  },
+                  success: function (data) {
+                    _this.text("Follow")
+                    _this.removeClass('btn-unfollow').addClass('btn-follow');
+                    _this.val("follow")
+                  }
+                })
+      });
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+
+      $(document).ready(function () {
+        $("#searchbox").on("keyup", function () {
+          var value = $(this).val().toLowerCase();
+          $('div[data-role="game"]').filter(function () {
+            $(this).toggle($(this).find('h3').text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+      });
+
+      var btn = $('#button');
+
+      $(window).scroll(function () {
+        if ($(window).scrollTop() > 300) {
+          btn.addClass('show');
+        } else {
+          btn.removeClass('show');
+        }
+      });
+
+      btn.on('click', function (e) {
+        e.preventDefault();
+        $('html, body').animate({scrollTop: 0}, '300');
+      });
+
+    </script>
+  {% endblock %}
+
+{% endblock content %}
