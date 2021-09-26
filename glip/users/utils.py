@@ -298,7 +298,8 @@ def get_top_games(request):
             game_id=e["id"],
             name=e["name"],
             box_art_url=e["box_art_url"],
-            last_queried_clips=datetime.now() - timedelta(minutes=5),
+            last_queried_clips=datetime.now() - timedelta(minutes=61),
+            last_tried_query=datetime.now() - timedelta(minutes=31),
         )
         for e in games
     ]
