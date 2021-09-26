@@ -420,7 +420,20 @@ a.effect-underline:hover:after {
 !important;
 }
 
-.card-group div:nth-child(n+21)
-{
+.card-group div:nth-child(n+21) {
   display: none;
+}
+
+.glip-container {
+  background-image: linear-gradient(178.1deg, rgba(60, 55, 106, 1) 8.5%, rgba(23, 20, 69, 1) 82.4%);
+}
+
+.glip-navbar {
+  background-image: linear-gradient(178.1deg, rgba(60, 55, 106, 0.3) 8.5%, rgba(23, 20, 69, 0.3) 82.4%);
+}
+
+.glip-navbar {
+  /*background: rgb(2, 0, 36);*/
+  /*background: linear-gradient(180deg, rgba(2, 0, 36, 1) 16%, rgba(106, 90, 205, 1) 79%, rgba(161, 106, 232, 1) 100%);*/
+  bottom: 0;
 }
