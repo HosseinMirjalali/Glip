@@ -112,7 +112,7 @@ def feed_view(request):
     end = datetime.now()
     clips = Clip.objects.filter(created_at__range=[start, end]).order_by(
         "-twitch_view_count"
-    )[:20]
+    )[:100]
     context = {"clips": clips, "template_info": template_info}
 
     return render(request, template_name, context)

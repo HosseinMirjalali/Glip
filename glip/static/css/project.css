@@ -419,3 +419,8 @@ a.effect-underline:hover:after {
   color: #fff;
 !important;
 }
+
+.card-group div:nth-child(n+21)
+{
+  display: none;
+}

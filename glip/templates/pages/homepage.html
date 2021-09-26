@@ -28,7 +28,7 @@
   </div>
 
   {% if clips %}
-    <p class="text-center">Today's top clips</p>
+    <p class="text-center">Today's top Twitch clips</p>
     <div class="card-group justify-content-center" id="cardGroup">
       {% for clip in clips|dictsortreversed:"twitch_view_count" %}
         <div class="clip-card " style="padding: 10px">
@@ -105,24 +105,11 @@
     <!-- Back to top button -->
     <a id="button"></a>
 
-
-    <style>
-      .not-visible {
-        display: none;
-      }
-    </style>
-
-    <div id="spinner-box" class="not-visible">
-      <div class="spinner-border text-dark" role="status"></div>
-    </div>
-
     <div id="loadmore-box" class="d-flex justify-content-center align-items-center">
       <button class="btn" id="loadbtn">
-        Load More
+        Show More
       </button>
     </div>
-
-
 
     {% block javascript %}
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -135,8 +122,22 @@
       <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
     {% endblock %}
     <script>
+      var loadbtnStatus = "more";
+      $("#loadbtn").click(function showMoreFunc() {
+        const _this = $(this);
+        $(".card-group div:nth-child(n+21)").toggle();
+        if (loadbtnStatus === "more") {
+          _this.text("Show Less")
+          loadbtnStatus = "less";
+        } else {
+          _this.text("Show More")
+          loadbtnStatus = "more";
+        }
+      });
 
 
+      {% comment %}
+      """ Commented the fetch and add new cards function """
       const card_group = document.getElementById('cardGroup')
       const loadbtn = document.getElementById('loadbtn')
       const spinner_box = document.getElementById('spinner-box')
@@ -155,7 +156,7 @@
             max_size = response.max
             const data = response.data
             data.map(clips => {
-              card_group.insertAdjacentHTML('beforeend',`
+              card_group.insertAdjacentHTML('beforeend', `
                                       <div class="clip-card " style="padding: 10px">
 
                                         <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
@@ -195,7 +196,7 @@
       loadbtn.addEventListener('click', () => {
         visible += 3
         getClips()
-      })
+      }){% endcomment %}
 
       //FUNCTION TO GET AND OPEN TWITCH EMBED CLIP
       function autoPlayTwitchModal(src) {
