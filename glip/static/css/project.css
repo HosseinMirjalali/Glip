@@ -362,14 +362,16 @@ body {
 .homeText {
   border-width: 1px 0;
   list-style: none;
-  margin: 0;
   padding: 0;
+  margin-bottom: 100px;
   text-align: center;
   position: relative;
-  top: -350px;
-  height: 150px; /* or some other number */
 }
 
+svg {
+  position: absolute;
+  z-index: 0;
+}
 a {
   color: #6A5ACD;
 }
