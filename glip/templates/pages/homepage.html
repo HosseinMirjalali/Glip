@@ -112,7 +112,7 @@
     </div>
 
     {% block javascript %}
-      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
       <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
               integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
               crossorigin="anonymous"></script>
@@ -199,24 +199,23 @@
       }){% endcomment %}
 
       //FUNCTION TO GET AND OPEN TWITCH EMBED CLIP
-      function autoPlayTwitchModal(src) {
-        console.log(src)
-        {% comment %}        theSrc = src += "&parent=localhost"{% endcomment %}
+      function autoPlayTwitchModal() {
         var trigger = $("body").find('[data-toggle="modal"]');
         trigger.click(function () {
           var theModal = $(this).data("target"),
                   videoSRC = $(this).attr("data-theVideo"),
                   videoSRCauto = videoSRC + "";
-          $(theModal + ' iframe').attr('src', src);
+          $(theModal + ' iframe').attr('src', videoSRCauto);
           $(theModal + ' button.close').click(function () {
             $(theModal + ' iframe').attr('src', videoSRC);
           });
         });
+        var modal = $(this).data("target");
+        modal.on('hide.bs.modal', function () {
+          var memory = $(this).html();
+          $(this).html(memory)
+        })
       }
-
-      $('#videoModal').on('hidden.bs.modal', function (e) {
-        $('#twitchplayer').attr('src', '')
-      });
 
       $(document).ready(function () {
         autoPlayTwitchModal();
