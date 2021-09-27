@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load static %}
+{% block title %}About{% endblock %}
 
 {% block content %}
   <style>
@@ -20,8 +22,7 @@
       <div class="row h-100 align-items-center">
         <div class="col-12 text-center">
           <h1 class="font-weight-light">Glip</h1>
-          <p class="lead">A simple hub to help you catch up with your favorite Twitch clips and your favorite
-            streamers</p>
+          <p class="font-weight-light">A simple hub to help you catch up with your favorite Twitch streamers' clips</p>
           <p>👇</p>
         </div>
       </div>
@@ -92,6 +93,11 @@
     </div>
 
   </section>
-  <hr>
-
+  {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
+  {% endblock %}
 {% endblock %}

@@ -8,8 +8,8 @@ from django.core.cache import cache
 from future.backports.datetime import datetime, timedelta
 
 from config import celery_app
-from glip.games.models import Game
-from glip.games.utils import get_and_save_games_clips
+from glip.games.models import Game, TopGame
+from glip.games.utils import get_all_top_games, get_and_save_games_clips
 
 User = get_user_model()
 
@@ -87,12 +87,13 @@ def save_clips_with_lock(self):
 
 @celery_app.task()
 def get_feed(past_x: int):
-    # Game.objects.all().update(last_tried_query=datetime.now())
-    not_updated_games = Game.objects.filter(
-        last_queried_clips__lt=past_x_hours(past_x)
-    ).filter(
-        last_tried_query__lt=past_x_minutes(30)
-    ).order_by("id")[:1]
+    # Game.objects.all().update(last_queried_clips=datetime.now() - timedelta(minutes=61))
+    # Game.objects.all().update(last_tried_query=datetime.now() - timedelta(minutes=31))
+    not_updated_games = (
+        Game.objects.filter(last_queried_clips__lt=past_x_hours(past_x))
+        .filter(last_tried_query__lt=past_x_minutes(30))
+        .order_by("id")[:1]
+    )
     not_updated_games_ids = []
     count = 0
     for game in not_updated_games:
@@ -109,3 +110,19 @@ def get_feed(past_x: int):
 @celery_app.task()
 def purge_other_tasks():
     celery_app.control.purge()
+
+
+@celery_app.task()
+def get_and_set_top_games():
+    games = get_all_top_games()
+    TopGame.objects.all().delete()
+    order = 1
+    objs = []
+    for g in games:
+        objs.append(
+            TopGame(
+                id=g["id"], name=g["name"], box_art_url=g["box_art_url"], order=order
+            )
+        )
+        order += 1
+    TopGame.objects.bulk_create(objs, ignore_conflicts=True)

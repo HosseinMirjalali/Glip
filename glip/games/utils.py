@@ -6,7 +6,7 @@ from allauth.socialaccount.models import SocialApp
 from django.core.exceptions import ObjectDoesNotExist
 
 from glip.clips.models import Clip
-from glip.clips.utils import update_view_counts, update_last_tried_date
+from glip.clips.utils import update_last_tried_date, update_view_counts
 from glip.games.models import Game
 
 env = environ.Env()
@@ -67,7 +67,9 @@ def get_and_save_games_clips(game_id):
         ]
     except ObjectDoesNotExist:
         update_last_tried_date(game_id)
-        print(f"@@@@@@@@@ Game field in Clip failed due to game id {game_id} not being found in Game table. @@@@@@@@@")
+        print(
+            f"@@@@@@@@@ Game field in Clip failed due to game id {game_id} not being found in Game table. @@@@@@@@@"
+        )
         return game_id
     Clip.objects.bulk_create(objs, ignore_conflicts=True)
     update_view_counts(clips)
@@ -77,3 +79,40 @@ def get_and_save_games_clips(game_id):
     g.save()
 
     return True
+
+
+def get_all_top_games():
+    """
+    Actually gets top 200 games
+    :return: top current 200 games on Twitch
+    """
+    try:
+        bearer = SocialApp.objects.get(provider__iexact="twitch").key
+    except ObjectDoesNotExist:
+        raise MyException("Twitch App is not added in admin panel.")
+
+    bearer = "Bearer {}".format(bearer)
+    headers = {"Authorization": "{}".format(bearer), "Client-ID": client_id}
+
+    game_clip_url = "https://api.twitch.tv/helix/games/top?first=100"
+    response_data = requests.get(game_clip_url, headers=headers)
+    all_games = []
+    try:
+        games = response_data.json()["data"]
+        for game in games:
+            all_games.append(game)
+        count = 0
+        if "cursor" in response_data.json()["pagination"] and count <= 2:
+            cursor = response_data.json()["pagination"]["cursor"]
+            next_games_response = requests.get(
+                "https://api.twitch.tv/helix/games/top?first=100&after=100&after={}".format(
+                    cursor
+                ),
+                headers=headers,
+            )
+            next_games = next_games_response.json()["data"]
+            count += 1
+            for game in next_games:
+                all_games.append(game)
+    finally:
+        return all_games

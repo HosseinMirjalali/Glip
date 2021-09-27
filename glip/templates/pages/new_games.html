@@ -142,7 +142,7 @@
                     <button value="follow" class="btn btn-followdisabled" style="cursor:default;" name="myButton">Login to Follow</button>
                   {% endif %}
                   <a class="text-decoration-none custom-text-h3"
-                     href="{% url 'games:gameclip' %}?game_id={{ game.id }}&name={{ game.name }}"
+                     href="{% url 'games:localgameclip' %}?name={{ game.name }}"
                      target="_blank">
                     <i data-toggle="tooltip" data-placement="top" title="Watch {{ game.name }} clips"
                        class="fas fa-film"></i>
@@ -163,7 +163,7 @@
   <a id="button"></a>
 
   {% block javascript %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
