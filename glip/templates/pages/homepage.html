@@ -217,6 +217,10 @@
         })
       }
 
+      $('#videoModal').on('hidden.bs.modal', function (e) {
+        $('#twitchplayer').attr('src', '')
+      });
+
       $(document).ready(function () {
         autoPlayTwitchModal();
       });
