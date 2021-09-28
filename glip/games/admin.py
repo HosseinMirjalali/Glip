@@ -4,11 +4,8 @@ from glip.games.models import Game, GameFollow, TopGame
 
 
 class GameAdmin(admin.ModelAdmin):
-    list_display = (
-        "game_id",
-        "name",
-    )
-    search_fields = ["game_id", "name"]
+    list_display = ("game_id", "name", "last_queried_clips", "last_tried_query")
+    search_fields = ["game_id", "name", "last_queried_clips", "last_tried_query"]
 
 
 class GameFollowAdmin(admin.ModelAdmin):
