@@ -125,4 +125,37 @@ def get_and_set_top_games():
             )
         )
         order += 1
+    games_to_save = [
+        Game(
+            game_id=e["id"],
+            name=e["name"],
+            box_art_url=e["box_art_url"],
+            last_queried_clips=datetime.now() - timedelta(minutes=61),
+            last_tried_query=datetime.now() - timedelta(minutes=31),
+        )
+        for e in games
+    ]
+    Game.objects.bulk_create(games_to_save, ignore_conflicts=True)
     TopGame.objects.bulk_create(objs, ignore_conflicts=True)
+
+
+@celery_app.task()
+def get_feed_from_last(past_x: int):
+    not_updated_games = (
+        list(
+            Game.objects.filter(last_queried_clips__lt=past_x_hours(past_x))
+            .filter(last_tried_query__lt=past_x_minutes(30))
+            .order_by("id")
+        )
+    )[:-1]
+    not_updated_games_ids = []
+    count = 0
+    for game in not_updated_games:
+        not_updated_games_ids.append(game.game_id)
+    if len(not_updated_games_ids) > 0:
+        for game_id in not_updated_games_ids:
+            count += 1
+            get_and_save_games_clips(game_id)
+            if count >= 1:
+                break
+    return True
