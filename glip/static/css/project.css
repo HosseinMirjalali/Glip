@@ -185,7 +185,7 @@ input[type="color"]:focus,
 
 .customShadowBox {
   background-color: rgba(0, 0, 0, 0.2);
-  padding: 150px 150px;
+  padding: 100%;
   position: absolute;
   border-radius: 5px;
 }
