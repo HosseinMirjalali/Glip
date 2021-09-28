@@ -185,7 +185,7 @@ input[type="color"]:focus,
 
 .customShadowBox {
   background-color: rgba(0, 0, 0, 0.2);
-  padding: 150px 150px;
+  padding: 100%;
   position: absolute;
   border-radius: 5px;
 }
@@ -371,7 +371,10 @@ body {
 svg {
   position: absolute;
   z-index: 0;
+  left: 50%;
+  transform: translate(-50%);
 }
+
 a {
   color: #6A5ACD;
 }

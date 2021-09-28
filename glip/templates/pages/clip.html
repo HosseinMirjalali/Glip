@@ -37,7 +37,7 @@
 
           <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
                data-target="#videoModal"
-               data-theVideo="{{ clip.embed_url }}&parent=glipsite.com&parent=www.glipsite.com">
+               data-theVideo="{{ clip.embed_url }}&parent=localhost">
             <img loading=lazy class="card-img-top clip-card-img" src="{{ clip.thumbnail_url }}" alt=""
                  style="opacity: 0.5; height: 100%;">
             <div href="#"
@@ -124,6 +124,12 @@
     <!-- Back to top button -->
     <a id="button"></a>
 
+    <div id="loadmore-box" class="d-flex justify-content-center align-items-center">
+      <button class="btn" id="loadbtn">
+        Show More
+      </button>
+    </div>
+
 
     {% block javascript %}
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -177,6 +183,19 @@
       $('#videoModal').on('hidden.bs.modal', function (e) {
         // do something...
         $('#videoModal iframe').attr("src", $("#videoModal iframe").attr("src"));
+      });
+
+      var loadbtnStatus = "more";
+      $("#loadbtn").click(function showMoreFunc() {
+        const _this = $(this);
+        $(".card-group div:nth-child(n+21)").toggle();
+        if (loadbtnStatus === "more") {
+          _this.text("Show Less")
+          loadbtnStatus = "less";
+        } else {
+          _this.text("Show More")
+          loadbtnStatus = "more";
+        }
       });
 
 

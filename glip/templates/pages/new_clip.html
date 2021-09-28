@@ -123,6 +123,12 @@
     <!-- Back to top button -->
     <a id="button"></a>
 
+    <div id="loadmore-box" class="d-flex justify-content-center align-items-center">
+      <button class="btn" id="loadbtn">
+        Show More
+      </button>
+    </div>
+
     {% block javascript %}
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
       <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -178,7 +184,18 @@
       });
 
 
-      var btn = $('#button');
+      var loadbtnStatus = "more";
+      $("#loadbtn").click(function showMoreFunc() {
+        const _this = $(this);
+        $(".card-group div:nth-child(n+21)").toggle();
+        if (loadbtnStatus === "more") {
+          _this.text("Show Less")
+          loadbtnStatus = "less";
+        } else {
+          _this.text("Show More")
+          loadbtnStatus = "more";
+        }
+      });
 
       $(window).scroll(function () {
         if ($(window).scrollTop() > 300) {
