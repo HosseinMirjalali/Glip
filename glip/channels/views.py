@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 
+from glip.clips.models import Clip
 from glip.games.models import Game
 from glip.users.utils import get_clips, get_user_bulk_info, get_user_follows
 
@@ -83,4 +84,22 @@ def clip_page(request):
     first = request.GET.get("first")
     clips = get_clips(request, broadcaster_id, first)
     context = {"clips": clips, "template_info": template_info}
+    return render(request, template_name, context)
+
+
+def local_game_clip_view(request):
+    template_name = "pages/new_clip.html"
+    broadcaster_name = request.GET.get("channel")
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print(broadcaster_name)
+    template_info = f"Top {broadcaster_name} Twitch clips"
+    start = datetime.now() - timedelta(hours=24)
+    end = datetime.now()
+    clips = (
+        Clip.objects.filter(broadcaster_name__iexact=broadcaster_name)
+        .filter(created_at__range=[start, end])
+        .order_by("-twitch_view_count")[:100]
+    )
+    context = {"clips": clips, "template_info": template_info}
+
     return render(request, template_name, context)
