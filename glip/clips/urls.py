@@ -1,12 +1,12 @@
 from django.urls import path
 
 from .views import (
+    ClipsJsonListView,
     clips_view,
     feed_view,
     futures_followed_clips,
     new_your_clips_local,
     your_clip_page,
-    ClipsJsonListView
 )
 
 app_name = "clips"
