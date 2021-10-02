@@ -9,7 +9,7 @@ class ClipAdmin(admin.ModelAdmin):
         "clip_twitch_id",
         "title",
     )
-    search_fields = ["game__name", "twitch_game_id"]
+    search_fields = ["game__name", "twitch_game_id", "clip_twitch_id"]
 
 
 admin.site.register(Clip, ClipAdmin)
