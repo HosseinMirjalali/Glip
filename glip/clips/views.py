@@ -170,3 +170,14 @@ class ClipsJsonListView(View):
 
 
 clips_json = ClipsJsonListView.as_view()
+
+
+def local_clip_detail_page(request):
+    template_name = "pages/clip_detail.html"
+    clip_twitch_id = request.GET.get("twitch_id")
+    # template_info = f"Top {clip_twitch_id} Twitch clips"
+    clip = Clip.objects.get(clip_twitch_id=clip_twitch_id)
+    template_info = f"{clip.title} from {clip.broadcaster_name} playing {clip.game}"
+    context = {"clip": clip, "template_info": template_info}
+
+    return render(request, template_name, context)
