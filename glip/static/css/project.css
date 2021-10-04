@@ -66,11 +66,11 @@ h3 {
   transition: all 0.3s;
 }
 
-.clip-card:hover img {
-  -moz-transform: scale(1.05);
-  -webkit-transform: scale(1.05);
-  transform: scale(1.05);
-}
+/*.clip-card:hover img {*/
+/*  -moz-transform: scale(1.05);*/
+/*  -webkit-transform: scale(1.05);*/
+/*  transform: scale(1.05);*/
+/*}*/
 
 textarea:focus,
 input[type="text"]:focus,
@@ -124,6 +124,16 @@ input[type="color"]:focus,
   /*border-radius: 10px;*/
 }
 
+.card-comments {
+  margin: 5px;
+  color: #A16AE8;
+}
+
+.card-comments:hover, .card-comments:active, .card-comments:focus {
+  margin: 5px;
+  color: #A16AE8;
+}
+
 .card-followslist {
   /*-moz-transition: all 0.3s;*/
   /*-webkit-transition: all 0.3s;*/
@@ -156,6 +166,11 @@ input[type="color"]:focus,
 .followslist-icon-film {
   top: 6px;
   right: 2px;
+}
+
+.comment-submit {
+  margin-bottom: 20px;
+  margin-top: 0;
 }
 
 /*.followslist-icon-twitch, .followslist-icon-film {

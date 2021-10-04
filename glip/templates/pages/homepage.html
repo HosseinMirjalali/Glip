@@ -19,11 +19,9 @@
   <div class="homeText">
     <br>
     <h1>All Twitch clips in one place</h1>
-    <br>
-    <br>
+    <br><br>
     <h2>Top clips of Twitch from the past 24 hours in your personal feed</h2>
-    <br>
-    <br>
+    <br><br>
     <h3 align="center"><a href="{% url 'about' %}" class="effect-underline text-decoration-none">Read more...</a>
     </h3>
   </div>
@@ -34,15 +32,15 @@
       {% for clip in clips|dictsortreversed:"twitch_view_count" %}
         <div class="clip-card " style="padding: 10px">
 
-          <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
-               data-target="#videoModal"
-               data-theVideo="{{ clip.embed_url }}&parent=localhost"
-               onClick='autoPlayTwitchModal(" {{ clip.embed_url }}&parent=localhost ")'>
+          <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem;">
             <img loading=lazy class="card-img-top clip-card-img" src="{{ clip.thumbnail_url }}" alt=""
-                 style="opacity: 0.5; height: 100%;">
+                 style="opacity: 0.5; height: 100%;" data-toggle="modal"
+                 data-target="#videoModal"
+                 data-theVideo="{{ clip.embed_url }}&parent=localhost"
+                 onClick='autoPlayTwitchModal(" {{ clip.embed_url }}&parent=localhost ")'>
             <div href="#"
                  style="position: absolute; bottom: 65px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
-                 class="stretched-link font-weight-bold card-my-div">{{ clip.broadcaster_name }}</div>
+                 class="font-weight-bold card-my-div">{{ clip.broadcaster_name }}</div>
             <div style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
                  class="text-wrapper">
               <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem">
@@ -54,11 +52,19 @@
                       class="fas fa-eye"></i>
                 {{ clip.twitch_view_count }}</p>
             </div>
-            <a class="stretched-link" href="javascript:void(0);" style="color: #83577500; "></a>
-            <h5 style="position: absolute; bottom: 15px; left: 9px; font-size: 0.9rem; max-width: 95%;"
+            <div class="clip-box-shadow"></div>
+            <h5 style="position: absolute; bottom: 30px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
+            <a class="text-wrap fs-6 text-decoration-none card-comments"
+               href="{% url 'clips:clip_detail' %}?twitch_id={{ clip.clip_twitch_id }}">
+              <i class="fas fa-comment"></i>
+              See comments
+            </a>
+            {#            <a class="text-wrap fs-6 text-decoration-none card-comments" href="{% url 'clips:clip_detail' %}?twitch_id={{ clip.clip_twitch_id }}">#}
+            {#              <i class="fas fa-comment"></i>#}
+            {#              {{ clip.comments.all.count }} comment{{ clip.comments.all.count|pluralize }}#}
+            {#            </a>#}
           </div>
-
         </div>
       {% endfor %}
     </div>

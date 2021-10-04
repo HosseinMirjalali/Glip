@@ -24,6 +24,28 @@
       <h3 class="text-white">{{ total_comments }} comment{{ total_comments|pluralize }}</h3>
     {% endwith %}
 
+    {% if request.user.is_authenticated %}
+      <form id="myForm" method="post">
+        {{ comment_form.as_p }}
+        {% csrf_token %}
+        <button type="submit"
+                class="btn btn-outline-light btn-rounded ctaButton comment-submit d-flex justify-content-center align-items-center">
+          Comment
+        </button>
+      </form>
+    {% else %}
+      <div class="mb-4">
+        Please<p class="btn btn-floating m-1">
+        <span class="me-3"></span>
+        <a href="{% url 'account_login' %}" type="button" class="btn btn-outline-light btn-rounded ctaButton"
+           role="button">
+          Login or Sign up
+        </a>
+      </p> to make a comment
+      </div>
+
+    {% endif %}
+    <hr><br>
     {% for comment in comments %}
       <div class="card mb-4">
         <div class="card-body">
@@ -51,24 +73,7 @@
     {% endfor %}
     <br><br><br>
     <h3>Make a new comment...</h3>
-    {% if request.user.is_authenticated %}
-      <form id="myForm" method="post">
-        {{ comment_form.as_p }}
-        {% csrf_token %}
-        <button type="submit" class="d-flex justify-content-center align-items-center">Submit</button>
-      </form>
-    {% else %}
-      <div class="mb-4">
-        Please<p class="btn btn-floating m-1">
-        <span class="me-3"></span>
-        <a href="{% url 'account_login' %}" type="button" class="btn btn-outline-light btn-rounded ctaButton"
-           role="button">
-          Login or Sign up
-        </a>
-      </p> to make a comment
-      </div>
 
-    {% endif %}
 
 
 
