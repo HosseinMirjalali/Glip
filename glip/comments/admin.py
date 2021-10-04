@@ -4,14 +4,11 @@ from glip.comments.models import Comment
 
 
 class CommentAdmin(admin.ModelAdmin):
-    pass
-    # list_display = (
-    #     "user",
-    #     "clip",
-    #     "content",
-    #     "timestamp"
-    # )
-    # search_fields = ["user", "clip", "timestamp"]
+    list_display = ("user", "content", "timestamp")
+    list_filter = ("user", "timestamp")
+    search_fields = ["user", "timestamp"]
+    raw_id_fields = ("clip", "reply")
+    # readonly_fields = ("clip", "reply")
 
 
 admin.site.register(Comment, CommentAdmin)

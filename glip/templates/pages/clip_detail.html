@@ -20,36 +20,57 @@
            data-commentUserAvatar="{{ comment.user.socialaccount_set.all.0.get_avatar_url }}">
       </div>
     {% endfor %}{% endcomment %}
-    <h3 class="text-white">Comments</h3>
-    {% if clip.comments.all %}
+    {% with comments.count as total_comments %}
+      <h3 class="text-white">{{ total_comments }} comment{{ total_comments|pluralize }}</h3>
+    {% endwith %}
 
-      {% for comment in clip.comments.all %}
+    {% for comment in comments %}
+      <div class="card mb-4">
+        <div class="card-body">
+          <p class="commentContent text-dark">{{ comment.content }}</p>
 
-        <div class="card mb-4">
-          <div class="card-body">
-            <p class="commentContent text-dark">{{ comment.content }}</p>
-
-            <div class="d-flex justify-content-between">
-              <div class="d-flex flex-row align-items-center">
-                <img
-                        class="commentUserAvatar"
-                        src="{{ comment.user.socialaccount_set.all.0.get_avatar_url }}"
-                        alt="avatar"
-                        width="25"
-                        height="25"
-                />
-                <p class="small mb-0 ms-2 commentUser text-dark">{{ comment.user }}</p>
-              </div>
-              <div class="d-flex flex-row align-items-center">
-                <p class="commentTimestamp small text-muted mb-0">{{ comment.timestamp }}</p>
-              </div>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-row align-items-center">
+              <img
+                      class="commentUserAvatar"
+                      src="{{ comment.user.socialaccount_set.all.0.get_avatar_url }}"
+                      alt="avatar"
+                      width="25"
+                      height="25"
+              />
+              <p class="small mb-0 ms-2 commentUser text-dark">{{ comment.user }}</p>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+              <p class="commentTimestamp small text-muted mb-0">{{ comment.timestamp }}</p>
             </div>
           </div>
         </div>
-      {% endfor %}
-      {% else %}
+      </div>
+    {% empty %}
       No comments yet...
+    {% endfor %}
+    <br><br><br>
+    <h3>Make a new comment...</h3>
+    {% if request.user.is_authenticated %}
+      <form id="myForm" method="post">
+        {{ comment_form.as_p }}
+        {% csrf_token %}
+        <button type="submit" class="d-flex justify-content-center align-items-center">Submit</button>
+      </form>
+    {% else %}
+      <div class="mb-4">
+        Please<p class="btn btn-floating m-1">
+        <span class="me-3"></span>
+        <a href="{% url 'account_login' %}" type="button" class="btn btn-outline-light btn-rounded ctaButton"
+           role="button">
+          Login or Sign up
+        </a>
+      </p> to make a comment
+      </div>
+
     {% endif %}
+
+
 
   {% else %}
     <style>
@@ -63,10 +84,6 @@
 
       a {
         color: #6A5ACD;
-      }
-
-      .twitchLink {
-        color: #a970ff;
       }
 
       hr {

@@ -5,12 +5,15 @@ import environ
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.http.response import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views import View
 from requests_futures.sessions import FuturesSession
 
 from glip.clips.models import Clip
+from glip.comments.forms import NewCommentForm
 from glip.games.models import GameFollow
 from glip.users.utils import (
     get_clips,
@@ -176,8 +179,31 @@ def local_clip_detail_page(request):
     template_name = "pages/clip_detail.html"
     clip_twitch_id = request.GET.get("twitch_id")
     # template_info = f"Top {clip_twitch_id} Twitch clips"
-    clip = Clip.objects.get(clip_twitch_id=clip_twitch_id)
+    # clip = Clip.objects.get(clip_twitch_id=clip_twitch_id)
+    clip = get_object_or_404(Clip, clip_twitch_id=clip_twitch_id)
+    comments = clip.comments.all()
     template_info = f"{clip.title} from {clip.broadcaster_name} playing {clip.game}"
-    context = {"clip": clip, "template_info": template_info}
+    user_comment = None
+
+    if request.method == "POST":
+        comment_form = NewCommentForm(request.POST)
+        if comment_form.is_valid():
+            user_comment = comment_form.save(commit=False)
+            user_comment.clip = clip
+            user_comment.user = request.user
+            user_comment.save()
+            clip_detail_url = reverse("clips:clip_detail")
+            clip_url = clip_detail_url + f"?twitch_id={clip_twitch_id}"
+            return HttpResponseRedirect(clip_url)
+    else:
+        comment_form = NewCommentForm()
+
+    context = {
+        "clip": clip,
+        "comments": comments,
+        "template_info": template_info,
+        "user_comment": user_comment,
+        "comment_form": comment_form,
+    }
 
     return render(request, template_name, context)
