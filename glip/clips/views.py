@@ -5,6 +5,7 @@ import environ
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -114,9 +115,16 @@ def feed_view(request):
     template_info = "Most watched clips of the past 24 hours"
     start = datetime.now() - timedelta(hours=24)
     end = datetime.now()
-    clips = Clip.objects.filter(created_at__range=[start, end]).order_by(
-        "-twitch_view_count"
-    )[:100]
+    # clips = Clip.objects.filter(created_at__range=[start, end]).order_by(
+    #     "-twitch_view_count"
+    # )[:100]
+    # clips = Clip.objects.all().annotate(comment_count=Count('comments'),
+    #                                     filter=Q(created_at__range=[start, end])).order_by("-twitch_view_count")[:100]
+    clips = (
+        Clip.objects.filter(created_at__range=[start, end])
+        .annotate(comment_count=Count("comments"))
+        .order_by("-twitch_view_count")[:100]
+    )
     context = {"clips": clips, "template_info": template_info}
 
     return render(request, template_name, context)

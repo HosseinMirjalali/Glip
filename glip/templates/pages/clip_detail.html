@@ -21,10 +21,12 @@
       </div>
     {% endfor %}{% endcomment %}
     {% with comments.count as total_comments %}
+      <br>
       <h3 class="text-white">{{ total_comments }} comment{{ total_comments|pluralize }}</h3>
     {% endwith %}
 
     {% if request.user.is_authenticated %}
+      <br>
       <form id="myForm" method="post">
         {{ comment_form.as_p }}
         {% csrf_token %}
@@ -35,13 +37,7 @@
       </form>
     {% else %}
       <div class="mb-4">
-        Please<p class="btn btn-floating m-1">
-        <span class="me-3"></span>
-        <a href="{% url 'account_login' %}" type="button" class="btn btn-outline-light btn-rounded ctaButton"
-           role="button">
-          Login or Sign up
-        </a>
-      </p> to make a comment
+        Please <a class="text-decoration-none" href="{% url 'account_login' %}">Login or Sign up</a> to make a comment
       </div>
 
     {% endif %}
@@ -71,11 +67,6 @@
     {% empty %}
       No comments yet...
     {% endfor %}
-    <br><br><br>
-    <h3>Make a new comment...</h3>
-
-
-
 
   {% else %}
     <style>

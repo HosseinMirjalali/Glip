@@ -39,7 +39,7 @@
                  data-theVideo="{{ clip.embed_url }}&parent=localhost"
                  onClick='autoPlayTwitchModal(" {{ clip.embed_url }}&parent=localhost ")'>
             <div href="#"
-                 style="position: absolute; bottom: 65px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
+                 style="position: absolute; bottom: 75px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
                  class="font-weight-bold card-my-div">{{ clip.broadcaster_name }}</div>
             <div style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
                  class="text-wrapper">
@@ -53,17 +53,18 @@
                 {{ clip.twitch_view_count }}</p>
             </div>
             <div class="clip-box-shadow"></div>
-            <h5 style="position: absolute; bottom: 30px; left: 9px; font-size: 0.9rem; max-width: 95%;"
+            <h5 style="position: absolute; bottom: 40px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
+            {% comment %}            <a class="text-wrap fs-6 text-decoration-none card-comments"
+               href="{% url 'clips:clip_detail' %}?twitch_id={{ clip.clip_twitch_id }}">
+              <i class="far fa-comment-alt"></i>
+              See comments
+            </a>{% endcomment %}
             <a class="text-wrap fs-6 text-decoration-none card-comments"
                href="{% url 'clips:clip_detail' %}?twitch_id={{ clip.clip_twitch_id }}">
-              <i class="fas fa-comment"></i>
-              See comments
+              <i class="far fa-comment-alt"></i>
+              {{ clip.comment_count }} comment{{ clip.comment_count|pluralize }}
             </a>
-            {#            <a class="text-wrap fs-6 text-decoration-none card-comments" href="{% url 'clips:clip_detail' %}?twitch_id={{ clip.clip_twitch_id }}">#}
-            {#              <i class="fas fa-comment"></i>#}
-            {#              {{ clip.comments.all.count }} comment{{ clip.comments.all.count|pluralize }}#}
-            {#            </a>#}
           </div>
         </div>
       {% endfor %}
@@ -94,8 +95,14 @@
           <div class="modal-footer justify-content-center text-white">
             <span class="mr-4">Share my website with your friends</span>
             <!--Twitter-->
-            <a href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
-               type="button" target="_blank" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+            <a
+                    target="_blank"
+                    class="btn btn-outline-light btn-floating m-1"
+                    href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
+                    role="button"
+            ><i class="fab fa-twitter"></i></a>
+            {% comment %}<a href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
+               type="button" target="_blank" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>{% endcomment %}
             <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4 closeBtn" data-dismiss="modal">
               Close
             </button>
