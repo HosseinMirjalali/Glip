@@ -105,7 +105,7 @@ noauthgameslist = NoAuthGamesListView.as_view()
 
 
 def local_game_clip_view(request):
-    template_name = "pages/new_clip.html"
+    template_name = "pages/clips_no_modal_page.html"
     game_name = request.GET.get("name")
     template_info = f"Top {game_name} Twitch clips"
     start = datetime.now() - timedelta(hours=24)

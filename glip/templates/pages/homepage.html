@@ -19,11 +19,9 @@
   <div class="homeText">
     <br>
     <h1>All Twitch clips in one place</h1>
-    <br>
-    <br>
+    <br><br>
     <h2>Top clips of Twitch from the past 24 hours in your personal feed</h2>
-    <br>
-    <br>
+    <br><br>
     <h3 align="center"><a href="{% url 'about' %}" class="effect-underline text-decoration-none">Read more...</a>
     </h3>
   </div>
@@ -34,15 +32,15 @@
       {% for clip in clips|dictsortreversed:"twitch_view_count" %}
         <div class="clip-card " style="padding: 10px">
 
-          <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
-               data-target="#videoModal"
-               data-theVideo="{{ clip.embed_url }}&parent=glipsite.com&parent=www.glipsite.com"
-               onClick='autoPlayTwitchModal(" {{ clip.embed_url }}&parent=glipsite.com&parent=www.glipsite.com")'>
+          <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem;">
             <img loading=lazy class="card-img-top clip-card-img" src="{{ clip.thumbnail_url }}" alt=""
-                 style="opacity: 0.5; height: 100%;">
+                 style="opacity: 0.5; height: 100%;" data-toggle="modal"
+                 data-target="#videoModal"
+                 data-theVideo="{{ clip.embed_url }}&parent=localhost"
+                 onClick='autoPlayTwitchModal(" {{ clip.embed_url }}&parent=localhost ")'>
             <div href="#"
-                 style="position: absolute; bottom: 65px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
-                 class="stretched-link font-weight-bold card-my-div">{{ clip.broadcaster_name }}</div>
+                 style="position: absolute; bottom: 75px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
+                 class="font-weight-bold card-my-div">{{ clip.broadcaster_name }}</div>
             <div style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
                  class="text-wrapper">
               <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem">
@@ -54,11 +52,20 @@
                       class="fas fa-eye"></i>
                 {{ clip.twitch_view_count }}</p>
             </div>
-            <a class="stretched-link" href="javascript:void(0);" style="color: #83577500; "></a>
-            <h5 style="position: absolute; bottom: 15px; left: 9px; font-size: 0.9rem; max-width: 95%;"
+            <div class="clip-box-shadow"></div>
+            <h5 style="position: absolute; bottom: 40px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
+            {% comment %}            <a class="text-wrap fs-6 text-decoration-none card-comments"
+               href="{% url 'clips:clip_detail' %}?twitch_id={{ clip.clip_twitch_id }}">
+              <i class="far fa-comment-alt"></i>
+              See comments
+            </a>{% endcomment %}
+            <a class="text-wrap fs-6 text-decoration-none card-comments"
+               href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}">
+              <i class="far fa-comment-alt"></i>
+              {{ clip.comment_count }} comment{{ clip.comment_count|pluralize }}
+            </a>
           </div>
-
         </div>
       {% endfor %}
     </div>
@@ -88,8 +95,14 @@
           <div class="modal-footer justify-content-center text-white">
             <span class="mr-4">Share my website with your friends</span>
             <!--Twitter-->
-            <a href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
-               type="button" target="_blank" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+            <a
+                    target="_blank"
+                    class="btn btn-outline-light btn-floating m-1"
+                    href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
+                    role="button"
+            ><i class="fab fa-twitter"></i></a>
+            {% comment %}<a href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
+               type="button" target="_blank" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>{% endcomment %}
             <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4 closeBtn" data-dismiss="modal">
               Close
             </button>

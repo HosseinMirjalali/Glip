@@ -5,12 +5,16 @@ import environ
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
+from django.http import HttpResponseRedirect
 from django.http.response import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views import View
 from requests_futures.sessions import FuturesSession
 
 from glip.clips.models import Clip
+from glip.comments.forms import NewCommentForm
 from glip.games.models import GameFollow
 from glip.users.utils import (
     get_clips,
@@ -111,9 +115,16 @@ def feed_view(request):
     template_info = "Most watched clips of the past 24 hours"
     start = datetime.now() - timedelta(hours=24)
     end = datetime.now()
-    clips = Clip.objects.filter(created_at__range=[start, end]).order_by(
-        "-twitch_view_count"
-    )[:100]
+    # clips = Clip.objects.filter(created_at__range=[start, end]).order_by(
+    #     "-twitch_view_count"
+    # )[:100]
+    # clips = Clip.objects.all().annotate(comment_count=Count('comments'),
+    #                                     filter=Q(created_at__range=[start, end])).order_by("-twitch_view_count")[:100]
+    clips = (
+        Clip.objects.filter(created_at__range=[start, end])
+        .annotate(comment_count=Count("comments"))
+        .order_by("-twitch_view_count")[:100]
+    )
     context = {"clips": clips, "template_info": template_info}
 
     return render(request, template_name, context)
@@ -170,3 +181,34 @@ class ClipsJsonListView(View):
 
 
 clips_json = ClipsJsonListView.as_view()
+
+
+def local_clip_detail_page(request, pk):
+    template_name = "pages/clip_detail.html"
+    clip = get_object_or_404(Clip, clip_twitch_id=pk)
+    comments = clip.comments.all()
+    template_info = f"{clip.title} from {clip.broadcaster_name} playing {clip.game}"
+    user_comment = None
+
+    if request.method == "POST":
+        comment_form = NewCommentForm(request.POST)
+        if comment_form.is_valid():
+            user_comment = comment_form.save(commit=False)
+            user_comment.clip = clip
+            user_comment.user = request.user
+            user_comment.save()
+            clip_detail_url = reverse("clips:clip_detail", args=[pk])
+            clip_url = clip_detail_url
+            return HttpResponseRedirect(clip_url)
+    else:
+        comment_form = NewCommentForm()
+
+    context = {
+        "clip": clip,
+        "comments": comments,
+        "template_info": template_info,
+        "user_comment": user_comment,
+        "comment_form": comment_form,
+    }
+
+    return render(request, template_name, context)
