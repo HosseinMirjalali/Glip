@@ -183,12 +183,9 @@ class ClipsJsonListView(View):
 clips_json = ClipsJsonListView.as_view()
 
 
-def local_clip_detail_page(request):
+def local_clip_detail_page(request, pk):
     template_name = "pages/clip_detail.html"
-    clip_twitch_id = request.GET.get("twitch_id")
-    # template_info = f"Top {clip_twitch_id} Twitch clips"
-    # clip = Clip.objects.get(clip_twitch_id=clip_twitch_id)
-    clip = get_object_or_404(Clip, clip_twitch_id=clip_twitch_id)
+    clip = get_object_or_404(Clip, clip_twitch_id=pk)
     comments = clip.comments.all()
     template_info = f"{clip.title} from {clip.broadcaster_name} playing {clip.game}"
     user_comment = None
@@ -200,8 +197,8 @@ def local_clip_detail_page(request):
             user_comment.clip = clip
             user_comment.user = request.user
             user_comment.save()
-            clip_detail_url = reverse("clips:clip_detail")
-            clip_url = clip_detail_url + f"?twitch_id={clip_twitch_id}"
+            clip_detail_url = reverse("clips:clip_detail", args=[pk])
+            clip_url = clip_detail_url
             return HttpResponseRedirect(clip_url)
     else:
         comment_form = NewCommentForm()
