@@ -19,5 +19,5 @@ urlpatterns = [
     path("future", view=futures_followed_clips, name="future"),
     path("feed", view=feed_view, name="feed"),
     path("yourclips/", view=your_clip_page, name="your_clips"),
-    path("yourclipsnew/", view=new_your_clips_local, name="new_your_clips"),
+    path("clipsforyou/", view=new_your_clips_local, name="new_your_clips"),
 ]

@@ -85,8 +85,8 @@
                  href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.view_name == 'clips:your_clips' %}active{% endif %}"
-                 href="{% url 'clips:your_clips' %}">{% trans "Clips For You" %}</a>
+              <a class="nav-link {% if request.resolver_match.view_name == 'clips:new_your_clips' %}active{% endif %}"
+                 href="{% url 'clips:new_your_clips' %}">{% trans "Clips For You" %}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.view_name == 'channels:followed' %}active{% endif %}"

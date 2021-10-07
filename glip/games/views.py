@@ -118,3 +118,19 @@ def local_game_clip_view(request):
     context = {"clips": clips, "template_info": template_info}
 
     return render(request, template_name, context)
+
+
+def local_game_clip_view_new(request, pk):
+    template_name = "pages/clips_no_modal_page.html"
+    game_name = request.GET.get("name")
+    template_info = f"Top {game_name} Twitch clips"
+    start = datetime.now() - timedelta(hours=24)
+    end = datetime.now()
+    clips = (
+        Clip.objects.filter(game__game_id=pk)
+        .filter(created_at__range=[start, end])
+        .order_by("-twitch_view_count")[:100]
+    )
+    context = {"clips": clips, "template_info": template_info}
+
+    return render(request, template_name, context)

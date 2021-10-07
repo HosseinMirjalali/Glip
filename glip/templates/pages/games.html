@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Top Games on Twitch{% endblock %}
-{#{% load clips_filters %}#}
 {% block content %}
 
   <style>
@@ -35,19 +34,17 @@
 
     }
 
-    .media {
-
-    }
-
     .mt-0 {
       margin-top: 10px;
     }
 
+{% comment %}
     .text-center {
       margin-top: 20px;
       margin-bottom: 20px;
       color: #FFFFFF;
     }
+{% endcomment %}
 
     .lead {
       color: #A16AE8;
@@ -92,7 +89,7 @@
   {% if games %}
 
     <div class="masthead">
-      <hr>
+      <br>
       <p class="text-center">Top {{ games|length }} games by viewer count</p>
       <div class="d-flex justify-content-center">
         <div class="row pb-4">
@@ -142,7 +139,7 @@
                     <button value="follow" class="btn btn-followdisabled" style="cursor:default;" name="myButton">Login to Follow</button>
                   {% endif %}
                   <a class="text-decoration-none custom-text-h3"
-                     href="{% url 'games:gameclip' %}?game_id={{ game.id }}&name={{ game.name }}"
+                     href="{% url 'games:localgameclipnew' pk=game.id %}?game_name={{ game.name }}"
                      target="_blank">
                     <i data-toggle="tooltip" data-placement="top" title="Watch {{ game.name }} clips"
                        class="fas fa-film"></i>

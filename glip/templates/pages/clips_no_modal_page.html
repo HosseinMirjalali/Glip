@@ -45,7 +45,7 @@
                       class="fas fa-eye"></i>
                 {{ clip.twitch_view_count }}</p>
             </div>
-            <a target="_blank" class="stretched-link" href="{% url 'clips:clip_detail' %}?twitch_id={{ clip.clip_twitch_id }}" style="color: #83577500; "></a>
+            <a target="_blank" class="stretched-link" href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}" style="color: #83577500; "></a>
             <h5 style="position: absolute; bottom: 15px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
           </div>
