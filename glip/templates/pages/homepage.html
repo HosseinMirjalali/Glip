@@ -52,14 +52,8 @@
                       class="fas fa-eye"></i>
                 {{ clip.twitch_view_count }}</p>
             </div>
-            <div class="clip-box-shadow"></div>
             <h5 style="position: absolute; bottom: 40px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
-            {% comment %}            <a class="text-wrap fs-6 text-decoration-none card-comments"
-               href="{% url 'clips:clip_detail' %}?twitch_id={{ clip.clip_twitch_id }}">
-              <i class="far fa-comment-alt"></i>
-              See comments
-            </a>{% endcomment %}
             <a class="text-wrap fs-6 text-decoration-none card-comments"
                href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}">
               <i class="far fa-comment-alt"></i>
