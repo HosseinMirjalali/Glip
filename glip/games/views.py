@@ -27,7 +27,7 @@ class GamesListView(LoginRequiredMixin, View):
 
     def get(self, request):
         """
-        Gets list of followed streamers and recursively calls the API with each followed ID
+        Gets list of top 200 games on twitch
         """
         template_name = "pages/games.html"
         games = get_top_games(request)
