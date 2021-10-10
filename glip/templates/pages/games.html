@@ -139,7 +139,7 @@
                     <button value="follow" class="btn btn-followdisabled" style="cursor:default;" name="myButton">Login to Follow</button>
                   {% endif %}
                   <a class="text-decoration-none custom-text-h3"
-                     href="{% url 'games:localgameclipnew' pk=game.id %}?game_name={{ game.name }}"
+                     href="{% url 'games:localgameclipnew' pk=game.id %}"
                      target="_blank">
                     <i data-toggle="tooltip" data-placement="top" title="Watch {{ game.name }} clips"
                        class="fas fa-film"></i>

@@ -13,13 +13,6 @@
               src="{{ clip.embed_url }}&parent=glipsite.com&parent=www.glipsite.com"
               allowfullscreen="true" width="100%"></iframe>
     </div>
-    {% comment %}    {% for comment in clip.comments.all %}
-      <div data-toggle="commentModal" id="comment{{ comment.id }}" data-target="#videoModal"
-           data-commentContent="{{ comment.content }}"
-           data-commentUser="{{ comment.user }}" data-commentTimestamp="{{ comment.timestamp }}"
-           data-commentUserAvatar="{{ comment.user.socialaccount_set.all.0.get_avatar_url }}">
-      </div>
-    {% endfor %}{% endcomment %}
     {% with comments.count as total_comments %}
       <br>
       <h3 class="text-white">{{ total_comments }} comment{{ total_comments|pluralize }}</h3>

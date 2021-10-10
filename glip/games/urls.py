@@ -12,7 +12,7 @@ from .views import (
 
 app_name = "games"
 urlpatterns = [
-    path("games", view=games_view, name="games"),
+    path("", view=games_view, name="games"),
     path("topgames", view=noauthgameslist, name="topgames"),
     path("follow_game", view=follow_game, name="follow_game"),
     path("unfollow_game", view=unfollow_game, name="unfollow_game"),

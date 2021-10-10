@@ -105,6 +105,7 @@ def new_your_clips_local(request):
         Clip.objects.filter(twitch_game_id__in=games_id_dic)
         .filter(broadcaster_id__in=user_channel_follows_id)
         .filter(created_at__range=[start, end])
+        .annotate(comment_count=Count("comments"))
     )
     context = {"clips": clips, "template_info": template_info}
     return render(request, template_name, context)
