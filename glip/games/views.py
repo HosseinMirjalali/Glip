@@ -121,8 +121,9 @@ def local_game_clip_view(request):
 
 
 def local_game_clip_view_new(request, pk):
-    template_name = "pages/clips_no_modal_page.html"
-    game_name = request.GET.get("name")
+    template_name = "pages/new_clip.html"
+    # game_name = request.GET.get("name")
+    game_name = Game.objects.get(game_id=pk).name
     template_info = f"Top {game_name} Twitch clips"
     start = datetime.now() - timedelta(hours=24)
     end = datetime.now()
