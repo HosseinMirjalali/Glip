@@ -474,3 +474,14 @@ a.effect-underline:hover:after {
   /*background: linear-gradient(180deg, rgba(2, 0, 36, 1) 16%, rgba(106, 90, 205, 1) 79%, rgba(161, 106, 232, 1) 100%);*/
   bottom: 0;
 }
+
+#like-button, #share-button {
+  color: #6A5ACD;
+  right: 50px;
+}
+
+#like-button:hover, #like-button:active, #like-button:after,
+#share-button:hover, #share-button:active, #share-button:after,
+#share-twitter-button:hover, #share-twitter-button:active, #share-twitter-button:after {
+  background-color: #212529;
+}

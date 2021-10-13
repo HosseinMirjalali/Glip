@@ -213,3 +213,23 @@ def local_clip_detail_page(request, pk):
     }
 
     return render(request, template_name, context)
+
+
+@login_required
+def like_clip(request):
+    if request.POST.get("action") == "post":
+        result = ""
+        clip_twitch_id = request.POST.get("clip_id")
+        clip = get_object_or_404(Clip, clip_twitch_id=clip_twitch_id)
+        if clip.likes.filter(id=request.user.id).exists():
+            clip.likes.remove(request.user)
+            clip.like_count -= 1
+            result = clip.like_count
+            clip.save()
+        else:
+            clip.likes.add(request.user)
+            clip.like_count += 1
+            result = clip.like_count
+            clip.save()
+
+        return JsonResponse({"result": result})
