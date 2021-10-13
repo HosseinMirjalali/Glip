@@ -487,8 +487,8 @@ a.effect-underline:hover:after {
 }
 
 .clip-buttons {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  /*display: block;*/
+  /*margin-left: auto;*/
+  /*margin-right: auto;*/
   margin-top: 10px;
 }

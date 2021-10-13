@@ -20,26 +20,26 @@
       </div>
     </div>
 
-    <div class="row text-center clip-buttons">
+    <div class="row justify-content-center clip-buttons">
       {% if request.user.is_authenticated %}
-        <button class="col-1 btn btn-link border-0 btn-outline-light" id="like-button"
+        <button class="col btn btn-link border-0 btn-outline-light" id="like-button"
                 value="{{ clip.clip_twitch_id }}">
           <i class="{% if fav %}fas {% else %}far {% endif %}fa-heart"
              id="like-button-icon"> {{ clip.like_count }}</i>
         </button>
       {% else %}
-        <a class="col-1 btn btn-link border-0 btn-outline-light" id="no-login-like-button"
+        <a class="col btn btn-link border-0 btn-outline-light" id="no-login-like-button"
            href="{% url 'account_login' %}">
           <i class="far fa-heart" id="like-button-icon"> {{ clip.like_count }}</i>
         </a>
       {% endif %}
 
-      <button onclick="copyCurrentPage()" class="col-1 btn btn-link border-0 btn-outline-light" id="share-button">
+      <button onclick="copyCurrentPage()" class="col btn btn-link border-0 btn-outline-light" id="share-button">
         <i class="far fa-share-square" id="share-button-icon"> Copy</i>
       </button>
       <a href="https://twitter.com/intent/tweet?text={{ clip.title }} (by {{ clip.broadcaster_name }})
           glipsite.com{{ request.get_full_path }}"
-         type="button" target="_blank" class="col-1 btn btn-link border-0 btn-outline-light" id="share-twitter-button">
+         type="button" target="_blank" class="col btn btn-link border-0 btn-outline-light" id="share-twitter-button">
         <i class="fab fa-twitter" id="share-twitter-button-icon"> Share to Twitter</i>
       </a>
     </div>
