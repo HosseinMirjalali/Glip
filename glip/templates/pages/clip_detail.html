@@ -8,6 +8,10 @@
 {% block content %}
   {% if clip %}
     <br>
+    {#    <button class="btn btn-link border-0 btn-outline-light" id="like-button"#}
+    {#            value="{{ clip.clip_twitch_id }}">#}
+    {#      <i class="far fa-heart" id="like-button-icon"> Favorite</i>#}
+    {#    </button>#}
     <div class="row align-items-center">
       <div class="text-center embed-responsive embed-responsive-16by9 z-depth-1-half embedDetail">
         <iframe class="embed-responsive-item"
@@ -15,23 +19,30 @@
                 allowfullscreen="true"></iframe>
       </div>
     </div>
-    <span id="like_count">{{ clip.like_count }}</span>
-    {% if request.user.is_authenticated %}
-      <div class="row justify-content-center clip-buttons">
-        <button class="btn btn-link border-0 btn-outline-light" id="like-button"
+
+    <div class="row text-center clip-buttons">
+      {% if request.user.is_authenticated %}
+        <button class="col-1 btn btn-link border-0 btn-outline-light" id="like-button"
                 value="{{ clip.clip_twitch_id }}">
-          <i class="far fa-heart" id="like-button-icon"> Favorite</i>
+          <i class="{% if fav %}fas {% else %}far {% endif %}fa-heart"
+             id="like-button-icon"> {{ clip.like_count }}</i>
         </button>
-        <button onclick="copyCurrentPage()" class="btn btn-link border-0 btn-outline-light" id="share-button">
-          <i class="far fa-share-square" id="share-button-icon"> Copy the link to clipboard</i>
-        </button>
-        <a href="https://twitter.com/intent/tweet?text={{ clip.title }} (by {{ clip.broadcaster_name }})
-          glipsite.com{{ request.get_full_path }}"
-           type="button" target="_blank" class="btn btn-link border-0 btn-outline-light" id="share-twitter-button">
-          <i class="fab fa-twitter" id="share-twitter-button-icon"> Share to Twitter</i>
+      {% else %}
+        <a class="col-1 btn btn-link border-0 btn-outline-light" id="no-login-like-button"
+           href="{% url 'account_login' %}">
+          <i class="far fa-heart" id="like-button-icon"> {{ clip.like_count }}</i>
         </a>
-      </div>
-    {% endif %}
+      {% endif %}
+
+      <button onclick="copyCurrentPage()" class="col-1 btn btn-link border-0 btn-outline-light" id="share-button">
+        <i class="far fa-share-square" id="share-button-icon"> Copy</i>
+      </button>
+      <a href="https://twitter.com/intent/tweet?text={{ clip.title }} (by {{ clip.broadcaster_name }})
+          glipsite.com{{ request.get_full_path }}"
+         type="button" target="_blank" class="col-1 btn btn-link border-0 btn-outline-light" id="share-twitter-button">
+        <i class="fab fa-twitter" id="share-twitter-button-icon"> Share to Twitter</i>
+      </a>
+    </div>
     {% with comments.count as total_comments %}
       <br>
       <div class="row">
@@ -129,6 +140,8 @@
     function copyCurrentPage() {
       let url = window.location.href;
       navigator.clipboard.writeText(url);
+      $("#share-button-icon").toggleClass("fas far").text(" Copied");
+      {#$("#share-button-icon")#}
     }
 
     $(document).on('click', '#like-button', function (e) {
@@ -143,7 +156,9 @@
                   action: "post"
                 },
                 success: function (json) {
-                  document.getElementById("like_count").innerHTML = json['result']
+                  document.getElementById("like-button-icon").innerHTML = " " + json['result']
+                  let buttonIcon = $("#like-button-icon")
+                  buttonIcon.toggleClass("fas far")
                   console.log(json)
                 },
                 error: function (xhr, errmsg, err) {
@@ -155,14 +170,14 @@
 
     $("#like-button").hover(
             function () {
-              $("#like-button-icon").toggleClass("fas");
+              $(".fas, .far", this).toggleClass("fas far");
             }
     );
-    $("#share-button").hover(
-            function () {
-              $("#share-button-icon").toggleClass("fas");
-            }
-    );
+    {#$("#share-button").hover(#}
+    {#        function () {#}
+    {#          $(".fas, .far", this).toggleClass("fas far");#}
+    {#        }#}
+    {#);#}
 
 
   </script>

@@ -190,6 +190,11 @@ def local_clip_detail_page(request, pk):
     comments = clip.comments.all()
     template_info = f"{clip.title} from {clip.broadcaster_name} playing {clip.game}"
     user_comment = None
+    fav = False
+    if clip.likes.filter(id=request.user.id).exists():
+        fav = True
+    else:
+        fav = False
 
     if request.method == "POST":
         comment_form = NewCommentForm(request.POST)
@@ -210,6 +215,7 @@ def local_clip_detail_page(request, pk):
         "template_info": template_info,
         "user_comment": user_comment,
         "comment_form": comment_form,
+        "fav": fav,
     }
 
     return render(request, template_name, context)
