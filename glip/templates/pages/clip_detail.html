@@ -86,7 +86,7 @@
               <p class="small mb-0 ms-2 commentUser text-dark">{{ comment.user }}</p>
             </div>
             <div class="d-flex flex-row align-items-center">
-              <p class="commentTimestamp small text-muted mb-0">{{ comment.timestamp }}</p>
+              <p class="commentTimestamp small text-muted mb-0">{{ comment.timestamp |timesince }} ago</p>
             </div>
           </div>
         </div>
