@@ -1,4 +1,3 @@
-import datetime
 from unittest import TestCase, mock
 
 import pytest
@@ -6,10 +5,11 @@ from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
 from django.contrib.auth.models import AnonymousUser
 from django.test import Client, RequestFactory, tag
 from django.urls import reverse
+from django.utils import timezone
 
 from glip.clips.models import Clip
 from glip.clips.views import local_clip_detail_page
-from glip.games.models import Game
+from glip.games.models import Game, GameFollow
 from glip.users.models import User
 
 pytestmark = pytest.mark.django_db
@@ -29,6 +29,20 @@ def mock_get_user_follows_one_broadcaster(**kwargs):
 
 def mock_get_user_follows_empty(request, user_token):
     broadcaster = {}
+    return broadcaster
+
+
+def mock_get_user_follows_non_empty(request, user_token):
+    broadcaster = [
+        {
+            "from_id": "171003792",
+            "from_login": "iiisutha067iii",
+            "from_name": "IIIsutha067III",
+            "to_id": "425462523",
+            "to_name": "madara_irgen",
+            "followed_at": "2017-08-22T22:55:24Z",
+        }
+    ]
     return broadcaster
 
 
@@ -67,7 +81,7 @@ class TestClipDetailView(TestCase):
             title="Chair get destroyed by angry fist that once destroyed closet ",
             twitch_view_count="9",
             glip_view_count="",
-            created_at=datetime.datetime.now(),
+            created_at=timezone.now(),
             thumbnail_url="https://clips-media-assets2.twitch.tv/AT-cm%7CHSCQyY59sYdqFvjRu4CUHQ-preview-480x272.jpg",
             duration="17.3",
         )
@@ -138,7 +152,7 @@ class TestClipsForYou(TestCase):
             title="Chair get destroyed by angry fist that once destroyed closet ",
             twitch_view_count="9",
             glip_view_count="",
-            created_at=datetime.datetime.now(),
+            created_at=timezone.now(),
             thumbnail_url="https://clips-media-assets2.twitch.tv/AT-cm%7CHSCQyY59sYdqFvjRu4CUHQ-preview-480x272.jpg",
             duration="17.3",
         )
@@ -158,8 +172,33 @@ class TestClipsForYou(TestCase):
         "glip.clips.views.get_new_access_from_refresh", mock_get_new_access_from_refresh
     )
     @mock.patch("glip.clips.views.get_user_follows2", mock_get_user_follows_empty)
-    def test_no_users_followed(self, *args, **kwargs):
+    def test_no_users_no_games_followed(self, *args, **kwargs):
         self.c.login(username="test", password="top_secret")
         response = self.c.get(reverse("clips:new_your_clips"))
         assert response.status_code == 200
-        assert response.context["clips"].exists() is False
+        assert len(response.context["clips"]) == 0
+
+    @mock.patch("glip.clips.views.validate_token", mock_validate_token)
+    @mock.patch(
+        "glip.clips.views.get_new_access_from_refresh", mock_get_new_access_from_refresh
+    )
+    @mock.patch("glip.clips.views.get_user_follows2", mock_get_user_follows_non_empty)
+    def test_users_followed_no_games_followed(self, *args, **kwargs):
+        self.c.login(username="test", password="top_secret")
+        response = self.c.get(reverse("clips:new_your_clips"))
+        assert response.status_code == 200
+        assert len(response.context["clips"]) == 0
+
+    @mock.patch("glip.clips.views.validate_token", mock_validate_token)
+    @mock.patch(
+        "glip.clips.views.get_new_access_from_refresh", mock_get_new_access_from_refresh
+    )
+    @mock.patch("glip.clips.views.get_user_follows2", mock_get_user_follows_non_empty)
+    def test_users_and_game_followed(self, *args, **kwargs):
+        GameFollow.objects.create(
+            following=self.user, followed=self.game, follow_time=timezone.now()
+        )
+        self.c.login(username="test", password="top_secret")
+        response = self.c.get(reverse("clips:new_your_clips"))
+        assert response.status_code == 200
+        assert len(response.context["clips"]) == 1
