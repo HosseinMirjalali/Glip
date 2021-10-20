@@ -178,6 +178,7 @@ class TestClipsForYou(TestCase):
         assert response.status_code == 200
         assert len(response.context["clips"]) == 0
 
+    @tag("client")
     @mock.patch("glip.clips.views.validate_token", mock_validate_token)
     @mock.patch(
         "glip.clips.views.get_new_access_from_refresh", mock_get_new_access_from_refresh
@@ -189,6 +190,7 @@ class TestClipsForYou(TestCase):
         assert response.status_code == 200
         assert len(response.context["clips"]) == 0
 
+    @tag("client")
     @mock.patch("glip.clips.views.validate_token", mock_validate_token)
     @mock.patch(
         "glip.clips.views.get_new_access_from_refresh", mock_get_new_access_from_refresh
@@ -202,3 +204,18 @@ class TestClipsForYou(TestCase):
         response = self.c.get(reverse("clips:new_your_clips"))
         assert response.status_code == 200
         assert len(response.context["clips"]) == 1
+
+    @tag("client")
+    @mock.patch("glip.clips.views.validate_token", mock_validate_token)
+    @mock.patch(
+        "glip.clips.views.get_new_access_from_refresh", mock_get_new_access_from_refresh
+    )
+    @mock.patch("glip.clips.views.get_user_follows2", mock_get_user_follows_empty)
+    def test_game_followed_but_no_user(self, *args, **kwargs):
+        GameFollow.objects.create(
+            following=self.user, followed=self.game, follow_time=timezone.now()
+        )
+        self.c.login(username="test", password="top_secret")
+        response = self.c.get(reverse("clips:new_your_clips"))
+        assert response.status_code == 200
+        assert len(response.context["clips"]) == 0
