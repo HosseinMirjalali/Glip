@@ -55,6 +55,10 @@ def mock_get_new_access_from_refresh(request):
 
 
 class TestClipDetailView(TestCase):
+    """
+    Tests regarding Clips Detail page ( local_clip_detail_page )
+    """
+
     def setUp(self):
         self.factory = RequestFactory()
         self.client = Client
@@ -115,7 +119,7 @@ class TestClipDetailView(TestCase):
     @tag("fast")
     def test_wrong_clip_id(self):
         """
-        Tests that providing a wrong id should result in 404
+        Tests that providing a wrong id results in 404
         """
         request = self.factory.get("/clips/clip")
         view = local_clip_detail_page(request, pk="ObviouslyWrongClipID")
@@ -126,6 +130,10 @@ class TestClipDetailView(TestCase):
 
 
 class TestClipsForYou(TestCase):
+    """
+    Tests regarding ClipsForYou view ( new_your_clips_local )
+    """
+
     def setUp(self):
         self.factory = RequestFactory()
         self.c = Client()
@@ -173,6 +181,12 @@ class TestClipsForYou(TestCase):
     )
     @mock.patch("glip.clips.views.get_user_follows2", mock_get_user_follows_empty)
     def test_no_users_no_games_followed(self, *args, **kwargs):
+        """
+        Tests that view returns no clips when no broadcasters and no games are followed
+        :param args: Mock Patches
+        :param kwargs: Mock Patches
+        :return: None
+        """
         self.c.login(username="test", password="top_secret")
         response = self.c.get(reverse("clips:new_your_clips"))
         assert response.status_code == 200
@@ -197,6 +211,12 @@ class TestClipsForYou(TestCase):
     )
     @mock.patch("glip.clips.views.get_user_follows2", mock_get_user_follows_non_empty)
     def test_users_and_game_followed(self, *args, **kwargs):
+        """
+        Tests that view returns a clip when user has followed broadcasters and games
+        :param args: Mock Patches
+        :param kwargs: Mock Patches
+        :return: None
+        """
         GameFollow.objects.create(
             following=self.user, followed=self.game, follow_time=timezone.now()
         )
@@ -212,6 +232,12 @@ class TestClipsForYou(TestCase):
     )
     @mock.patch("glip.clips.views.get_user_follows2", mock_get_user_follows_empty)
     def test_game_followed_but_no_user(self, *args, **kwargs):
+        """
+        Test that view returns no clips when a game is followed but no broadcaster is followed
+        :param args: Mock Patches
+        :param kwargs: Mock Patches
+        :return: None
+        """
         GameFollow.objects.create(
             following=self.user, followed=self.game, follow_time=timezone.now()
         )
