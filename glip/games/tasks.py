@@ -87,17 +87,17 @@ def save_clips_with_lock(self):
 
 @celery_app.task()
 def get_feed(past_x: int):
-    # Game.objects.all().update(last_queried_clips=datetime.now() - timedelta(minutes=61))
-    # Game.objects.all().update(last_tried_query=datetime.now() - timedelta(minutes=31))
+    # TopGame.objects.all().update(last_queried_clips=datetime.now() - timedelta(minutes=61))
+    # TopGame.objects.all().update(last_tried_query=datetime.now() - timedelta(minutes=31))
     not_updated_games = (
-        Game.objects.filter(last_queried_clips__lt=past_x_hours(past_x))
+        TopGame.objects.filter(last_queried_clips__lt=past_x_hours(past_x))
         .filter(last_tried_query__lt=past_x_minutes(30))
         .order_by("id")[:1]
     )
     not_updated_games_ids = []
     count = 0
     for game in not_updated_games:
-        not_updated_games_ids.append(game.game_id)
+        not_updated_games_ids.append(game.id)
     if len(not_updated_games_ids) > 0:
         for game_id in not_updated_games_ids:
             count += 1
