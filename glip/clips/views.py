@@ -190,6 +190,11 @@ def local_clip_detail_page(request, pk):
     comments = clip.comments.all()
     template_info = f"{clip.title} from {clip.broadcaster_name} playing {clip.game}"
     user_comment = None
+    fav = False
+    if clip.likes.filter(id=request.user.id).exists():
+        fav = True
+    else:
+        fav = False
 
     if request.method == "POST":
         comment_form = NewCommentForm(request.POST)
@@ -210,6 +215,27 @@ def local_clip_detail_page(request, pk):
         "template_info": template_info,
         "user_comment": user_comment,
         "comment_form": comment_form,
+        "fav": fav,
     }
 
     return render(request, template_name, context)
+
+
+@login_required
+def like_clip(request):
+    if request.POST.get("action") == "post":
+        result = ""
+        clip_twitch_id = request.POST.get("clip_id")
+        clip = get_object_or_404(Clip, clip_twitch_id=clip_twitch_id)
+        if clip.likes.filter(id=request.user.id).exists():
+            clip.likes.remove(request.user)
+            clip.like_count -= 1
+            result = clip.like_count
+            clip.save()
+        else:
+            clip.likes.add(request.user)
+            clip.like_count += 1
+            result = clip.like_count
+            clip.save()
+
+        return JsonResponse({"result": result})

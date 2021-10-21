@@ -8,14 +8,48 @@
 {% block content %}
   {% if clip %}
     <br>
-    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half embedDetail">
-      <iframe class="embed-responsive-item"
-              src="{{ clip.embed_url }}&parent=glipsite.com&parent=www.glipsite.com&parent=localhost"
-              allowfullscreen="true" width="100%"></iframe>
+    {#    <button class="btn btn-link border-0 btn-outline-light" id="like-button"#}
+    {#            value="{{ clip.clip_twitch_id }}">#}
+    {#      <i class="far fa-heart" id="like-button-icon"> Favorite</i>#}
+    {#    </button>#}
+    <div class="row align-items-center">
+      <div class="text-center embed-responsive embed-responsive-16by9 z-depth-1-half embedDetail">
+        <iframe class="embed-responsive-item"
+                src="{{ clip.embed_url }}&parent=glipsite.com&parent=www.glipsite.com&parent=localhost"
+                allowfullscreen="true"></iframe>
+      </div>
+    </div>
+
+    <div class="row justify-content-center clip-buttons">
+      {% if request.user.is_authenticated %}
+        <button class="col btn btn-link border-0 btn-outline-light" id="like-button"
+                value="{{ clip.clip_twitch_id }}">
+          <i class="{% if fav %}fas {% else %}far {% endif %}fa-heart"
+             id="like-button-icon"> {{ clip.like_count }}</i>
+        </button>
+      {% else %}
+        <a class="col btn btn-link border-0 btn-outline-light" id="no-login-like-button"
+           href="{% url 'account_login' %}">
+          <i class="far fa-heart" id="like-button-icon"> {{ clip.like_count }}</i>
+        </a>
+      {% endif %}
+
+      <button onclick="copyCurrentPage()" class="col btn btn-link border-0 btn-outline-light" id="share-button">
+        <i class="far fa-share-square" id="share-button-icon"> Copy</i>
+      </button>
+      <a href="https://twitter.com/intent/tweet?text={{ clip.title }} (by {{ clip.broadcaster_name }})
+          glipsite.com{{ request.get_full_path }}"
+         type="button" target="_blank" class="col btn btn-link border-0 btn-outline-light" id="share-twitter-button">
+        <i class="fab fa-twitter" id="share-twitter-button-icon"> Share to Twitter</i>
+      </a>
     </div>
     {% with comments.count as total_comments %}
       <br>
-      <h3 class="text-white">{{ total_comments }} comment{{ total_comments|pluralize }}</h3>
+      <div class="row">
+        <div class="col-sm-6">
+          <h3 class="text-white">{{ total_comments }} comment{{ total_comments|pluralize }}</h3>
+        </div>
+      </div>
     {% endwith %}
 
     {% if request.user.is_authenticated %}
@@ -52,7 +86,7 @@
               <p class="small mb-0 ms-2 commentUser text-dark">{{ comment.user }}</p>
             </div>
             <div class="d-flex flex-row align-items-center">
-              <p class="commentTimestamp small text-muted mb-0">{{ comment.timestamp }}</p>
+              <p class="commentTimestamp small text-muted mb-0">{{ comment.timestamp |timesince }} ago</p>
             </div>
           </div>
         </div>
@@ -89,4 +123,62 @@
       <br><br><br><br><br><br>
     </div>
   {% endif %}
+
+  {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    {% comment %}    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>{% endcomment %}
+    <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
+  {% endblock %}
+
+  <script>
+
+    function copyCurrentPage() {
+      let url = window.location.href;
+      navigator.clipboard.writeText(url);
+      $("#share-button-icon").toggleClass("fas far").text(" Copied");
+      {#$("#share-button-icon")#}
+    }
+
+    $(document).on('click', '#like-button', function (e) {
+      e.preventDefault();
+      $.ajax(
+              {
+                type: "POST",
+                url: "{% url 'clips:like-clip' %}",
+                data: {
+                  clip_id: $("#like-button").val(),
+                  csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+                  action: "post"
+                },
+                success: function (json) {
+                  document.getElementById("like-button-icon").innerHTML = " " + json['result']
+                  let buttonIcon = $("#like-button-icon")
+                  buttonIcon.toggleClass("fas far")
+                  console.log(json)
+                },
+                error: function (xhr, errmsg, err) {
+
+                }
+              });
+    });
+
+
+    $("#like-button").hover(
+            function () {
+              $(".fas, .far", this).toggleClass("fas far");
+            }
+    );
+    {#$("#share-button").hover(#}
+    {#        function () {#}
+    {#          $(".fas, .far", this).toggleClass("fas far");#}
+    {#        }#}
+    {#);#}
+
+
+  </script>
 {% endblock %}

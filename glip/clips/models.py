@@ -24,3 +24,5 @@ class Clip(models.Model):
     created_at = models.DateTimeField()
     thumbnail_url = models.URLField()
     duration = models.CharField(max_length=10)
+    likes = models.ManyToManyField(User, related_name="like", default=None, blank=True)
+    like_count = models.BigIntegerField(default="0")

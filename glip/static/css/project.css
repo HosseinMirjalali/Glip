@@ -127,12 +127,12 @@ input[type="color"]:focus,
 
 .card-comments {
   margin: 5px;
-  color: #A16AE8;
+  color: #BF00FF;
 }
 
 .card-comments:hover, .card-comments:active, .card-comments:focus {
   margin: 5px;
-  color: #A16AE8;
+  color: #BF00FF;
 }
 
 .card-followslist {
@@ -473,4 +473,22 @@ a.effect-underline:hover:after {
   /*background: rgb(2, 0, 36);*/
   /*background: linear-gradient(180deg, rgba(2, 0, 36, 1) 16%, rgba(106, 90, 205, 1) 79%, rgba(161, 106, 232, 1) 100%);*/
   bottom: 0;
+}
+
+#like-button, #share-button, #no-login-like-button {
+  color: #BF00FF;
+}
+
+#like-button:hover, #like-button:active, #like-button:after,
+#share-button:hover, #share-button:active, #share-button:after,
+#share-twitter-button:hover, #share-twitter-button:active, #share-twitter-button:after,
+#no-login-like-button:hover, #no-login-like-button:active, #no-login-like-button:after {
+  background-color: #212529;
+}
+
+.clip-buttons {
+  /*display: block;*/
+  /*margin-left: auto;*/
+  /*margin-right: auto;*/
+  margin-top: 10px;
 }
