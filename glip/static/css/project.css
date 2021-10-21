@@ -127,12 +127,12 @@ input[type="color"]:focus,
 
 .card-comments {
   margin: 5px;
-  color: #A16AE8;
+  color: #BF00FF;
 }
 
 .card-comments:hover, .card-comments:active, .card-comments:focus {
   margin: 5px;
-  color: #A16AE8;
+  color: #BF00FF;
 }
 
 .card-followslist {
