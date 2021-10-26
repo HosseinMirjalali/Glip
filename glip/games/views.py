@@ -113,6 +113,7 @@ def local_game_clip_view(request):
     clips = (
         Clip.objects.filter(game__name=game_name)
         .filter(created_at__range=[start, end])
+        .exclude(disabled=True)
         .order_by("-twitch_view_count")[:100]
     )
     context = {"clips": clips, "template_info": template_info}
@@ -130,6 +131,7 @@ def local_game_clip_view_new(request, pk):
     clips = (
         Clip.objects.filter(game__game_id=pk)
         .filter(created_at__range=[start, end])
+        .exclude(disabled=True)
         .order_by("-twitch_view_count")[:100]
     )
     context = {"clips": clips, "template_info": template_info}

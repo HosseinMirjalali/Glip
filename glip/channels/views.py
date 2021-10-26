@@ -87,7 +87,7 @@ def clip_page(request):
     return render(request, template_name, context)
 
 
-def local_game_clip_view(request):
+def local_broadcaster_clip_view(request):
     template_name = "pages/new_clip.html"
     broadcaster_name = request.GET.get("channel")
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@")
@@ -98,6 +98,7 @@ def local_game_clip_view(request):
     clips = (
         Clip.objects.filter(broadcaster_name__iexact=broadcaster_name)
         .filter(created_at__range=[start, end])
+        .exclude(disabled=True)
         .order_by("-twitch_view_count")[:100]
     )
     context = {"clips": clips, "template_info": template_info}

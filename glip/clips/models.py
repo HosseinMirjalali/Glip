@@ -26,3 +26,4 @@ class Clip(models.Model):
     duration = models.CharField(max_length=10)
     likes = models.ManyToManyField(User, related_name="like", default=None, blank=True)
     like_count = models.BigIntegerField(default="0")
+    disabled = models.BooleanField(default=False)

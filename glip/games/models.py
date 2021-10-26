@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -8,8 +9,10 @@ class Game(models.Model):
     game_id = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     box_art_url = models.TextField()
-    last_queried_clips = models.DateTimeField(blank=True, null=True)
-    last_tried_query = models.DateTimeField(blank=True, null=True)
+    last_queried_clips = models.DateTimeField(
+        blank=True, null=True, default=timezone.now
+    )
+    last_tried_query = models.DateTimeField(blank=True, null=True, default=timezone.now)
 
     def __str__(self):
         return f"{self.name}"
@@ -40,3 +43,7 @@ class TopGame(models.Model):
     name = models.CharField(max_length=255)
     box_art_url = models.TextField()
     order = models.BigIntegerField(blank=True, null=True)
+    last_queried_clips = models.DateTimeField(
+        blank=True, null=True, default=timezone.now
+    )
+    last_tried_query = models.DateTimeField(blank=True, null=True, default=timezone.now)
