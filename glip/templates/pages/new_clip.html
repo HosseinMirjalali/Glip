@@ -12,7 +12,7 @@
 </style>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5714575909415775"
-     crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
 
 {% block content %}
   {% if clips %}
@@ -42,15 +42,17 @@
             <div href="#"
                  style="position: absolute; bottom: 75px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
                  class="font-weight-bold card-my-div">{{ clip.broadcaster_name }}</div>
-            <div style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
-                 class="text-wrapper">
+            <div
+              style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
+              class="text-wrapper">
               <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem">
                 0:{{ clip.duration }}</p>
             </div>
-            <div style="position: absolute; top: 8px; left: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
-                 class="text-wrapper">
+            <div
+              style="position: absolute; top: 8px; left: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
+              class="text-wrapper">
               <p class="card-text font-weight-bold" style="padding: 0px 5px; font-size: 0.9rem"><i
-                      class="fas fa-eye"></i>
+                class="fas fa-eye"></i>
                 {{ clip.twitch_view_count }}</p>
             </div>
             <h5 style="position: absolute; bottom: 40px; left: 9px; font-size: 0.9rem; max-width: 95%;"
@@ -87,8 +89,9 @@
           <div class="modal-footer justify-content-center text-white">
             <span class="mr-4">Share my website with your friends</span>
             <!--Twitter-->
-            <a href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
-               type="button" target="_blank" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+            <a
+              href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
+              type="button" target="_blank" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
             {% comment %}<!--Google +-->
             <a type="button" class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus-g"></i></a>
             <!--Linkedin-->
@@ -125,6 +128,8 @@
               integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
               crossorigin="anonymous"></script>
       <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5714575909415775"
+              crossorigin="anonymous"></script>
     {% endblock %}
     <script>
       //FUNCTION TO GET AND OPEN TWITCH EMBED CLIP
@@ -132,8 +137,8 @@
         var trigger = $("body").find('[data-toggle="modal"]');
         trigger.click(function () {
           var theModal = $(this).data("target"),
-                  videoSRC = $(this).attr("data-theVideo"),
-                  videoSRCauto = videoSRC + "";
+            videoSRC = $(this).attr("data-theVideo"),
+            videoSRCauto = videoSRC + "";
           $(theModal + ' iframe').attr('src', videoSRCauto);
           $(theModal + ' button.close').click(function () {
             $(theModal + ' iframe').attr('src', videoSRC);
@@ -239,8 +244,8 @@
       <br>
       <p>You have not followed enough streamers on <a href="https://www.twitch.tv/"
                                                       class="lead text-decoration-none twitchLink">Twitch</a> and/or <a
-              href="{% url 'games:games' %}"
-              class="lead text-decoration-none">Games</a> on Glip.</p>
+        href="{% url 'games:games' %}"
+        class="lead text-decoration-none">Games</a> on Glip.</p>
       <br>
       <p></p>
     </div>
