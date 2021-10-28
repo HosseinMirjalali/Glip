@@ -62,6 +62,7 @@ def get_and_save_games_clips(game_id):
                 created_at=c["created_at"],
                 thumbnail_url=c["thumbnail_url"],
                 duration=c["duration"],
+                disabled=False,
             )
             for c in clips
         ]
