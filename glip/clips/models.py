@@ -20,10 +20,12 @@ class Clip(models.Model):
     language = models.CharField(max_length=5)
     title = models.CharField(max_length=255)
     twitch_view_count = models.DecimalField(max_digits=10, decimal_places=0)
-    glip_view_count = models.CharField(max_length=15, blank=True, null=True)
-    created_at = models.DateTimeField()
+    glip_view_count = models.CharField(
+        max_length=15, blank=True, null=True, db_index=True
+    )
+    created_at = models.DateTimeField(db_index=True)
     thumbnail_url = models.URLField()
     duration = models.CharField(max_length=10)
     likes = models.ManyToManyField(User, related_name="like", default=None, blank=True)
     like_count = models.BigIntegerField(default="0")
-    disabled = models.BooleanField(default=False)
+    disabled = models.BooleanField(default=False, db_index=True)
