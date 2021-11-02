@@ -89,6 +89,8 @@ class TestClipDetailView(TestCase):
             created_at=timezone.now(),
             thumbnail_url="https://clips-media-assets2.twitch.tv/AT-cm%7CHSCQyY59sYdqFvjRu4CUHQ-preview-480x272.jpg",
             duration="17.3",
+            like_count=0,
+            disabled=False,
         )
 
     @pytest.mark.factory
@@ -164,6 +166,8 @@ class TestClipsForYou(TestCase):
             created_at=timezone.now(),
             thumbnail_url="https://clips-media-assets2.twitch.tv/AT-cm%7CHSCQyY59sYdqFvjRu4CUHQ-preview-480x272.jpg",
             duration="17.3",
+            like_count=0,
+            disabled=False,
         )
         self.social_account = SocialAccount.objects.create(
             user=self.user, provider="twitch"
@@ -282,6 +286,8 @@ class TestFeedView(TestCase):
             created_at=timezone.now(),
             thumbnail_url="https://clips-media-assets2.twitch.tv/AT-cm%7CHSCQyY59sYdqFvjRu4CUHQ-preview-480x272.jpg",
             duration="17.3",
+            like_count=0,
+            disabled=False,
         )
         self.clip_old = Clip.objects.create(
             clip_twitch_id="2ZealousVictoriousSamosaPlanking-jn2xh2oW-NG7gJQd",
@@ -301,6 +307,8 @@ class TestFeedView(TestCase):
             created_at=timezone.now() - timezone.timedelta(weeks=2),
             thumbnail_url="https://clips-media-assets2.twitch.tv/AT-cm%7CHSCQyY59sYdqFvjRu4CUHQ-preview-480x272.jpg",
             duration="17.3",
+            like_count=0,
+            disabled=False,
         )
         self.social_account = SocialAccount.objects.create(
             user=self.user, provider="twitch"

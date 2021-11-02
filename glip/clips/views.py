@@ -201,9 +201,14 @@ def local_clip_detail_page(request, pk):
     template_info = f"{clip.title} from {clip.broadcaster_name} playing {clip.game}"
     user_comment = None
     fav = False
-    if clip.likes.filter(id=request.user.id).exists():
-        fav = True
-    else:
+
+    try:
+        user_id = request.user.id
+        if clip.likes.filter(user_id).exists():
+            fav = True
+        else:
+            fav = False
+    except AttributeError:
         fav = False
 
     if request.method == "POST":
