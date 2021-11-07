@@ -73,6 +73,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "cachalot",
 ]
 
 LOCAL_APPS = [

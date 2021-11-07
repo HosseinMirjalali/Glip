@@ -11,7 +11,6 @@ from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import View
-from django.views.decorators.cache import cache_page
 from requests_futures.sessions import FuturesSession
 
 from glip.clips.models import Clip
@@ -28,6 +27,8 @@ from glip.users.utils import (
     validate_token,
 )
 from glip.users.views import get_new_access_from_refresh
+
+# from django.views.decorators.cache import cache_page
 
 env = environ.Env()
 
@@ -113,7 +114,7 @@ def new_your_clips_local(request):
     return render(request, template_name, context)
 
 
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 def feed_view(request):
     template_name = "pages/homepage.html"
     template_info = "Most watched clips of the past 24 hours"
