@@ -205,7 +205,7 @@ def local_clip_detail_page(request, pk):
 
     try:
         user_id = request.user.id
-        if clip.likes.filter(user_id).exists():
+        if clip.likes.filter(id=user_id).exists():
             fav = True
         else:
             fav = False
