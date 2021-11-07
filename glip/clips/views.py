@@ -6,12 +6,11 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import View
-from django.views.decorators.cache import cache_page
 from requests_futures.sessions import FuturesSession
 
 from glip.clips.models import Clip
@@ -28,6 +27,8 @@ from glip.users.utils import (
     validate_token,
 )
 from glip.users.views import get_new_access_from_refresh
+
+# from django.views.decorators.cache import cache_page
 
 env = environ.Env()
 
@@ -113,7 +114,7 @@ def new_your_clips_local(request):
     return render(request, template_name, context)
 
 
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 def feed_view(request):
     template_name = "pages/homepage.html"
     template_info = "Most watched clips of the past 24 hours"
@@ -190,14 +191,25 @@ clips_json = ClipsJsonListView.as_view()
 
 def local_clip_detail_page(request, pk):
     template_name = "pages/clip_detail.html"
-    clip = get_object_or_404(Clip, clip_twitch_id=pk)
+    try:
+        clip = get_object_or_404(Clip, clip_twitch_id=pk)
+    except Http404:
+        response = render(request, template_name)
+        response.status_code = 404
+        return response
+
     comments = clip.comments.all()
     template_info = f"{clip.title} from {clip.broadcaster_name} playing {clip.game}"
     user_comment = None
     fav = False
-    if clip.likes.filter(id=request.user.id).exists():
-        fav = True
-    else:
+
+    try:
+        user_id = request.user.id
+        if clip.likes.filter(user_id).exists():
+            fav = True
+        else:
+            fav = False
+    except AttributeError:
         fav = False
 
     if request.method == "POST":
@@ -208,8 +220,7 @@ def local_clip_detail_page(request, pk):
             user_comment.user = request.user
             user_comment.save()
             clip_detail_url = reverse("clips:clip_detail", args=[pk])
-            clip_url = clip_detail_url
-            return HttpResponseRedirect(clip_url)
+            return HttpResponseRedirect(clip_detail_url)
     else:
         comment_form = NewCommentForm()
 
