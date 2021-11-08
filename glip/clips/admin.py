@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from glip.clips.models import Clip
+from glip.clips.models import Clip, TopClip
 
 
 class ClipAdmin(admin.ModelAdmin):
@@ -12,4 +12,9 @@ class ClipAdmin(admin.ModelAdmin):
     search_fields = ["game__name", "twitch_game_id", "clip_twitch_id"]
 
 
+class TopClipAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Clip, ClipAdmin)
+admin.site.register(TopClip, TopClipAdmin)

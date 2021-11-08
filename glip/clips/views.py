@@ -13,7 +13,7 @@ from django.urls import reverse
 from django.views import View
 from requests_futures.sessions import FuturesSession
 
-from glip.clips.models import Clip
+from glip.clips.models import Clip, TopClip
 from glip.comments.forms import NewCommentForm
 from glip.games.models import GameFollow
 from glip.users.utils import (
@@ -118,19 +118,20 @@ def new_your_clips_local(request):
 def feed_view(request):
     template_name = "pages/homepage.html"
     template_info = "Most watched clips of the past 24 hours"
-    start = datetime.now() - timedelta(hours=24)
-    end = datetime.now()
-    # clips = Clip.objects.filter(created_at__range=[start, end]).order_by(
-    #     "-twitch_view_count"
-    # )[:100]
-    # clips = Clip.objects.all().annotate(comment_count=Count('comments'),
-    #                                     filter=Q(created_at__range=[start, end])).order_by("-twitch_view_count")[:100]
-    clips = (
-        Clip.objects.filter(created_at__range=[start, end])
-        .annotate(comment_count=Count("comments"))
-        .exclude(disabled=True)
-        .order_by("-twitch_view_count")[:100]
+    # clips = (
+    #     Clip.objects.filter(created_at__range=[start, end])
+    #     .annotate(comment_count=Count("comments"))
+    #     .exclude(disabled=True)
+    #     .order_by("-twitch_view_count")[:100]
+    # )
+    clips = []
+    top_clips = (
+        TopClip.objects.all()
+        .select_related("clip")
+        .order_by("-clip__twitch_view_count")[:100]
     )
+    for clip in top_clips:
+        clips.append(clip.clip)
     context = {"clips": clips, "template_info": template_info}
 
     return render(request, template_name, context)
