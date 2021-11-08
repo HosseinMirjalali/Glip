@@ -5,9 +5,11 @@ from hashlib import md5
 import environ
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.db.models import Count
 from future.backports.datetime import datetime, timedelta
 
 from config import celery_app
+from glip.clips.models import Clip, TopClip
 from glip.games.models import Game, TopGame
 from glip.games.utils import get_all_top_games, get_and_save_games_clips
 
@@ -98,11 +100,7 @@ def get_feed(past_x: int):
     top_games_ids = []
     for game in top_games:
         top_games_ids.append(game.id)
-
     not_updated_games_ids = []
-    # count = 0
-    print("!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(not_updated_games)
     for game in not_updated_games:
         not_updated_games_ids.append(game.game_id)
     if len(not_updated_games_ids) > 0:
@@ -110,9 +108,6 @@ def get_feed(past_x: int):
             if game_id in top_games_ids:
                 get_and_save_games_clips(game_id)
                 break
-                # count += 1
-                # if count >= 1:
-                #     break
     return True
 
 
@@ -168,3 +163,21 @@ def get_feed_from_last(past_x: int):
             if count >= 1:
                 break
     return True
+
+
+@celery_app.task()
+def add_top_clips_to_TopClip_model():
+    TopClip.objects.all().delete()
+    start = datetime.now() - timedelta(hours=24)
+    end = datetime.now()
+    top_clips = (
+        Clip.objects.filter(created_at__range=[start, end])
+        .annotate(comment_count=Count("comments"))
+        .exclude(disabled=True)
+        .order_by("-twitch_view_count")[:5000]
+    )
+    objs = []
+    for clip in top_clips:
+        objs.append(TopClip(clip=clip))
+
+    TopClip.objects.bulk_create(objs, ignore_conflicts=True)

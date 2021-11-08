@@ -33,3 +33,10 @@ class Clip(models.Model):
     likes = models.ManyToManyField(User, related_name="like", default=None, blank=True)
     like_count = models.BigIntegerField(default="0")
     disabled = models.BooleanField(default=False, db_index=True)
+
+
+class TopClip(models.Model):
+    clip = models.OneToOneField(Clip, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return "%s" % self.clip.clip_twitch_id
