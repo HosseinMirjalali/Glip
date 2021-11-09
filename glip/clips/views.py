@@ -128,10 +128,18 @@ def feed_view(request):
     top_clips = (
         TopClip.objects.all()
         .select_related("clip")
+        .annotate(comment_count=Count("clip__comments"))
+        .annotate(likes_count=Count("clip__likes"))
         .order_by("-clip__twitch_view_count")[:100]
     )
-    for clip in top_clips:
-        clips.append(clip.clip)
+    # for clip in top_clips:
+    #     clips.append(clip.clip)
+
+    for top_clip in top_clips:
+        clip = top_clip.clip
+        clip.comment_count = top_clip.comment_count
+        clip.likes_count = top_clip.likes_count
+        clips.append(clip)
     context = {"clips": clips, "template_info": template_info}
 
     return render(request, template_name, context)
