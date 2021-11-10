@@ -56,7 +56,7 @@
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
             <div class="row">
               <a class="col text-wrap fs-6 text-decoration-none card-comments"
-                 href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}">
+                 href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}" data-toggle="tooltip" data-placement="top" title="See comments and download Twitch clip">
                 <i class="far fa-comment-alt"></i>
                 {{ clip.comment_count }} comment{{ clip.comment_count|pluralize }}
               </a>
