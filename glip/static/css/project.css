@@ -475,13 +475,14 @@ a.effect-underline:hover:after {
   bottom: 0;
 }
 
-#like-button, #share-button, #no-login-like-button {
+#like-button, #share-button, #no-login-like-button, #download-button {
   color: #BF00FF;
 }
 
 #like-button:hover, #like-button:active, #like-button:after,
 #share-button:hover, #share-button:active, #share-button:after,
 #share-twitter-button:hover, #share-twitter-button:active, #share-twitter-button:after,
+#download-button:hover, #download-button:active, #download-button:after,
 #no-login-like-button:hover, #no-login-like-button:active, #no-login-like-button:after {
   background-color: #212529;
 }

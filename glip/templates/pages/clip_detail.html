@@ -34,6 +34,11 @@
         </a>
       {% endif %}
 
+      <a class="col btn btn-link border-0 btn-outline-light" id="download-button"
+              href="{% url 'clips:download-clip' pk=clip.clip_twitch_id %}">
+        <i class="fas fa-download"> Download</i>
+      </a>
+
       <button onclick="copyCurrentPage()" class="col btn btn-link border-0 btn-outline-light" id="share-button">
         <i class="far fa-share-square" id="share-button-icon"> Copy</i>
       </button>
@@ -77,11 +82,11 @@
           <div class="d-flex justify-content-between">
             <div class="d-flex flex-row align-items-center">
               <img
-                      class="commentUserAvatar"
-                      src="{{ comment.user.socialaccount_set.all.0.get_avatar_url }}"
-                      alt="avatar"
-                      width="25"
-                      height="25"
+                class="commentUserAvatar"
+                src="{{ comment.user.socialaccount_set.all.0.get_avatar_url }}"
+                alt="avatar"
+                width="25"
+                height="25"
               />
               <p class="small mb-0 ms-2 commentUser text-dark">{{ comment.user }}</p>
             </div>
@@ -147,31 +152,31 @@
     $(document).on('click', '#like-button', function (e) {
       e.preventDefault();
       $.ajax(
-              {
-                type: "POST",
-                url: "{% url 'clips:like-clip' %}",
-                data: {
-                  clip_id: $("#like-button").val(),
-                  csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
-                  action: "post"
-                },
-                success: function (json) {
-                  document.getElementById("like-button-icon").innerHTML = " " + json['result']
-                  let buttonIcon = $("#like-button-icon")
-                  buttonIcon.toggleClass("fas far")
-                  console.log(json)
-                },
-                error: function (xhr, errmsg, err) {
+        {
+          type: "POST",
+          url: "{% url 'clips:like-clip' %}",
+          data: {
+            clip_id: $("#like-button").val(),
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+            action: "post"
+          },
+          success: function (json) {
+            document.getElementById("like-button-icon").innerHTML = " " + json['result']
+            let buttonIcon = $("#like-button-icon")
+            buttonIcon.toggleClass("fas far")
+            console.log(json)
+          },
+          error: function (xhr, errmsg, err) {
 
-                }
-              });
+          }
+        });
     });
 
 
     $("#like-button").hover(
-            function () {
-              $(".fas, .far", this).toggleClass("fas far");
-            }
+      function () {
+        $(".fas, .far", this).toggleClass("fas far");
+      }
     );
     {#$("#share-button").hover(#}
     {#        function () {#}

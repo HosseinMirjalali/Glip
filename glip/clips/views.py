@@ -1,12 +1,14 @@
+import os
 from concurrent.futures import as_completed
 from datetime import datetime, timedelta
 
 import environ
+import youtube_dl
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -27,8 +29,6 @@ from glip.users.utils import (
     validate_token,
 )
 from glip.users.views import get_new_access_from_refresh
-
-# from django.views.decorators.cache import cache_page
 
 env = environ.Env()
 
@@ -263,3 +263,35 @@ def like_clip(request):
             clip.save()
 
         return JsonResponse({"result": result})
+
+
+@login_required
+def download_clip(request, pk):
+    ydl_opts = {"outtmpl": f"{pk}.mp4"}
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([f"https://clips.twitch.tv/{pk}"])
+
+    path = f"{pk}.mp4"
+    file_path = os.path.join(path)
+    if os.path.exists(file_path):
+        with open(file_path, "rb") as fh:
+            response = HttpResponse(
+                fh.read(), content_type="application/force-download"
+            )
+            response["Content-Disposition"] = "inline; filename=" + os.path.basename(
+                file_path
+            )
+            os.remove(file_path)
+            return response
+    raise Http404
+
+    # ydl_opts = {
+    #     'outtmpl': '-'
+    # }
+    # with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+    #     sys.stdout = open('file', 'w')
+    #     process = Popen(ydl.download([f"https://clips.twitch.tv/{pk}"]), stdout=PIPE)
+    #     # response = FileResponse(process.stdout)
+    #     response = StreamingHttpResponse(process.stdout)
+    #     # file = ydl.download([f"https://clips.twitch.tv/{pk}"])
+    #     return response
