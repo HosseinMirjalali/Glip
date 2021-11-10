@@ -10,7 +10,7 @@ from django.views import View
 
 from glip.clips.models import Clip
 from glip.games.models import Game, GameFollow, TopGame
-from glip.users.utils import get_clips_by_game, get_token, get_top_games
+from glip.users.utils import get_clips_by_game, get_token
 
 env = environ.Env()
 
@@ -30,7 +30,7 @@ class GamesListView(LoginRequiredMixin, View):
         Gets list of top 200 games on twitch
         """
         template_name = "pages/games.html"
-        games = get_top_games(request)
+        games = TopGame.objects.all().values()
         followed_games = GameFollow.objects.filter(following=request.user).values_list(
             "followed__game_id", flat=True
         )

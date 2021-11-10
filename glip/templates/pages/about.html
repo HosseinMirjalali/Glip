@@ -32,9 +32,11 @@
   <section class="py-5">
     <div class="container">
       <h2 class="font-weight-light">Twitch login process</h2>
-      <p>You login on Twitch website and your credentials are handled by Twitch, not this website. Once you successfully
-        log in on Twitch, I will receive from
-        Twitch, your username (your public name), your email, and your avatar. They all can be seen on My Profile after
+      <p>You login on Twitch and your credentials are handled by Twitch, not this website. Once you
+        successfully
+        log in on Twitch, I will only receive the email address you've signed up with. Your information can be seen
+        on My Profile
+        after
         you log in.
         Please, make sure you are in Twitch's website when you are logging in, by checking the url
         (https://www.twitch.tv/ or https://id.twitch.tv/)
@@ -59,8 +61,8 @@
         given me, the ones whose streams you follow. As an example, you follow Shroud, XQC, and Asmongold, and you have
         followed Valorant, Just Chatting, and World of Warcraft on <a href="{% url 'games:games' %}"
                                                                       class="lead">Games</a> on Glip. In <a
-              href="{% url 'clips:your_clips' %}"
-              class="lead">Clips For You</a>
+        href="{% url 'clips:your_clips' %}"
+        class="lead">Clips For You</a>
         , you will only see Shroud, XQC, and Asmongold's clips if they're among the top X clips of aforementioned games.
       </p>
       <hr>
@@ -72,7 +74,7 @@
         anyone who can use Twitch API. The more streamers you follow, the more clips you see in
         <a href="{% url 'clips:your_clips' %}" class="lead">Clips For You</a>.
         You can watch their top clips (up to 100) from the past 24 hours by clicking on <span
-              class="fas fa-film followslist-icon-film"></span> icon.
+        class="fas fa-film followslist-icon-film"></span> icon.
         You will see a <span class="liveDot">Live</span> icon if the streamer is online, and by clicking on that
         or <i class="fab fa-twitch followslist-icon-twitch"></i> icon, you will be redirected to their Twitch page.
       </p>
@@ -85,7 +87,7 @@
         to see the clips of that game in <a href="{% url 'clips:your_clips' %}" class="lead">Clips For You</a>. If at
         any point, you don't want to see that game's clips anymore, you can always unfollow them.
         You can watch each game's top 100 clips from the past 24 hours by clicking on <span
-              class="fas fa-film followslist-icon-film"></span> icon.
+        class="fas fa-film followslist-icon-film"></span> icon.
         Also, by clicking on <i class="fab fa-twitch followslist-icon-twitch"></i> icon, you will be redirected to that
         game's Twitch page.
       </p>

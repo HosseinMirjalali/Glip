@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Top Games on Twitch{% endblock %}
-{#{% load clips_filters %}#}
 {% block content %}
 
   <style>
@@ -44,8 +43,8 @@
     }
 
     .text-center {
-      margin-top: 20px;
-      margin-bottom: 20px;
+      {#margin-top: 20px;#}
+      {#margin-bottom: 20px;#}
       color: #FFFFFF;
     }
 
@@ -92,7 +91,7 @@
   {% if games %}
 
     <div class="masthead">
-      <hr>
+      <br>
       <p class="text-center">Top {{ games|length }} games by viewer count</p>
       <div class="d-flex justify-content-center">
         <div class="row pb-4">
