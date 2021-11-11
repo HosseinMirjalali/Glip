@@ -133,7 +133,9 @@ def local_game_clip_view_new(request, pk):
         Clip.objects.filter(game__game_id=pk)
         .filter(created_at__range=[start, end])
         .exclude(disabled=True)
-        .annotate(fav=Exists(User.objects.filter(like=OuterRef("pk"))))
+        .annotate(
+            fav=Exists(User.objects.filter(like=OuterRef("pk"), id=request.user.id))
+        )
         .annotate(comment_count=Count("comments"))
         .annotate(likes_count=Count("likes"))
         .order_by("-twitch_view_count")[:100]

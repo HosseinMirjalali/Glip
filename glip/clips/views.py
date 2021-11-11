@@ -130,7 +130,9 @@ def feed_view(request):
         .select_related("clip")
         .annotate(comment_count=Count("clip__comments"))
         .annotate(likes_count=Count("clip__likes"))
-        .annotate(fav=Exists(User.objects.filter(like=OuterRef("pk"))))
+        .annotate(
+            fav=Exists(User.objects.filter(like=OuterRef("pk"), id=request.user.id))
+        )
         .order_by("-clip__twitch_view_count")[:100]
     )
 
