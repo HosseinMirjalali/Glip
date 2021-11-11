@@ -107,6 +107,11 @@ def new_your_clips_local(request):
         Clip.objects.filter(twitch_game_id__in=games_id_dic)
         .filter(broadcaster_id__in=user_channel_follows_id)
         .filter(created_at__range=[start, end])
+        .annotate(
+            fav=Exists(User.objects.filter(like=OuterRef("pk"), id=request.user.id))
+        )
+        .annotate(comment_count=Count("comments"))
+        .annotate(likes_count=Count("likes"))
         .exclude(disabled=True)
         .annotate(comment_count=Count("comments"))
     )
