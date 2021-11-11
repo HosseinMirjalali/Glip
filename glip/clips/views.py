@@ -7,7 +7,7 @@ import youtube_dl
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count
+from django.db.models import Count, Exists, OuterRef
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -130,15 +130,15 @@ def feed_view(request):
         .select_related("clip")
         .annotate(comment_count=Count("clip__comments"))
         .annotate(likes_count=Count("clip__likes"))
+        .annotate(fav=Exists(User.objects.filter(like=OuterRef("pk"))))
         .order_by("-clip__twitch_view_count")[:100]
     )
-    # for clip in top_clips:
-    #     clips.append(clip.clip)
 
     for top_clip in top_clips:
         clip = top_clip.clip
         clip.comment_count = top_clip.comment_count
         clip.likes_count = top_clip.likes_count
+        clip.fav = top_clip.fav
         clips.append(clip)
     context = {"clips": clips, "template_info": template_info}
 

@@ -32,7 +32,7 @@
     <div class="card-group justify-content-center" id="cardGroup">
       {% for clip in clips|dictsortreversed:"twitch_view_count" %}
         <div class="clip-card " style="padding: 10px">
-
+          {% csrf_token %}
           <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem;">
             <img loading=lazy class="card-img-top clip-card-img" src="{{ clip.thumbnail_url }}" alt=""
                  style="opacity: 0.5; height: 100%;" data-toggle="modal"
@@ -57,11 +57,23 @@
             </div>
             <h5 style="position: absolute; bottom: 40px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
-            <a class="text-wrap fs-6 text-decoration-none card-comments"
-               href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}" data-toggle="tooltip" data-placement="top" title="See comments and download Twitch clip">
-              <i class="far fa-comment-alt"></i>
-              {{ clip.comment_count }} comment{{ clip.comment_count|pluralize }}
-            </a>
+            <div class="row">
+              <a class="col text-wrap fs-6 text-decoration-none card-comments"
+                 href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}" data-toggle="tooltip" data-placement="top"
+                 title="See comments and download Twitch clip">
+                <i class="far fa-comment-alt"></i>
+                {{ clip.comment_count }} comment{{ clip.comment_count|pluralize }}
+              </a>
+              <div class="col-4">
+                <button class="btn btn-link {% if not request.user.is_authenticated %}disabled{% endif %}
+                border-0 btn-outline-light overflow-hidden"
+                        id="like-button"
+                        value="{{ clip.clip_twitch_id }}">
+                  <i class="{% if clip.fav %}fas {% else %}far {% endif %}fa-heart"
+                     id="{{ clip.clip_twitch_id }}"> {{ clip.likes_count }}</i>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       {% endfor %}
@@ -153,6 +165,31 @@
 
       $(document).ready(function () {
         autoPlayTwitchModal();
+      });
+
+      $(document).on('click', '#like-button', function (e) {
+        e.preventDefault();
+        let clip_id = $(this).val()
+        let sharp = "#"
+        $.ajax(
+          {
+            type: "POST",
+            url: "{% url 'clips:like-clip' %}",
+            data: {
+              clip_id: $(this).val(),
+              csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+              action: "post"
+            },
+            success: function (json) {
+              document.getElementById(clip_id).innerHTML = " " + json['result']
+            let buttonIcon = $("#".concat(clip_id))
+            buttonIcon.toggleClass("fas far")
+            console.log(json)
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+          });
       });
 
       $(function () {
