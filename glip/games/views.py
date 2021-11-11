@@ -4,6 +4,7 @@ import environ
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count, Exists, OuterRef
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
@@ -132,6 +133,11 @@ def local_game_clip_view_new(request, pk):
         Clip.objects.filter(game__game_id=pk)
         .filter(created_at__range=[start, end])
         .exclude(disabled=True)
+        .annotate(
+            fav=Exists(User.objects.filter(like=OuterRef("pk"), id=request.user.id))
+        )
+        .annotate(comment_count=Count("comments"))
+        .annotate(likes_count=Count("likes"))
         .order_by("-twitch_view_count")[:100]
     )
     context = {"clips": clips, "template_info": template_info}

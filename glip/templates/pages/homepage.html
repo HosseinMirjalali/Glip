@@ -41,30 +41,37 @@
             <div href="#"
                  style="position: absolute; bottom: 75px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
                  class="font-weight-bold card-my-div">{{ clip.broadcaster_name }}</div>
-            <div style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
-                 class="text-wrapper">
+            <div
+              style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
+              class="text-wrapper">
               <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem">
                 0:{{ clip.duration }}</p>
             </div>
-            <div style="position: absolute; top: 8px; left: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
-                 class="text-wrapper">
+            <div
+              style="position: absolute; top: 8px; left: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
+              class="text-wrapper">
               <p class="card-text font-weight-bold" style="padding: 0px 5px; font-size: 0.9rem"><i
-                      class="fas fa-eye"></i>
+                class="fas fa-eye"></i>
                 {{ clip.twitch_view_count }}</p>
             </div>
             <h5 style="position: absolute; bottom: 40px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
             <div class="row">
               <a class="col text-wrap fs-6 text-decoration-none card-comments"
-                 href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}" data-toggle="tooltip" data-placement="top" title="See comments and download Twitch clip">
+                 href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}" data-toggle="tooltip" data-placement="top"
+                 title="See comments and download Twitch clip">
                 <i class="far fa-comment-alt"></i>
                 {{ clip.comment_count }} comment{{ clip.comment_count|pluralize }}
               </a>
               <div class="col-4">
-                <button class="btn btn-link disabled border-0 btn-outline-light overflow-hidden" id="like-button"
+                {% csrf_token %}
+                <button class="btn btn-link {% if not request.user.is_authenticated %}
+                  disabled
+                {% endif %}  border-0 btn-outline-light overflow-hidden" id="like-button"
                         value="{{ clip.clip_twitch_id }}">
-                  <i class="{% if fav %}fas {% else %}far {% endif %}fa-heart"
-                     id="like-button-icon"> {{ clip.likes_count }}</i>
+
+                  <i class="{% if clip.fav %}fas {% else %}far {% endif %}fa-heart"
+                     id="{{ clip.clip_twitch_id }}"> {{ clip.likes_count }}</i>
                 </button>
               </div>
             </div>
@@ -99,10 +106,10 @@
             <span class="mr-4">Share my website with your friends</span>
             <!--Twitter-->
             <a
-                    target="_blank"
-                    class="btn btn-outline-light btn-floating m-1"
-                    href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
-                    role="button"
+              target="_blank"
+              class="btn btn-outline-light btn-floating m-1"
+              href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
+              role="button"
             ><i class="fab fa-twitter"></i></a>
             {% comment %}<a href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
                type="button" target="_blank" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>{% endcomment %}
@@ -152,6 +159,31 @@
         }
       });
 
+
+      $(document).on('click', '#like-button', function (e) {
+        e.preventDefault();
+        let clip_id = $(this).val()
+        let sharp = "#"
+        $.ajax(
+          {
+            type: "POST",
+            url: "{% url 'clips:like-clip' %}",
+            data: {
+              clip_id: $(this).val(),
+              csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+              action: "post"
+            },
+            success: function (json) {
+              document.getElementById(clip_id).innerHTML = " " + json['result']
+              let buttonIcon = $("#".concat(clip_id))
+              buttonIcon.toggleClass("fas far")
+              console.log(json)
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+          });
+      });
 
       {% comment %}
       """ Commented the fetch and add new cards function """
@@ -220,8 +252,8 @@
         var trigger = $("body").find('[data-toggle="modal"]');
         trigger.click(function () {
           var theModal = $(this).data("target"),
-                  videoSRC = $(this).attr("data-theVideo"),
-                  videoSRCauto = videoSRC + "";
+            videoSRC = $(this).attr("data-theVideo"),
+            videoSRCauto = videoSRC + "";
           $(theModal + ' iframe').attr('src', videoSRCauto);
           $(theModal + ' button.close').click(function () {
             $(theModal + ' iframe').attr('src', videoSRC);
@@ -322,8 +354,8 @@
       <br>
       <p>You have not followed enough streamers on <a href="https://www.twitch.tv/"
                                                       class="lead text-decoration-none twitchLink">Twitch</a> and/or <a
-              href="{% url 'games:games' %}"
-              class="lead text-decoration-none">Games</a> on Glip.</p>
+        href="{% url 'games:games' %}"
+        class="lead text-decoration-none">Games</a> on Glip.</p>
       <br>
       <p></p>
     </div>
