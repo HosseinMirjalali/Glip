@@ -487,6 +487,11 @@ a.effect-underline:hover:after {
   background-color: #212529;
 }
 
+#download-icon {
+  margin: 5px 5px 5px 40px;
+  color: #BF00FF;
+}
+
 .clip-buttons {
   /*display: block;*/
   /*margin-left: auto;*/
