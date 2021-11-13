@@ -124,7 +124,7 @@ class NoAuthGamesListView(View):
     context_object_name = "noauthgames"
 
     def get(self, request):
-        template_name = "pages/new_games.html"
+        template_name = "pages/games.html"
         games = TopGame.objects.all().values()
         games_dict = {"games": games}
         for game in games:
