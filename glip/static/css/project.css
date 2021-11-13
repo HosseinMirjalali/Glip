@@ -1,5 +1,6 @@
 /* These styles are generated from project.scss. */
 
+@import "games.css";
 
 .alert-debug {
   color: black;
@@ -219,12 +220,12 @@ input[type="color"]:focus,
   align-items: center;
   justify-content: center;
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   overflow: hidden;
   top: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.9);
   border-radius: 0 0 0 32px;
   transition: transform 0.0s ease-out;
 }
@@ -233,6 +234,7 @@ input[type="color"]:focus,
   margin-top: -5px;
   margin-right: -5px;
   color: white;
+  transition: none !important;
 }
 
 .go-corner-left {
@@ -245,7 +247,7 @@ input[type="color"]:focus,
   overflow: hidden;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.9);
   border-radius: 0 0 32px 0;
   transition: transform 0.0s ease-out;
 }
@@ -493,8 +495,5 @@ a.effect-underline:hover:after {
 }
 
 .clip-buttons {
-  /*display: block;*/
-  /*margin-left: auto;*/
-  /*margin-right: auto;*/
   margin-top: 10px;
 }

@@ -1,0 +1,46 @@
+/* General */
+.masthead {
+  background-size: cover;
+  background-position: center;
+}
+
+.mt-0 {
+  margin-top: 10px;
+}
+
+.lead {
+  color: #A16AE8;
+}
+
+.fa-film {
+  color: #6A5ACD;
+}
+
+.fa-film:hover, .fa-film:focus, .fa-film:active {;
+  color: #603F8B;
+  transform: scale(1.2);
+  transition: all ease 500ms;
+}
+
+.fa-twitch:hover, .fa-twitch:focus, .fa-twitch:active {;
+  color: #6441A4;
+  transform: scale(1.2);
+  transition: all ease 500ms;
+}
+
+/* Cards */
+
+.card-link-games {
+  color: white;
+  font-size: 15px;
+  transition: all 0s ease-in-out;
+  padding: 0 0 2px 0;
+}
+
+.card-link-games:hover, .card-link-games:focus, .card-link-games:active {
+  color: #BF00FF;
+}
+
+.card-text-games {
+  font-size: 15px;
+}

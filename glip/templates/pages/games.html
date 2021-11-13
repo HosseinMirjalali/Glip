@@ -4,84 +4,6 @@
 {% block content %}
 
   <style>
-    .masthead {
-      background-size: cover;
-      background-position: center;
-    }
-
-    .card-group .card-transparent {
-      border-radius: 15px;
-      width: 100%;
-      object-fit: cover;
-      margin: 10px;
-      border: 3px solid #A16AE8;
-    }
-
-    .btn {
-      border: 2px solid #A16AE8;
-      margin: 10px;
-      color: #C0C0C0;
-      transition: all .5s ease-in-out;
-    }
-
-    .btn:hover, .btn:focus, .btn:active {
-      color: #fff;
-      background-color: #603F8B;
-    }
-
-    h3 {
-      overflow: hidden;
-
-    }
-
-    .mt-0 {
-      margin-top: 10px;
-    }
-
-{% comment %}
-    .text-center {
-      margin-top: 20px;
-      margin-bottom: 20px;
-      color: #FFFFFF;
-    }
-{% endcomment %}
-
-    .lead {
-      color: #A16AE8;
-    }
-
-    .custom-text-h3 {
-      transition: all .2s ease-in-out;
-    }
-
-    .custom-text-h3:hover, .custom-text-h3:focus, .custom-text-h3:active {
-      color: #603F8B;
-    }
-
-    .card-img-top {
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
-    }
-
-    .fa-twitch {
-      color: #6441A4;
-    }
-
-    .fa-film {
-      color: #6A5ACD;
-    }
-
-    .fa-film:hover, .fa-film:focus, .fa-film:active {;
-      color: #603F8B;
-      transform: scale(1.2);
-      transition: all ease 500ms;
-    }
-
-    .fa-twitch:hover, .fa-twitch:focus, .fa-twitch:active {;
-      color: #6441A4;
-      transform: scale(1.2);
-      transition: all ease 500ms;
-    }
 
 
   </style>
@@ -104,52 +26,54 @@
         <div class="media-body">
           <h5 class="mt-0">Games</h5>
           <p>See which games are the top on Twitch, and follow the ones you like, to see their clips in <a
-                  href="{% url 'clips:your_clips' %}"
-                  class="lead">Clips For You</a></p>
+            href="{% url 'clips:your_clips' %}"
+            class="lead">Clips For You</a></p>
         </div>
       </div>
-      <div class="row mt-5 text-center align-self-center">
+      <div class="row mt-5 justify-content-center">
         {% for game in games %}
-          <div class="col-sm-2">
-            <div class="card-group">
-              <div class="card-transparent mx-2 mb-3" data-role="game">
-                <img loading=lazy src="{{ game.box_art_url }}" alt="" class="card-img-top">
-                <div class="card-content">
-                  <br>
-                  <a class="text-decoration-none" href="https://www.twitch.tv/directory/game/{{ game.name }}"
-                     target="_blank">
-                    <h3 id="user_name" class="custom-text-h3" style="max-height: 2rem" data-toggle="tooltip"
-                        data-placement="top"
-                        title="{{ game.name }}">{{ game.name }}
-                    </h3>
-                  </a>
-                  <a class="text-decoration-none custom-text-h3"
-                     href="https://www.twitch.tv/directory/game/{{ game.name }}"
-                     target="_blank">
-                    <i data-toggle="tooltip" data-placement="top" title="Go to {{ game.name }} Twitch page" class="fab fa-twitch"></i>
-                  </a>
-                  {% if request.user.is_authenticated %}
-                    {% if game.is_followed == True %}
-                      <button value="unfollow" class="btn btn-unfollow" id="{{ game.id }}" name="myButton">Unfollow
-                      </button>
-                    {% else %}
-                      <button value="follow" class="btn btn-follow" id="{{ game.id }}" name="myButton">Follow</button>
-                    {% endif %}
+          <div class="col-sm-2" data-role="game">
+
+            <div class="card card1 card-followslist mx-2 mb-3">
+              {#              <div class="customShadowBox"></div>#}
+              <a target="_blank"
+                 href="{% url 'games:localgameclipnew' pk=game.id %}"></a>
+              <img src="{{ game.box_art_url }}"
+                   alt="" class="cardImage">
+              <div class="card-body">
+                <h3 class="card-text card-text-games text-truncate">
+                  {{ game.name }}
+                </h3>
+                {% if request.user.is_authenticated %}
+                  {% if game.is_followed == True %}
+                    <button data-toggle="tooltip" data-placement="top" title="Follow {{ game.name }}"
+                      value="unfollow" class="btn btn-unfollow card-link card-link-games" id="{{ game.id }}"
+                            name="myButton">Unfollow
+                    </button>
                   {% else %}
-                    <button value="follow" class="btn btn-followdisabled" style="cursor:default;" name="myButton">Login to Follow</button>
+                    <button data-toggle="tooltip" data-placement="top" title="Unfollow {{ game.name }}"
+                      value="follow" class="btn btn-follow card-link card-link-games" id="{{ game.id }}"
+                            name="myButton">Follow
+                    </button>
                   {% endif %}
-                  <a class="text-decoration-none custom-text-h3"
-                     href="{% url 'games:localgameclipnew' pk=game.id %}"
-                     target="_blank">
-                    <i data-toggle="tooltip" data-placement="top" title="Watch {{ game.name }} clips"
-                       class="fas fa-film"></i>
-                  </a>
-                </div><!-- card content -->
-              </div><!-- card -->
-            </div><!-- card-group -->
-          </div><!-- col-sm-2 -->
+                {% else %}
+                  <button data-toggle="tooltip" data-placement="top" title="Login to Follow"
+                    value="follow" class="btn btn-followdisabled card-link card-link-games"
+                          style="cursor:default;" name="myButton">Login to
+                    Follow
+                  </button>
+                {% endif %}
+                <a class="text-decoration-none card-link card-link-games"
+                   href="{% url 'games:localgameclipnew' pk=game.id %}"
+                   target="_blank">
+                  <p data-toggle="tooltip" data-placement="top" title="Watch {{ game.name }}'s top clips"
+                     class="card-link-games-icon">Clips</p>
+                </a>
+              </div>
+            </div>
+          </div>
         {% endfor %}
-      </div><!-- row closing -->
+      </div>
     </div><!-- masthead closing -->
 
   {% else %}
@@ -180,18 +104,18 @@
         e.preventDefault()
         const _this = $(this);
         $.ajax(
-                {
-                  type: "GET",
-                  url: "{% url 'games:follow_game' %}",
-                  data: {
-                    game_id: id
-                  },
-                  success: function (data) {
-                    _this.text("Unfollow")
-                    _this.removeClass('btn-follow').addClass('btn-unfollow');
-                    _this.val("unfollow")
-                  }
-                })
+          {
+            type: "GET",
+            url: "{% url 'games:follow_game' %}",
+            data: {
+              game_id: id
+            },
+            success: function (data) {
+              _this.text("Unfollow")
+              _this.removeClass('btn-follow').addClass('btn-unfollow');
+              _this.val("unfollow")
+            }
+          })
       });
       $('.btn-unfollow').click(function (e) {
         var id;
@@ -199,18 +123,18 @@
         e.preventDefault()
         const _this = $(this);
         $.ajax(
-                {
-                  type: "GET",
-                  url: "{% url 'games:unfollow_game' %}",
-                  data: {
-                    game_id: id
-                  },
-                  success: function (data) {
-                    _this.text("Follow")
-                    _this.removeClass('btn-unfollow').addClass('btn-follow');
-                    _this.val("follow")
-                  }
-                })
+          {
+            type: "GET",
+            url: "{% url 'games:unfollow_game' %}",
+            data: {
+              game_id: id
+            },
+            success: function (data) {
+              _this.text("Follow")
+              _this.removeClass('btn-unfollow').addClass('btn-follow');
+              _this.val("follow")
+            }
+          })
       });
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
