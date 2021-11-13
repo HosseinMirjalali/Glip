@@ -1,5 +1,6 @@
 /* These styles are generated from project.scss. */
 
+@import "games.css";
 
 .alert-debug {
   color: black;
