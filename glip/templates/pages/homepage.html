@@ -62,7 +62,9 @@
                  title="See comments and download Twitch clip">
                 <i class="far fa-comment-alt"> {{ clip.comment_count }}</i>
               </a>
-              <a class="col-sm" href="{% url 'clips:download-clip' pk=clip.clip_twitch_id %}" id="download-icon"><i
+              <a class="col-sm" href="
+                {% if request.user.is_authenticated %}{% url 'clips:download-clip' pk=clip.clip_twitch_id %}{% else %}{% url 'account_login' %} {% endif %}"
+                 id="download-icon"><i
                 class="fas fa-download"></i></a>
               <div class="col-sm">
                 {% csrf_token %}

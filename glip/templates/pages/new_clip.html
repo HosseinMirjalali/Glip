@@ -58,12 +58,14 @@
             <h5 style="position: absolute; bottom: 40px; left: 9px; font-size: 0.9rem; max-width: 95%;"
                 class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
             <div class="row">
-               <a class="col-sm text-wrap fs-6 text-decoration-none card-comments"
+              <a class="col-sm text-wrap fs-6 text-decoration-none card-comments"
                  href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}" data-toggle="tooltip" data-placement="top"
                  title="See comments and download Twitch clip">
                 <i class="far fa-comment-alt"> {{ clip.comment_count }}</i>
               </a>
-              <a class="col-sm" href="{% url 'clips:download-clip' pk=clip.clip_twitch_id %}" id="download-icon"><i
+              <a class="col-sm" href="
+                {% if request.user.is_authenticated %}{% url 'clips:download-clip' pk=clip.clip_twitch_id %}{% else %}{% url 'account_login' %} {% endif %}"
+                 id="download-icon"><i
                 class="fas fa-download"></i></a>
               <div class="col-sm">
                 <button class="btn btn-link {% if not request.user.is_authenticated %}disabled{% endif %}
@@ -183,9 +185,9 @@
             },
             success: function (json) {
               document.getElementById(clip_id).innerHTML = " " + json['result']
-            let buttonIcon = $("#".concat(clip_id))
-            buttonIcon.toggleClass("fas far")
-            console.log(json)
+              let buttonIcon = $("#".concat(clip_id))
+              buttonIcon.toggleClass("fas far")
+              console.log(json)
             },
             error: function (xhr, errmsg, err) {
 
