@@ -33,7 +33,6 @@
       <div class="row mt-5 justify-content-center">
         {% for game in games %}
           <div class="col-sm-2" data-role="game">
-
             <div class="card card1 card-followslist mx-2 mb-3">
               {#              <div class="customShadowBox"></div>#}
               <a target="_blank"
@@ -44,21 +43,24 @@
                 <h3 class="card-text card-text-games text-truncate">
                   {{ game.name }}
                 </h3>
+                {% csrf_token %}
                 {% if request.user.is_authenticated %}
-                  {% if game.is_followed == True %}
-                    <button data-toggle="tooltip" data-placement="top" title="Follow {{ game.name }}"
-                      value="unfollow" class="btn btn-unfollow card-link card-link-games" id="{{ game.id }}"
-                            name="myButton">Unfollow
+                  {% if game.followed %}
+                    <button data-toggle="tooltip" data-placement="top" title="Unfollow {{ game.name }}"
+                            value="{{ game.id }}" class="btn btn-follow card-link card-link-games"
+                            id="follow-button"
+                    >Unfollow
                     </button>
                   {% else %}
-                    <button data-toggle="tooltip" data-placement="top" title="Unfollow {{ game.name }}"
-                      value="follow" class="btn btn-follow card-link card-link-games" id="{{ game.id }}"
-                            name="myButton">Follow
+                    <button data-toggle="tooltip" data-placement="top" title="Follow {{ game.name }}"
+                            value="{{ game.id }}" class="btn btn-follow card-link card-link-games"
+                            id="follow-button"
+                    >Follow
                     </button>
                   {% endif %}
                 {% else %}
                   <button data-toggle="tooltip" data-placement="top" title="Login to Follow"
-                    value="follow" class="btn btn-followdisabled card-link card-link-games"
+                          value="follow" class="btn btn-followdisabled card-link card-link-games"
                           style="cursor:default;" name="myButton">Login to
                     Follow
                   </button>
@@ -95,76 +97,68 @@
   {% endblock %}
 
 
-  {% block inline_javascript %}
-    {{ block.super }}
-    <script type="text/javascript">
-      $('.btn-follow').click(function (e) {
-        var id;
-        id = $(this).attr("id");
-        e.preventDefault()
-        const _this = $(this);
-        $.ajax(
-          {
-            type: "GET",
-            url: "{% url 'games:follow_game' %}",
-            data: {
-              game_id: id
-            },
-            success: function (data) {
-              _this.text("Unfollow")
-              _this.removeClass('btn-follow').addClass('btn-unfollow');
-              _this.val("unfollow")
-            }
-          })
-      });
-      $('.btn-unfollow').click(function (e) {
-        var id;
-        id = $(this).attr("id");
-        e.preventDefault()
-        const _this = $(this);
-        $.ajax(
-          {
-            type: "GET",
-            url: "{% url 'games:unfollow_game' %}",
-            data: {
-              game_id: id
-            },
-            success: function (data) {
-              _this.text("Follow")
-              _this.removeClass('btn-unfollow').addClass('btn-follow');
-              _this.val("follow")
-            }
-          })
-      });
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      })
 
-      $(document).ready(function () {
-        $("#searchbox").on("keyup", function () {
-          var value = $(this).val().toLowerCase();
-          $('div[data-role="game"]').filter(function () {
-            $(this).toggle($(this).find('h3').text().toLowerCase().indexOf(value) > -1)
-          });
-        });
-      });
-
-      var btn = $('#button');
-
-      $(window).scroll(function () {
-        if ($(window).scrollTop() > 300) {
-          btn.addClass('show');
-        } else {
-          btn.removeClass('show');
+  <script>
+    $(document).on('click', '#follow-button', function (e) {
+      e.preventDefault();
+      $.fn.extend({
+        toggleText: function (a, b) {
+          return this.text(this.text() === b ? a : b);
         }
       });
+      let text = $(this).text()
+      const _this = $(this);
+      $.ajax(
+        {
+          type: "POST",
+          url: "{% url 'games:follow_game' %}",
+          data: {
+            clip_id: $(this).val(),
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+            action: "post"
+          },
+          success: function (json) {
+            if ($.trim(text) === "Follow") {
+              _this.text("Unfollow")
+            }
+            if ($.trim(text) === "Unfollow") {
+              _this.text("Follow")
+            }
+            console.log(json)
+          },
+          error: function (xhr, errmsg, err) {
 
-      btn.on('click', function (e) {
-        e.preventDefault();
-        $('html, body').animate({scrollTop: 0}, '300');
+          }
+        });
+    });
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    $(document).ready(function () {
+      $("#searchbox").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $('div[data-role="game"]').filter(function () {
+          $(this).toggle($(this).find('h3').text().toLowerCase().indexOf(value) > -1)
+        });
       });
+    });
 
-    </script>
-  {% endblock %}
+    var btn = $('#button');
+
+    $(window).scroll(function () {
+      if ($(window).scrollTop() > 300) {
+        btn.addClass('show');
+      } else {
+        btn.removeClass('show');
+      }
+    });
+
+    btn.on('click', function (e) {
+      e.preventDefault();
+      $('html, body').animate({scrollTop: 0}, '300');
+    });
+
+  </script>
 
 {% endblock content %}

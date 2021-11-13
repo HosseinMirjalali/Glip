@@ -5,8 +5,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, Exists, OuterRef
-from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
 from django.views import View
 
 from glip.clips.models import Clip
@@ -31,7 +31,17 @@ class GamesListView(LoginRequiredMixin, View):
         Gets list of top 200 games on twitch
         """
         template_name = "pages/games.html"
-        games = TopGame.objects.all().values()
+        games = (
+            TopGame.objects.all()
+            .values()
+            .annotate(
+                followed=Exists(
+                    User.objects.filter(
+                        follow__game_id=OuterRef("pk"), id=request.user.id
+                    )
+                )
+            )
+        )
         followed_games = GameFollow.objects.filter(following=request.user).values_list(
             "followed__game_id", flat=True
         )
@@ -53,25 +63,46 @@ class GamesListView(LoginRequiredMixin, View):
 games_view = GamesListView.as_view()
 
 
-@login_required(login_url="/accounts/login/")
+# @login_required(login_url="/accounts/login/")
+# def follow_game(request):
+#     game_id = request.GET.get("game_id")
+#     game_to_follow = Game.objects.get(game_id=game_id)
+#     user = request.user
+#     GameFollow.objects.get_or_create(following=user, followed=game_to_follow)
+#     return redirect(reverse("games:games"))
+#
+#
+# @login_required(login_url="/accounts/login/")
+# def unfollow_game(request):
+#     game_id = request.GET.get("game_id")
+#     game_to_follow = Game.objects.get(game_id=game_id)
+#     user = request.user
+#     obj = GameFollow.objects.get(following=user, followed=game_to_follow)
+#     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+#     print(obj)
+#     obj.delete()
+#     return redirect(reverse("games:games"))
+
+
+@login_required
 def follow_game(request):
-    game_id = request.GET.get("game_id")
-    game_to_follow = Game.objects.get(game_id=game_id)
-    user = request.user
-    GameFollow.objects.get_or_create(following=user, followed=game_to_follow)
-    return redirect(reverse("games:games"))
+    if request.POST.get("action") == "post":
+        result = ""
+        game_id = request.POST.get("clip_id")
+        game = get_object_or_404(Game, game_id=game_id)
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@")
+        print(game)
+        print(game.follows.all())
+        if game.follows.filter(id=request.user.id).exists():
+            game.follows.remove(request.user)
+            result = game.follows.all().count()
+            game.save()
+        else:
+            game.follows.add(request.user)
+            result = game.follows.all().count()
+            game.save()
 
-
-@login_required(login_url="/accounts/login/")
-def unfollow_game(request):
-    game_id = request.GET.get("game_id")
-    game_to_follow = Game.objects.get(game_id=game_id)
-    user = request.user
-    obj = GameFollow.objects.get(following=user, followed=game_to_follow)
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    print(obj)
-    obj.delete()
-    return redirect(reverse("games:games"))
+        return JsonResponse({"result": result})
 
 
 @login_required(login_url="/accounts/login/")
