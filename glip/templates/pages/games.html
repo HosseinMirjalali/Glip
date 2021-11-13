@@ -40,7 +40,7 @@
               <img src="{{ game.box_art_url }}"
                    alt="" class="cardImage">
               <div class="card-body">
-                <h3 class="card-text card-text-games text-truncate">
+                <h3 data-toggle="tooltip" data-placement="top" title="{{ game.name }}" class="card-text card-text-games text-truncate">
                   {{ game.name }}
                 </h3>
                 {% csrf_token %}

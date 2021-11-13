@@ -34,7 +34,7 @@
   color: white;
   font-size: 15px;
   transition: all 0s ease-in-out;
-  padding: 0 0 2px 0;
+  padding: 0 0 5px 0;
 }
 
 .card-link-games:hover, .card-link-games:focus, .card-link-games:active {
