@@ -176,7 +176,7 @@
   {% block inline_javascript %}
     {{ block.super }}
     <script type="text/javascript">
-      $('.btn-follow').click(function (e) {
+ {% comment %}     $('.btn-follow').click(function (e) {
         var id;
         id = $(this).attr("id");
         e.preventDefault()
@@ -213,7 +213,7 @@
                     _this.val("follow")
                   }
                 })
-      });
+      });{% endcomment %}
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
       })

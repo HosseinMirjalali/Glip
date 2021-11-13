@@ -13,6 +13,9 @@ class Game(models.Model):
         blank=True, null=True, default=timezone.now
     )
     last_tried_query = models.DateTimeField(blank=True, null=True, default=timezone.now)
+    follows = models.ManyToManyField(
+        User, related_name="follow", default=None, blank=True
+    )
 
     def __str__(self):
         return f"{self.name}"

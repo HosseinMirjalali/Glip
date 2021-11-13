@@ -17,7 +17,7 @@ from requests_futures.sessions import FuturesSession
 
 from glip.clips.models import Clip, TopClip
 from glip.comments.forms import NewCommentForm
-from glip.games.models import GameFollow
+from glip.games.models import Game
 from glip.users.utils import (
     get_clips,
     get_followed_games_clips_async,
@@ -88,12 +88,10 @@ def new_your_clips_local(request):
     else:
         get_new_access_from_refresh(request)
         user_token = get_token(request)
-    # time_threshold = datetime.now() - timedelta(hours=24)
     start = datetime.now() - timedelta(hours=24)
     end = datetime.now()
-    # new_end = end + timedelta(days=1)
-    followed_games_id = GameFollow.objects.filter(following=request.user).values_list(
-        "followed__game_id", flat=True
+    followed_games_id = Game.objects.filter(follows=request.user).values_list(
+        "game_id", flat=True
     )
     user_channel_follows_id = []
     user_channel_follows = get_user_follows2(request, user_token)
@@ -107,6 +105,11 @@ def new_your_clips_local(request):
         Clip.objects.filter(twitch_game_id__in=games_id_dic)
         .filter(broadcaster_id__in=user_channel_follows_id)
         .filter(created_at__range=[start, end])
+        .annotate(
+            fav=Exists(User.objects.filter(like=OuterRef("pk"), id=request.user.id))
+        )
+        .annotate(comment_count=Count("comments"))
+        .annotate(likes_count=Count("likes"))
         .exclude(disabled=True)
         .annotate(comment_count=Count("comments"))
     )
