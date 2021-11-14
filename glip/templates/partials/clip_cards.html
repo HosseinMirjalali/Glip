@@ -46,12 +46,12 @@
              id="download-icon-clip" data-toggle="tooltip" data-placement="top"
              title="Download Twitch clip"><i
             class="fas fa-download"></i></a>
-          <a class="btn {% if not request.user.is_authenticated %}disabled{% endif %} card-link-clip"
+          <button class="btn {% if not request.user.is_authenticated %}disabled{% endif %} card-link-clip"
              id="like-button-clip"
              value="{{ clip.clip_twitch_id }}">
             <i class="{% if clip.fav %}fas {% else %}far {% endif %}fa-heart"
                id="{{ clip.clip_twitch_id }}"> {{ clip.likes_count }}</i>
-          </a>
+          </button>
         </div>
       </div>
     </div>
