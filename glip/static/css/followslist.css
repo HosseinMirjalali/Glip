@@ -1,0 +1,34 @@
+.followslist-title {
+  font-size: 1rem;
+  color: white;
+}
+
+.followslist-icon-twitch, .followslist-icon-film {
+  color: #BF00FF;
+  z-index: 999999;
+!important;
+  padding: 0 10px 0 0;
+}
+
+.followslist-icon-twitch:hover, .followslist-icon-film:hover {
+  color: #BF00FF;
+}
+
+.followslist-icon-twitch {
+  top: 6px;
+  left: 2px;
+}
+
+.followslist-icon-film {
+  top: 6px;
+  right: 2px;
+  color: #BF00FF;
+}
+
+.liveDot {
+  color: #FF0000;
+}
+
+.followslist-total-follows {
+  padding-top: 40px;
+}

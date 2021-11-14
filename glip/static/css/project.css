@@ -2,6 +2,7 @@
 
 @import "games.css";
 @import "partials/clip_cards.css";
+@import "followslist.css";
 
 .alert-debug {
   color: black;
@@ -161,59 +162,13 @@ input[type="color"]:focus,
   margin-top: 10px;
 }
 
-.followslist-icon-twitch {
-  top: 6px;
-  left: 2px;
-}
-
-.followslist-icon-film {
-  top: 6px;
-  right: 2px;
-}
-
 .comment-submit {
   margin-bottom: 20px;
   margin-top: 0;
 }
 
-/*.followslist-icon-twitch, .followslist-icon-film {
-  font-size: 1.4rem;
-  position: absolute;
-  color: #BF00FF;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 1px 3px;
-  border-radius: 2px;
-  !*padding: 5px 5px;*!
-  z-index: 99999;
-}
-
-.followslist-icon-twitch:hover, .followslist-icon-twitch:focus, .followslist-icon-twitch:active, .followslist-icon-film:hover, .followslist-icon-film:focus, .followslist-icon-film:active {
-  color: #603F8B;
-}*/
-
-.followslist-icon-twitch, .followslist-icon-film {
-  color: #BF00FF;
-  z-index: 999999;
-!important;
-}
-
-.followslist-icon-twitch:hover, .followslist-icon-film:hover {
-  color: #BF00FF;
-}
-
-.customShadowBox {
-  background-color: rgba(0, 0, 0, 0.2);
-  padding: 100%;
-  position: absolute;
-  border-radius: 5px;
-}
-
 .cardImage {
   border-radius: 5px;
-}
-
-.liveDot {
-  color: #FF0000;
 }
 
 .go-corner {
@@ -358,7 +313,7 @@ body {
 
 #button::after {
   content: "\f077";
-  font-family: FontAwesome;
+  font-family: FontAwesome, serif;
   font-weight: normal;
   font-style: normal;
   font-size: 2em;
