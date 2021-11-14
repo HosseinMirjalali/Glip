@@ -80,3 +80,7 @@
 .broadcaster-clips:after, .broadcaster-clips:hover, .broadcaster-clips:focus {
   color: #BF00FF;
 }
+
+/*.clip-group div:nth-child(n+21) {*/
+/*  display: none;*/
+/*}*/

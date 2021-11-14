@@ -33,12 +33,6 @@
     <!-- Back to top button -->
     <a id="button"></a>
 
-{#    <div id="loadmore-box" class="d-flex justify-content-center align-items-center">#}
-{#      <button class="btn" id="loadbtn">#}
-{#        Show More#}
-{#      </button>#}
-{#    </div>#}
-
     {% block javascript %}
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
       <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -49,25 +43,11 @@
               crossorigin="anonymous"></script>
       <script src="https://kit.fontawesome.com/5e67d5e00b.js" crossorigin="anonymous"></script>
     {% endblock %}
+
     <script>
-      var loadbtnStatus = "more";
-      $("#loadbtn").click(function showMoreFunc() {
-        const _this = $(this);
-        $(".card-group div:nth-child(n+21)").toggle();
-        if (loadbtnStatus === "more") {
-          _this.text("Show Less")
-          loadbtnStatus = "less";
-        } else {
-          _this.text("Show More")
-          loadbtnStatus = "more";
-        }
-      });
-
-
       $(document).on('click', '#like-button', function (e) {
         e.preventDefault();
         let clip_id = $(this).val()
-        let sharp = "#"
         $.ajax(
           {
             type: "POST",
@@ -89,67 +69,6 @@
           });
       });
 
-      {% comment %}
-      """ Commented the fetch and add new cards function """
-      const card_group = document.getElementById('cardGroup')
-      const loadbtn = document.getElementById('loadbtn')
-      const spinner_box = document.getElementById('spinner-box')
-      const loadmore_box = document.getElementById('loadmore-box')
-      let visible = 23
-
-
-      const getClips = () => {
-        $.ajax({
-          type: "GET",
-          url: "{% url 'clips:clips-json' %}",
-          data: {
-            upper: visible
-          },
-          success: function (response) {
-            max_size = response.max
-            const data = response.data
-            data.map(clips => {
-              card_group.insertAdjacentHTML('beforeend', `
-                                      <div class="clip-card " style="padding: 10px">
-
-                                        <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem; height: 100%;" data-toggle="modal"
-                                             data-target="#videoModal"
-                                             data-theVideo="${clips.embed_url}&parent=localhost" onClick='autoPlayTwitchModal(" ${clips.embed_url}&parent=localhost ")'>
-                                          <img loading=lazy class="card-img-top clip-card-img" src="${clips.thumbnail_url}" alt=""
-                                               style="opacity: 0.5; height: 100%;">
-                                          <div href="#"
-                                               style="position: absolute; bottom: 65px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
-                                               class="stretched-link font-weight-bold card-my-div">${clips.broadcaster_name}</div>
-                                          <div style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
-                                               class="text-wrapper">
-                                            <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem">
-                                              0:${clips.duration}</p>
-                                          </div>
-                                          <div style="position: absolute; top: 8px; left: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
-                                               class="text-wrapper">
-                                            <p class="card-text font-weight-bold" style="padding: 0px 5px; font-size: 0.9rem"><i
-                                                    class="fas fa-eye"></i>
-                                              ${clips.twitch_view_count}</p>
-                                          </div>
-                                          <a class="stretched-link" href="javascript:void(0);" style="color: #83577500; "></a>
-                                          <h5 style="position: absolute; bottom: 15px; left: 9px; font-size: 0.9rem; max-width: 95%;"
-                                              class="card-title font-weight-bold text-truncate">${clips.title}</h5>
-                                        </div>
-
-                                      </div>
-                                      `)
-            });
-          },
-          error: function (error) {
-            console.log(error)
-          }
-        });
-      }
-
-      loadbtn.addEventListener('click', () => {
-        visible += 3
-        getClips()
-      }){% endcomment %}
 
       //FUNCTION TO GET AND OPEN TWITCH EMBED CLIP
       function autoPlayTwitchModal() {

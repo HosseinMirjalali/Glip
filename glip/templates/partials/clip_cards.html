@@ -56,9 +56,6 @@
             <i class="far fa-comment-alt"> {{ clip.comment_count }}</i>
           </a>
           <a class="btn card-link-clip" href="
-
-
-
             {% if request.user.is_authenticated %}{% url 'clips:download-clip' pk=clip.clip_twitch_id %}{% else %}{% url 'account_login' %} {% endif %}"
              id="download-icon-clip" data-toggle="tooltip" data-placement="top"
              title="Download Twitch clip"><i
@@ -116,3 +113,24 @@
   </div>
   <!--Modal: Name-->
 </div>
+
+{#<div id="loadmore-box" class="d-flex justify-content-center align-items-center">#}
+{#  <button class="btn" id="loadbtn">#}
+{#    Show More#}
+{#  </button>#}
+{#</div>#}
+
+<script>
+{% comment %}  var loadbtnStatus = "more";
+  $("#loadbtn").click(function showMoreFunc() {
+    const _this = $(this);
+    $(".clip-group div:nth-child(n+21)").toggle();
+    if (loadbtnStatus === "more") {
+      _this.text("Show Less")
+      loadbtnStatus = "less";
+    } else {
+      _this.text("Show More")
+      loadbtnStatus = "more";
+    }
+  });{% endcomment %}
+</script>
