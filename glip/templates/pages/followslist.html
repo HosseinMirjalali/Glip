@@ -58,7 +58,7 @@
                   {{ info.display_name }}
                 </h3>
                 <a class="text-decoration-none followslist-icon-film"
-                   href="{% url 'channels:clip' %}?broadcaster_id={{ clip.broadcaster_id }}&first=100&name={{ clip.broadcaster_name }}"
+                   href="{% url 'channels:clip' %}?broadcaster_id={{ info.id }}&first=100&name={{ info.display_name }}"
                    target="_blank">
                   <i data-toggle="tooltip" data-placement="top" title="Watch {{ info.display_name }}'s clips"
                      class="fas fa-film followslist-icon-film"></i>
