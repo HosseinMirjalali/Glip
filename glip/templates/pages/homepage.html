@@ -1,16 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Home{% endblock %}
-<style>
-  .text-wrapper {
-    position: absolute;
-    top: 8px;
-    left: 16px;
-  }
-
-
-</style>
 {% block content %}
+
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
     <path fill="#A16AE8" fill-opacity="1"
           d="M0,128L60,112C120,96,240,64,360,48C480,32,600,32,720,58.7C840,85,960,139,1080,176C1200,213,1320,235,1380,245.3L1440,256L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
@@ -25,7 +17,17 @@
     <h3 align="center"><a href="{% url 'about' %}" class="effect-underline text-decoration-none">Read more...</a>
     </h3>
   </div>
-
+  <div class="d-flex">
+    <img src="{% static 'images/video-clip.png' %}" width="64" height="64" class="mr-3" alt="...">
+    <div class="media-body">
+      <h5 class="mt-0">Clips</h5>
+      {% if template_info %}
+        {{ template_info }}
+      {% else %}
+        <p>See the clips you have chosen to see</p>
+      {% endif %}
+    </div>
+  </div>
   {% if clips %}
 
     {% include 'partials/clip_cards.html' with clips=clips %}

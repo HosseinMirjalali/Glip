@@ -1,19 +1,5 @@
 {% load static %}
 
-
-<div class="d-flex justify-content-center">
-</div>
-<div class="d-flex">
-  <img src="{% static 'images/video-clip.png' %}" width="64" height="64" class="mr-3" alt="...">
-  <div class="media-body">
-    <h5 class="mt-0">Clips</h5>
-    {% if template_info %}
-      {{ template_info }}
-    {% else %}
-      <p>See the clips you have chosen to see</p>
-    {% endif %}
-  </div>
-</div>
 <div class="row mt-5 justify-content-center">
   {% for clip in clips %}
     <div class="col-sm-3" data-role="game">
