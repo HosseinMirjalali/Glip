@@ -1,5 +1,10 @@
 .card-link-clip {
-  padding: 5px 5px 5px 5px;
+  padding: 10px 5px 5px 0;
+  /*color: #BF00FF;*/
+  color: white;
+}
+
+.card-link-clip:after, .card-link-clip:hover, .card-link-clip:focus {
   color: #BF00FF;
 }
 
@@ -74,7 +79,7 @@
 }
 
 .broadcaster-clips {
-  color: #BF00FF;
+  color: white;
 }
 
 .broadcaster-clips:after, .broadcaster-clips:hover, .broadcaster-clips:focus {
