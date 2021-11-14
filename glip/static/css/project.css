@@ -1,6 +1,7 @@
 /* These styles are generated from project.scss. */
 
 @import "games.css";
+@import "partials/clip_cards.css";
 
 .alert-debug {
   color: black;

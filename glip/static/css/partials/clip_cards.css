@@ -1,0 +1,82 @@
+.card-link-clip {
+  padding: 5px 5px 5px 5px;
+  color: #BF00FF;
+}
+
+.customShadowBoxClip {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 100%;
+  position: absolute;
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.go-corner-clip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  /*width: 60px;*/
+  /*height: 60px;*/
+  overflow: hidden;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-radius: 10px;
+  padding: 5px 10px 0 5px;
+  font-size: 0.9rem;
+}
+
+.go-arrow-clip {
+  margin-top: -5px;
+  margin-right: -5px;
+  color: white;
+}
+
+.go-corner-left-clip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  /*width: 40px;*/
+  /*height: 40px;*/
+  overflow: hidden;
+  top: 5px;
+  left: 5px;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-radius: 10px;
+  padding: 5px 10px 0 5px;
+  font-size: 0.9rem;
+}
+
+.go-arrow-left-clip {
+  margin-top: -5px;
+  margin-right: -5px;
+  color: white;
+}
+
+.go-corner-clip:hover, .go-corner-left-clip:hover {
+  /*transform: scale(1.2);*/
+}
+
+.go-corner-left-bottom-clip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  overflow: hidden;
+  top: 100px;
+  left: 5px;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-radius: 5px;
+  padding: 1px 5px 1px 5px;
+  font-size: 0.9rem;
+}
+
+.broadcaster-clips {
+  color: #BF00FF;
+}
+
+.broadcaster-clips:after, .broadcaster-clips:hover, .broadcaster-clips:focus {
+  color: #BF00FF;
+}
