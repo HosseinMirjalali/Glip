@@ -1,15 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Clips{% endblock %}
-<style>
-  .text-wrapper {
-    position: absolute;
-    top: 8px;
-    left: 16px;
-  }
-
-
-</style>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5714575909415775"
         crossorigin="anonymous"></script>
@@ -29,110 +20,11 @@
       </div>
     </div>
     <br>
-    <div class="card-group justify-content-center" id="cardGroup">
-      {% for clip in clips|dictsortreversed:"twitch_view_count" %}
-        <div class="clip-card " style="padding: 10px">
-          {% csrf_token %}
-          <div class="card text-white bg-dark mx-2 mb-3" style="max-width: 18rem;">
-            <img loading=lazy class="card-img-top clip-card-img" src="{{ clip.thumbnail_url }}" alt=""
-                 style="opacity: 0.5; height: 100%;" data-toggle="modal"
-                 data-target="#videoModal"
-                 data-theVideo="{{ clip.embed_url }}&parent=glipsite.com&parent=www.glipsite.com&parent=localhost"
-                 onClick='autoPlayTwitchModal(" {{ clip.embed_url }}&parent=glipsite.com&parent=www.glipsite.com&parent=localhost")'>
-            <div href="#"
-                 style="position: absolute; bottom: 75px; left: 9px; font-size: 0.9rem; color: #FFFFFF; text-decoration: none"
-                 class="font-weight-bold card-my-div">{{ clip.broadcaster_name }}</div>
-            <div
-              style="position: absolute; top: 8px; right: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
-              class="text-wrapper">
-              <p class="card-text font-weight-bold" style="padding: 0px 3px; font-size: 0.9rem">
-                0:{{ clip.duration }}</p>
-            </div>
-            <div
-              style="position: absolute; top: 8px; left: 16px; border-radius: 20px; background-color: rgba(0, 0, 0, 0.6);"
-              class="text-wrapper">
-              <p class="card-text font-weight-bold" style="padding: 0px 5px; font-size: 0.9rem"><i
-                class="fas fa-eye"></i>
-                {{ clip.twitch_view_count }}</p>
-            </div>
-            <h5 style="position: absolute; bottom: 40px; left: 9px; font-size: 0.9rem; max-width: 95%;"
-                class="card-title font-weight-bold text-truncate">{{ clip.title }}</h5>
-            <div class="row">
-              <a class="col-sm text-wrap fs-6 text-decoration-none card-comments"
-                 href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}" data-toggle="tooltip" data-placement="top"
-                 title="See comments and download Twitch clip">
-                <i class="far fa-comment-alt"> {{ clip.comment_count }}</i>
-              </a>
-              <a class="col-sm" href="
-                {% if request.user.is_authenticated %}{% url 'clips:download-clip' pk=clip.clip_twitch_id %}{% else %}{% url 'account_login' %} {% endif %}"
-                 id="download-icon"><i
-                class="fas fa-download"></i></a>
-              <div class="col-sm">
-                <button class="btn btn-link {% if not request.user.is_authenticated %}disabled{% endif %}
-                border-0 btn-outline-light overflow-hidden"
-                        id="like-button"
-                        value="{{ clip.clip_twitch_id }}">
-                  <i class="{% if clip.fav %}fas {% else %}far {% endif %}fa-heart"
-                     id="{{ clip.clip_twitch_id }}"> {{ clip.likes_count }}</i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
 
-    <!--Modal: Name-->
-    <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-
-        <!--Content-->
-        <div class="modal-content">
-
-          <!--Body-->
-          <div class="modal-body mb-0 p-0">
-
-            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-              <iframe class="embed-responsive-item" src=""
-                      allowfullscreen="true" width="100%"></iframe>
-            </div>
-
-          </div>
-
-          <!--Footer-->
-          <div class="modal-footer justify-content-center text-white">
-            <span class="mr-4">Share my website with your friends</span>
-            <!--Twitter-->
-            <a
-              href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
-              type="button" target="_blank" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
-            {% comment %}<!--Google +-->
-            <a type="button" class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus-g"></i></a>
-            <!--Linkedin-->
-            <a type="button" class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>{% endcomment %}
-
-            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4 closeBtn" data-dismiss="modal">
-              Close
-            </button>
-
-          </div>
-
-        </div>
-        <!--/.Content-->
-
-      </div>
-    </div>
-    <!--Modal: Name-->
+    {% include 'partials/clip_cards.html' with clips=clips %}
 
     <!-- Back to top button -->
     <a id="button"></a>
-
-    <div id="loadmore-box" class="d-flex justify-content-center align-items-center">
-      <button class="btn" id="loadbtn">
-        Show More
-      </button>
-    </div>
 
     {% block javascript %}
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -170,7 +62,7 @@
         autoPlayTwitchModal();
       });
 
-      $(document).on('click', '#like-button', function (e) {
+      $(document).on('click', '#like-button-clip', function (e) {
         e.preventDefault();
         let clip_id = $(this).val()
         let sharp = "#"

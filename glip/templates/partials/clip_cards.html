@@ -1,0 +1,122 @@
+{% load static %}
+
+<div class="row mt-5 justify-content-center">
+  {% for clip in clips %}
+    <div class="col-sm-3" data-role="game">
+      <div class="card card1 card-followslist mx-2 mb-3">
+        <img src="{{ clip.thumbnail_url }}"
+             alt="" class="cardImage"
+             data-toggle="modal"
+             data-target="#videoModal"
+             data-theVideo="{{ clip.embed_url }}&parent=glipsite.com&parent=www.glipsite.com&parent=localhost"
+             onClick='autoPlayTwitchModal(" {{ clip.embed_url }}&parent=glipsite.com&parent=www.glipsite.com&parent=localhost")'>
+        <div class="card-body">
+          <p data-toggle="tooltip" data-placement="top" title="{{ clip.title }}"
+             class="card-text card-text-games text-truncate">
+            {{ clip.title }}
+          </p>
+          <a
+            class="card-text text-decoration-none broadcaster-clips"
+            target="_blank"
+            data-toggle="tooltip" data-placement="top" title="More {{ clip.broadcaster_name }} clips"
+            href="{% url 'channels:clip' %}?broadcaster_id={{ clip.broadcaster_id }}&first=100&name={{ clip.broadcaster_name }}">
+            {{ clip.broadcaster_name }}
+          </a>
+          <br>
+          <div class="go-corner-left-clip" href="#">
+            <div class="go-arrow-left-clip">
+              <p class="card-text font-weight-bold" style=""><i
+                class="fas fa-eye"></i>
+                {{ clip.twitch_view_count }}</p>
+            </div>
+          </div>
+          <div class="go-corner-clip" href="#">
+            <div class="go-arrow-clip">
+              0:{{ clip.duration }}
+            </div>
+          </div>
+          {% csrf_token %}
+          <a class="btn card-link-clip"
+             href="{% url 'clips:clip_detail' pk=clip.clip_twitch_id %}" data-toggle="tooltip" data-placement="top"
+             title="See comments and share">
+            <i class="far fa-comment-alt"> {{ clip.comment_count }}</i>
+          </a>
+          <a class="btn card-link-clip" href="
+            {% if request.user.is_authenticated %}{% url 'clips:download-clip' pk=clip.clip_twitch_id %}{% else %}{% url 'account_login' %} {% endif %}"
+             id="download-icon-clip" data-toggle="tooltip" data-placement="top"
+             title="Download Twitch clip"><i
+            class="fas fa-download"></i></a>
+          <button class="btn {% if not request.user.is_authenticated %}disabled{% endif %} card-link-clip"
+             id="like-button-clip"
+             value="{{ clip.clip_twitch_id }}">
+            <i class="{% if clip.fav %}fas {% else %}far {% endif %}fa-heart"
+               id="{{ clip.clip_twitch_id }}"> {{ clip.likes_count }}</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  <!--Modal: Name-->
+  <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+
+      <!--Content-->
+      <div class="modal-content">
+
+        <!--Body-->
+        <div class="modal-body mb-0 p-0">
+
+          <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+            <iframe class="embed-responsive-item" src=""
+                    allowfullscreen="true" id="twitchplayer" width="100%"></iframe>
+          </div>
+
+        </div>
+
+        <!--Footer-->
+        <div class="modal-footer justify-content-center text-white">
+          <span class="mr-4">Share my website with your friends</span>
+          <!--Twitter-->
+          <a
+            target="_blank"
+            class="btn btn-outline-light btn-floating m-1"
+            href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
+            role="button"
+          ><i class="fab fa-twitter"></i></a>
+          {% comment %}<a href="https://twitter.com/intent/tweet?text=I'm%20using%20Glipsite.com%20to%20watch%20my%20favorite%20Twitch%20clips%20of%20the%20day.%20Make%20sure%20to%20check%20it%20out!"
+               type="button" target="_blank" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>{% endcomment %}
+          <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4 closeBtn" data-dismiss="modal">
+            Close
+          </button>
+
+        </div>
+
+      </div>
+      <!--/.Content-->
+
+    </div>
+  </div>
+  <!--Modal: Name-->
+</div>
+
+{#<div id="loadmore-box" class="d-flex justify-content-center align-items-center">#}
+{#  <button class="btn" id="loadbtn">#}
+{#    Show More#}
+{#  </button>#}
+{#</div>#}
+
+<script>
+{% comment %}  var loadbtnStatus = "more";
+  $("#loadbtn").click(function showMoreFunc() {
+    const _this = $(this);
+    $(".clip-group div:nth-child(n+21)").toggle();
+    if (loadbtnStatus === "more") {
+      _this.text("Show Less")
+      loadbtnStatus = "less";
+    } else {
+      _this.text("Show More")
+      loadbtnStatus = "more";
+    }
+  });{% endcomment %}
+</script>

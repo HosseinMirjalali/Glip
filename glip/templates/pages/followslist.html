@@ -13,29 +13,18 @@
       background-position: center;
     }
 
-    h3 {
-      overflow: hidden;
-
-    }
-
-    .media {
-
-    }
-
-
     .text-center {
       top: 20px;
       margin-bottom: 20px;
       color: #FFFFFF;
     }
-
   </style>
 
 
   <div class="masthead">
     {% if bulk_info %}
 
-      <p class="text-center">Total follows: {{ bulk_info|length }}</p>
+      <p class="text-center followslist-total-follows">Total follows: {{ bulk_info|length }}</p>
       <div class="d-flex justify-content-center">
         <div class="row pb-4">
           <div class="col-12">
@@ -45,7 +34,6 @@
         </div>
       </div>
 
-
       <div class="d-flex">
         <img src="{% static 'images/streamer.png' %}" width="64" height="64" class="mr-3" alt="...">
         <div class="media-body">
@@ -54,104 +42,43 @@
         </div>
       </div>
 
-
       {#            Newer small picture-only cards     #}
       <div class="row mt-5 justify-content-center">
         {% for info in bulk_info|dictsort:"display_name" %}
           <div class="col-sm-2">
 
             <div class="card card1 card-followslist mx-2 mb-3" data-role="game">
-              <div class="customShadowBox"></div>
+              {#              <div class="customShadowBox"></div>#}
               <a target="_blank"
                  href="{% url 'channels:clip' %}?broadcaster_id={{ info.id }}&first=100"></a>
               <img src="{{ info.profile_image_url }}"
                    alt="" class="cardImage">
-              <h3 class="cardText">
-                {{ info.display_name }}
-              </h3>
-              <div class="go-corner-left" href="#">
-                <div class="go-arrow-left">
-                  <a class="text-decoration-none followslist-icon-film"
-                     href="{% url 'channels:clip' %}?broadcaster_id={{ info.id }}&first=100&name={{ info.display_name }}"
-                     target="_blank">
-                    <i data-toggle="tooltip" data-placement="top" title="Watch {{ info.display_name }}'s top clips"
-                       class="fas fa-film"></i>
-                  </a>
-                </div>
-              </div>
-              {#            <a class="text-decoration-none followslist-icon-film"#}
-              {#               href="{% url 'clips:clip' %}?broadcaster_id={{ info.id }}&first=100"#}
-              {#               target="_blank">#}
-              {#              <i data-toggle="tooltip" data-placement="top" title="Watch {{ info.display_name }}'s top clips"#}
-              {#                 class="fas fa-film"></i>#}
-              {#            </a>#}
+              <div class="card-body">
+                <h3 class="card-title followslist-title text-truncate">
+                  {{ info.display_name }}
+                </h3>
+                <a class="text-decoration-none followslist-icon-film"
+                   href="{% url 'channels:clip' %}?broadcaster_id={{ clip.broadcaster_id }}&first=100&name={{ clip.broadcaster_name }}"
+                   target="_blank">
+                  <i data-toggle="tooltip" data-placement="top" title="Watch {{ info.display_name }}'s clips"
+                     class="fas fa-film followslist-icon-film"></i>
+                </a>
+                <a data-toggle="tooltip" data-placement="top" title="Open on Twitch"
+                   class="text-decoration-none followslist-icon-twitch"
+                   href="https://www.twitch.tv/{{ info.login }}"
+                   target="_blank">
 
-              {#            <a data-toggle="tooltip" data-placement="top" title="Open on Twitch"#}
-              {#               class="text-decoration-none followslist-icon-twitch"#}
-              {#               href="https://www.twitch.tv/{{ info.login }}"#}
-              {#               target="_blank">#}
-              {#              <i class="fab fa-twitch"></i>#}
-              {#              {% if info.type == "live" %}#}
-              {#                <span class="liveDot"></span>#}
-              {#                <span class="">Live</span>#}
-              {#              {% endif %}#}
-              {#            </a>#}
-              <div class="go-corner" href="#">
-                <div class="go-arrow">
-                  <a data-toggle="tooltip" data-placement="top" title="Open on Twitch"
-                     class="text-decoration-none followslist-icon-twitch"
-                     href="https://www.twitch.tv/{{ info.login }}"
-                     target="_blank">
-
-                    {% if info.type == "live" %}
-                      <span class="liveDot">Live</span>
-                    {% else %}
-                      <i class="fab fa-twitch"></i>
-                    {% endif %}
-                  </a>
-                </div>
+                  {% if info.type == "live" %}
+                    <span class="liveDot">Live</span>
+                  {% else %}
+                    <i class="fab fa-twitch followslist-icon-twitch"></i>
+                  {% endif %}
+                </a>
               </div>
             </div>
           </div>
         {% endfor %}
       </div>
-
-
-      {#      <div class="row text-center align-self-center">#}
-      {#        {% for info in bulk_info|dictsort:"display_name" %}#}
-      {#          <div class="col-sm-2">#}
-      {#            <div class="card-group">#}
-      {#              <div class="card-transparent" data-role="game" style="height: 27rem">#}
-      {#                <img src="{{ info.profile_image_url }}" alt="" class="card-img-top">#}
-      {#                <div class="card-content">#}
-      {#                  <br>#}
-      {#                  <h3 class="" style="max-height: 2rem"#}
-      {#                      title=" {{ info.display_name }}">#}
-      {#                    {{ info.display_name }}#}
-      {#                    <a class="text-decoration-none custom-text-h3" href="https://www.twitch.tv/{{ info.login }}"#}
-      {#                       target="_blank">#}
-      {#                      <i data-toggle="tooltip" data-placement="top" title="Open on Twitch" class="fab fa-twitch"></i>#}
-      {#                    </a>#}
-      {#                  </h3>#}
-      {#                  <a href="{% url 'clips:clip' %}?broadcaster_id={{ info.id }}&first=100" class="btn btn-primary">Watch {{ info.display_name }}'s top clips.</a>#}
-      {#                  <form class="form-inline" action="{% url 'clips:clip' %}" target="_blank" method="get" id="myForm">#}
-      {#                    <input type="text" value="{{ info.id }}" name="broadcaster_id" size="1" id="broadcaster_id"/>#}
-      {#                    <input type="hidden" value="20" name="first" size="1"/>#}
-      {#                    <input type="submit" class="btn"#}
-      {#                           value="View {{ info.display_name }}'s top clips"#}
-      {#                           name="Submit" id="sub-btn">#}
-      {#                  </form>#}
-      {#                  {% comment %}                  {% if game.is_followed == True %}#}
-      {#                    <button value="unfollow" class="btn" id="{{ game.id }}" name="myButton">Unfollow</button>#}
-      {#                  {% else %}#}
-      {#                    <button value="follow" class="btn" id="{{ game.id }}" name="myButton">Follow</button>#}
-      {#                  {% endif %}{% endcomment %}#}
-      {#                </div><!-- card content -->#}
-      {#              </div><!-- card -->#}
-      {#            </div>#}
-      {#          </div><!-- col-md-4 -->#}
-      {#        {% endfor %}#}
-      {#      </div><!-- row closing -->#}
       </div><!-- masthead closing -->
 
 
@@ -185,7 +112,6 @@
           window.find(string);
         }
 
-
         var btn = $('#button');
 
         $(window).scroll(function () {
@@ -200,7 +126,6 @@
           e.preventDefault();
           $('html, body').animate({scrollTop: 0}, '300');
         });
-
       </script>
 
 
