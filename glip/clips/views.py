@@ -213,7 +213,15 @@ def local_clip_detail_page(request, pk):
         response.status_code = 404
         return response
 
-    comments = clip.comments.all()
+    comments = (
+        clip.comments.all()
+        .annotate(comment_like_count=Count("likes"))
+        .annotate(
+            comment_fav=Exists(
+                User.objects.filter(comment_like=OuterRef("pk"), id=request.user.id)
+            )
+        )
+    )
     template_info = f"{clip.title} from {clip.broadcaster_name} playing {clip.game}"
     user_comment = None
     fav = False

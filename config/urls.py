@@ -20,6 +20,7 @@ urlpatterns = [
     # User management
     path("users/", include("glip.users.urls", namespace="users")),
     path("clips/", include("glip.clips.urls", namespace="clips")),
+    path("comments/", include("glip.comments.urls", namespace="comments")),
     path("games/", include("glip.games.urls", namespace="games")),
     path("channels/", include("glip.channels.urls", namespace="channels")),
     path("accounts/", include("allauth.urls")),
