@@ -14,6 +14,9 @@ class Comment(models.Model):
     )
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(
+        User, related_name="comment_like", default=None, blank=True
+    )
 
     def __str__(self):
         return "%s - %s" % (self.clip.title, self.user)

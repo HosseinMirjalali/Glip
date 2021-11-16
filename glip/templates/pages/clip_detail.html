@@ -35,7 +35,7 @@
       {% endif %}
 
       <a class="col btn btn-link border-0 btn-outline-light" id="download-button"
-              href="{% url 'clips:download-clip' pk=clip.clip_twitch_id %}">
+         href="{% url 'clips:download-clip' pk=clip.clip_twitch_id %}">
         <i class="fas fa-download"> Download</i>
       </a>
 
@@ -89,6 +89,18 @@
                 height="25"
               />
               <p class="small mb-0 ms-2 commentUser text-dark">{{ comment.user }}</p>
+              {% if request.user.is_authenticated %}
+                <button class="col btn btn-link border-0 btn-outline-light" id="comment-like-button"
+                        value="{{ comment.id }}">
+                  <i class="{% if comment.comment_fav %}fas {% else %}far {% endif %}fa-heart"
+                     id="{{ comment.id }}"> {{ comment.comment_like_count }}</i>
+                </button>
+              {% else %}
+                <a class="col btn btn-link border-0 btn-outline-light" id="no-login-comment-like-button"
+                   href="{% url 'account_login' %}">
+                  <i class="far fa-heart" id="{{ comment.id }}"> {{ comment.comment_like_count }}</i>
+                </a>
+              {% endif %}
             </div>
             <div class="d-flex flex-row align-items-center">
               <p class="commentTimestamp small text-muted mb-0">{{ comment.timestamp |timesince }} ago</p>
@@ -149,6 +161,31 @@
       {#$("#share-button-icon")#}
     }
 
+    $(document).on('click', '#comment-like-button', function (e) {
+      e.preventDefault();
+      let comment_id = $(this).val()
+      $.ajax(
+        {
+          type: "POST",
+          url: "{% url 'comments:like-comment' %}",
+          data: {
+            comment_id: comment_id,
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+            action: "post"
+          },
+          success: function (json) {
+            document.getElementById("like-button-icon").innerHTML = " " + json['result']
+            let buttonIcon = $("#".concat(comment_id))
+            buttonIcon.toggleClass("fas far")
+            buttonIcon.html(" " + json["result"])
+            console.log(json)
+          },
+          error: function (xhr, errmsg, err) {
+
+          }
+        });
+    });
+
     $(document).on('click', '#like-button', function (e) {
       e.preventDefault();
       $.ajax(
@@ -171,7 +208,6 @@
           }
         });
     });
-
 
     $("#like-button").hover(
       function () {

@@ -3,6 +3,7 @@
 @import "games.css";
 @import "partials/clip_cards.css";
 @import "followslist.css";
+@import "comments.css";
 
 .alert-debug {
   color: black;
