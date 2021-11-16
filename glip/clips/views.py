@@ -112,6 +112,7 @@ def new_your_clips_local(request):
         .annotate(likes_count=Count("likes"))
         .exclude(disabled=True)
         .annotate(comment_count=Count("comments"))
+        .order_by("-twitch_view_count")[:100]
     )
     context = {"clips": clips, "template_info": template_info}
     return render(request, template_name, context)
