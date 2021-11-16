@@ -222,9 +222,7 @@ class TestClipsForYou(TestCase):
         :param kwargs: Mock Patches
         :return: None
         """
-        GameFollow.objects.create(
-            following=self.user, followed=self.game, follow_time=timezone.now()
-        )
+        self.game.follows.add(self.user)
         self.c.login(username="test", password="top_secret")
         response = self.c.get(reverse("clips:new_your_clips"))
         assert response.status_code == 200
