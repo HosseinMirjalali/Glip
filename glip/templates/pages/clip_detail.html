@@ -96,7 +96,7 @@
                      id="{{ comment.id }}"> {{ comment.comment_like_count }}</i>
                 </button>
               {% else %}
-                <a class="col btn btn-link border-0 btn-outline-light" id="no-login-like-button"
+                <a class="col btn btn-link border-0 btn-outline-light" id="no-login-comment-like-button"
                    href="{% url 'account_login' %}">
                   <i class="far fa-heart" id="{{ comment.id }}"> {{ comment.comment_like_count }}</i>
                 </a>
