@@ -99,12 +99,9 @@ class TestClipDetailView(TestCase):
         Tests that anyone can access a clip detail page without authentication
         """
         request = self.factory.get("/clips/clip")
-        view = local_clip_detail_page(request, pk=self.clip.clip_twitch_id)
-
         request.user = AnonymousUser()
-
+        view = local_clip_detail_page(request, pk=self.clip.clip_twitch_id)
         view.request = request
-
         assert view.status_code == 200
 
     @pytest.mark.factory
@@ -113,10 +110,8 @@ class TestClipDetailView(TestCase):
         Tests that logged-in users can access a clip detail page
         """
         request = self.factory.get("/clips/clip")
-        view = local_clip_detail_page(request, pk=self.clip.clip_twitch_id)
-
         request.user = self.user
-
+        view = local_clip_detail_page(request, pk=self.clip.clip_twitch_id)
         assert view.status_code == 200
 
     @pytest.mark.factory
@@ -125,10 +120,8 @@ class TestClipDetailView(TestCase):
         Tests that providing a wrong id results in 404
         """
         request = self.factory.get("/clips/clip")
-        view = local_clip_detail_page(request, pk="ObviouslyWrongClipID")
-
         request.user = self.user
-
+        view = local_clip_detail_page(request, pk="ObviouslyWrongClipID")
         assert view.status_code == 404
 
 
