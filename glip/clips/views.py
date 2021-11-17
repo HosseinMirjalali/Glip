@@ -128,9 +128,11 @@ def feed_view(request):
     #     .exclude(disabled=True)
     #     .order_by("-twitch_view_count")[:100]
     # )
+    start = datetime.now() - timedelta(hours=24)
+    end = datetime.now()
     clips = []
     top_clips = (
-        TopClip.objects.all()
+        TopClip.objects.filter(clip__created_at__range=[start, end])
         .select_related("clip")
         .annotate(comment_count=Count("clip__comments"))
         .annotate(likes_count=Count("clip__likes"))
