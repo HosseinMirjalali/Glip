@@ -2,7 +2,6 @@ from unittest import TestCase, mock
 
 import pytest
 from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
-from django.contrib.auth.models import AnonymousUser
 from django.test import Client, RequestFactory
 from django.urls import reverse
 from django.utils import timezone
@@ -74,57 +73,121 @@ class TestClipDetailView(TestCase):
 
     def setUp(self):
         self.factory = RequestFactory()
-        self.client = Client
-        self.user = User.objects.create_user(
-            username="test", email="test@test.com", password="top_secret"
-        )
+        self.c = Client()
+        self.user = User.objects.create_user(username="test", email="test@test.com")
+        self.user.set_password("top_secret")
+        self.user.save()
         self.game = Game.objects.create(
             game_id="461067",
             name="Tekken 7",
             box_art_url="https://static-cdn.jtvnw.net/ttv-boxart/Tekken%207-{width}x{height}.jpg",
         )
         self.clip = Clip.objects.create(
-            clip_twitch_id="ZealousVictoriousSamosaPlanking-jn2xh2oW-NG7gJQd",
-            url="https://clips.twitch.tv/ZealousVictoriousSamosaPlanking-jn2xh2oW-NG7gJQd",
-            embed_url="https://clips.twitch.tv/embed?clip=ZealousVictoriousSamosaPlanking-jn2xh2oW-NG7gJQd",
-            broadcaster_id="425462523",
-            broadcaster_name="Kenoq_",
-            creator_id="230286742",
-            creator_name="madara_irgen",
-            video_id="1170882229",
-            twitch_game_id="461067",
+            clip_twitch_id="ZealousVictoriousSamosaPlanking",
+            url="https://clips.twitch.tv/ZealousVictoriousSamosaPlanking",
+            embed_url="https://clips.twitch.tv/embed?clip=ZealousVictoriousSamosaPlanking",
+            broadcaster_id="4254625231",
+            broadcaster_name="Kenoq_1",
+            creator_id="2302867421",
+            creator_name="madara_irgen1",
+            video_id="11708822291",
+            twitch_game_id="4610671",
             game=self.game,
             language="nl",
-            title="Chair get destroyed by angry fist that once destroyed closet ",
+            title="Chair get destroyed by angry fist that once destroyed closet1",
             twitch_view_count="9",
             glip_view_count="",
-            created_at=timezone.now(),
+            created_at=timezone.now() - timezone.timedelta(hours=2),
             thumbnail_url="https://clips-media-assets2.twitch.tv/AT-cm%7CHSCQyY59sYdqFvjRu4CUHQ-preview-480x272.jpg",
             duration="17.3",
             like_count=0,
             disabled=False,
         )
+        self.clip_other = Clip.objects.create(
+            clip_twitch_id="ZealousVictoriousSamosaPlanking2",
+            url="https://clips.twitch.tv/ZealousVictoriousSamosaPlanking2",
+            embed_url="https://clips.twitch.tv/embed?clip=ZealousVictoriousSamosaPlanking2",
+            broadcaster_id="42546252312",
+            broadcaster_name="Kenoq_12",
+            creator_id="23028674212",
+            creator_name="madara_irgen12",
+            video_id="117088222912",
+            twitch_game_id="46106712",
+            game=self.game,
+            language="nl",
+            title="Chair get destroyed by angry fist that once destroyed closet12",
+            twitch_view_count="9",
+            glip_view_count="",
+            created_at=timezone.now() - timezone.timedelta(hours=2),
+            thumbnail_url="https://clips-media-assets2.twitch.tv/AT-cm%7CHSCQyY59sYdqFvjRu4CUHQ-preview-480x272.jpg",
+            duration="17.3",
+            like_count=0,
+            disabled=False,
+        )
+        self.clip_old = Clip.objects.create(
+            clip_twitch_id="jn2xh2oW",
+            url="https://clips.twitch.tv/jn2xh2oW",
+            embed_url="https://clips.twitch.tv/embed?clip=jn2xh2oW",
+            broadcaster_id="425462522",
+            broadcaster_name="Kenoq__",
+            creator_id="2302867422",
+            creator_name="madara_irgenn",
+            video_id="11708822299",
+            twitch_game_id="4610677",
+            game=self.game,
+            language="nl",
+            title="Chair get destroyed by angry fist that once destroyed closet ",
+            twitch_view_count="8",
+            glip_view_count="",
+            created_at=timezone.now() - timezone.timedelta(weeks=2),
+            thumbnail_url="https://clips-media-assets2.twitch.tv/AT-cm%7CHSCQyY59sYdqFvjRu4CUHQ-preview-480x272.jpg",
+            duration="17.3",
+            like_count=0,
+            disabled=False,
+        )
+        self.social_account = SocialAccount.objects.create(
+            user=self.user, provider="twitch"
+        )
+        self.social_app = SocialApp.objects.create(
+            provider="twitch", name="twitch", client_id="client_id1234", secret="key264"
+        )
+        self.social_token = SocialToken.objects.create(
+            app=self.social_app, account=self.social_account, token="2323token"
+        )
+        self.top_clip = TopClip.objects.create(clip=self.clip)
+        self.top_clip_other = TopClip.objects.create(clip=self.clip_other)
+        self.top_clip_old = TopClip.objects.create(clip=self.clip_old)
+        self.like = self.clip.likes.add(self.user)
+        self.comment = Comment.objects.create(
+            user=self.user,
+            clip=self.clip,
+            reply=None,
+            content="Test123",
+            timestamp=timezone.now(),
+        )
 
-    @pytest.mark.factory
+    @pytest.mark.client
     def test_anonymous(self):
         """
         Tests that anyone can access a clip detail page without authentication
         """
-        request = self.factory.get("/clips/clip")
-        request.user = AnonymousUser()
-        view = local_clip_detail_page(request, pk=self.clip.clip_twitch_id)
-        view.request = request
-        assert view.status_code == 200
 
-    @pytest.mark.factory
+        url = reverse("clips:clip_detail", args=[self.clip.clip_twitch_id])
+        response = self.c.get(url)
+        assert response.status_code == 200
+        assert response.context["clip"] == self.clip
+
+    @pytest.mark.client
     def test_authenticated(self):
         """
         Tests that logged-in users can access a clip detail page
         """
-        request = self.factory.get("/clips/clip")
-        request.user = self.user
-        view = local_clip_detail_page(request, pk=self.clip.clip_twitch_id)
-        assert view.status_code == 200
+
+        url = reverse("clips:clip_detail", args=[self.clip.clip_twitch_id])
+        self.c.login(username="test", password="top_secret")
+        response = self.c.get(url)
+        assert response.status_code == 200
+        assert response.context["clip"] == self.clip
 
     @pytest.mark.factory
     def test_wrong_clip_id(self):
@@ -135,6 +198,27 @@ class TestClipDetailView(TestCase):
         request.user = self.user
         view = local_clip_detail_page(request, pk="ObviouslyWrongClipID")
         assert view.status_code == 404
+
+    @pytest.mark.client
+    def test_liked_clip_is_faved(self):
+        """
+        Test that a liked clip has a True fav
+        :return:
+        """
+        url = reverse("clips:clip_detail", args=[self.clip.clip_twitch_id])
+        self.c.login(username="test", password="top_secret")
+        response = self.c.get(url)
+        assert response.context["fav"] is True
+
+    @pytest.mark.client
+    def test_comment_is_shown(self):
+        """
+        Test that a clip that has a comment is shown in the page
+        :return:
+        """
+        url = reverse("clips:clip_detail", args=[self.clip.clip_twitch_id])
+        response = self.c.get(url)
+        assert response.context["comments"][0] == self.comment
 
 
 class TestClipsForYou(TestCase):
