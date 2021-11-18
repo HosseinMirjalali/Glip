@@ -491,10 +491,21 @@ class TestFeedView(TestCase):
         response = self.c.get(url)
         assert response.status_code == 200
         assert response.context["clips"][0].likes_count == 1
-        assert response.context["clips"][1].likes_count == 0
         assert response.context["clips"][0].fav
-        assert response.context["clips"][1].fav is False
         assert response.context["clips"][0] == self.clip
+
+    @pytest.mark.client
+    def test_like_doesnt_exist(self):
+        """
+        Test that a not liked clip has 0 like count
+        :return:
+        """
+        url = reverse("clips:feed")
+        self.c.login(username="test", password="top_secret")
+        response = self.c.get(url)
+        assert response.status_code == 200
+        assert response.context["clips"][1].likes_count == 0
+        assert response.context["clips"][1].fav is False
 
 
 class TestLikeClip(TestCase):
