@@ -7,10 +7,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from glip.clips.models import Clip
 from glip.games.models import Game
 from glip.users.utils import get_clips, get_user_bulk_info, get_user_follows
+from glip.utils.twitch_utils import TwitchAPICaller
 
 env = environ.Env()
 
@@ -104,3 +107,11 @@ def local_broadcaster_clip_view(request):
     context = {"clips": clips, "template_info": template_info}
 
     return render(request, template_name, context)
+
+
+@api_view(["GET"])
+@login_required()
+def api_follows(request):
+    apicaller = TwitchAPICaller(request)
+    follows = apicaller.get_user_follows()
+    return Response(data=follows)
