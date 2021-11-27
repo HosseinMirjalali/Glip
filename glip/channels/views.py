@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import environ
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -110,7 +110,7 @@ def local_broadcaster_clip_view(request):
 
 
 @api_view(["GET"])
-@login_required()
+@user_passes_test(lambda u: u.is_superuser)
 def api_follows(request):
     apicaller = TwitchAPICaller(request)
     follows = apicaller.get_user_follows()
