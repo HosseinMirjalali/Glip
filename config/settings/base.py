@@ -145,6 +145,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "glip.glip_middleware.twitchmiddleware.TwitchMiddleware",
 ]
 
 # STATIC
