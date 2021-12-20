@@ -30,7 +30,7 @@
             <section class="present-content container">
                 <div id="comport-present">
                     <h3>Hi!</br>I'm Hossein</br></h3>
-                    <h6>I'm a Web Developer, doing cool stuff, and coding.</h6>
+                    <h6>I'm a Web Developer, I do cool stuff, I code.</h6>
                     <a href="#portfolio" id="botao-min"><button class="buttons-page">PORTFOLIO</button></a>
                     <a href="#portfolio-max" id="botao-max"><button class="buttons-page">PORTFOLIO</button></a>
                     <i class="fas fa-angle-down" id="markdown"> </i>
@@ -42,9 +42,9 @@
                         <header>
                             <h2 class="app-title">ABOUT ME</h2>
                         </header>
-                        <p id="p-sub">If you wanna know who I am...</p>
+                        <p id="p-sub">A little about me...</p>
                         <p id="ajust-first-p">I press keyboard buttons really enthusiastically.</p>
-                        <p>My keyboard button pressing usually results in a huge amount of 0's and 1's that collectively, help a website operate. I started learning which buttons to press all by myself, I liked when others did it in movies. Starting with HTML and CSS, I built a static one-page Facebook clone that I was really, really proud of. Then I learned PHP as per almost every web developer, and did my first paid project for a company. I then participated in a Python workshop and it really helped me expand my knowledge and get a grip on basics of programming. Using Udemy and YouTube, I learned Django and fell in love with it. To apply my knowledge, I made <a id="glip_link" href="glipsite.com">Glip</a>, a simple hub for watching Twitch clips (try it, I'm sure if you like gaming and streaming, you will find a couple of clips that you will like.)</p>
+                        <p>My keyboard button pressing usually results in a huge amount of 0's and 1's that collectively, help a website operate. I started learning which buttons to press all by myself, I liked when others did it in movies. Starting with HTML and CSS, I built a static one-page Facebook clone that I was really, really proud of. Then I learned PHP as per almost every web developer, and did my first paid project for a company. I then participated in a Python workshop and it really helped me expand my knowledge and get a grip on basics of programming. Using Udemy and YouTube, I learned Django and fell in love with it. To apply my knowledge, I made <a id="glip_link" href="glipsite.com"><b>Glip</b></a>, a simple hub for watching Twitch clips (try it, I'm sure if you like gaming and streaming, you will find a couple of clips that you will enjoy watching.)</p>
                         <p id="ajust-p">My current knowledge in languages / technologies is:</p>
                         <h1 class="tec-title">PYTHON - DJANGO - POSTGRESQL - CELERY - DOCKER - HTML - CSS - JAVASCRIPT - GIT</h1>
                         <a href="https://github.com/HosseinMirjalali"><button class="buttons-page">GITHUB <i class="fab fa-github"></i></button></a>
@@ -70,7 +70,7 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <img src="" alt="Ral Offshore web-app" class="img-config">
+                                  <img src="{% static 'images/ral-offshore-homepage.jpeg'  %}" alt="Ral Offshore web-app" class="img-config">
                                 </td>
                                 <td>
                                     <h3 class="title-port">Ral Offshore Internal Invoice System</h3>
@@ -105,15 +105,14 @@
             <section class="content-page text-center md" id="contact">
                 <div id="comport-contact">
                     <header>
-                        <h2 class="app-title text-center">CONTACT</h2>
+                        <h2 class="app-title text-center">My Resume</h2>
                     </header>
-                    <p>If you wanna talk to me. Or hire me :) </p>
-                    <a href="https://www.linkedin.com/in/hossein-mirjalali/" target="_blank"><h1 class="text-center icontact"><i class="fas fa-address-card"></i></h1></a>
+                    <a href="{% static 'Resume-Hossein-Mirjalali.pdf' %}"><h1 class="text-center icontact"><i class="fas fa-address-card"></i></h1></a>
                 </div>
             </section>
-        </main>
+            </main>
         <footer class="foot" id="foot-style">
-            COPYRIGHT &copy; 2021 | <a href="https://www.linkedin.com/in/hossein-mirjalali/" target="_blank">Hossein</a>
+            <a href="https://www.linkedin.com/in/hossein-mirjalali/" target="_blank">Hossein</a>
         </footer>
     </body>
 </html>
