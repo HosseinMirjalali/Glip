@@ -4,6 +4,7 @@ from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
@@ -66,3 +67,12 @@ def get_new_access_from_refresh(request):
     st.token_secret = new_refresh
     st.save()
     return data
+
+
+def portfolio(request):
+    """
+    Simple portfolio single page made with HTML and CSS
+    """
+    template_name = "portfolio/portfolio.html"
+
+    return render(request, template_name)

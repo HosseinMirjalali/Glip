@@ -1,0 +1,478 @@
+@charset "UTF-8";
+
+/* FONTS */
+@import url('https://fonts.googleapis.com/css?family=Staatliches&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Staatliches&display=swap');
+
+@font-face {
+    font-family: 'Montserrat', sans-serif;
+    src: url('https://fonts.googleapis.com/css?family=Montserrat|Staatliches&display=swap');
+}
+
+@font-face {
+    font-family: 'Staatliches', sans-serif;
+    src: url('https://fonts.googleapis.com/css?family=Montserrat|Staatliches&display=swap');
+}
+
+/* RESETS */
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* GENERAL */
+body {
+    background-color: rgb(28, 35, 49);
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* TOP MENU */
+.menu {
+    background-color: rgba(28, 35, 49, 0.89);
+    padding: 15px;
+}
+
+.soon {
+    background-image: url(../../img/soon-paulo-white-128.png);
+    background-repeat: no-repeat;
+    display: block;
+    width: 128px;
+    height: 32px;
+    text-indent: -9999px;
+    margin: 0px;
+}
+
+.main-menu__btn {
+    display: block;
+    width: 32px;
+    height: 32px;
+    text-indent: -9999px;
+    background-image: url(../../img/main-menu-btn-bg-40.png);
+    background-repeat: no-repeat;
+    background-position: -18px 6px;
+    border-color: #000000;
+    border-style: solid;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.main-menu__btn:hover {
+    background-color: #ffffff;
+}
+
+.main-menu__list {
+    padding: 0px;
+}
+
+.main-menu__list li {
+    list-style: none;
+    cursor: pointer;
+}
+
+.main-menu__item {
+    text-decoration: none;
+    font-family: 'Staatliches', sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 18px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.main-menu__item:hover {
+    color: #26408B;
+    transition: 0.3s;
+}
+
+/* FOOTER */
+.foot {
+    background-color: rgb(28, 35, 49);
+    color: #ffffff21;
+    font-weight: bolder;
+    text-align: center;
+    padding: 15px;
+}
+
+.foot a {
+    color: #ffffff21;
+    text-decoration: none;
+    text-decoration-style: none;
+}
+
+/* TITLES */
+.app-title {
+    font-family: 'Staatliches', sans-serif;
+    color: #26408B;
+    font-size: 52px;
+    font-weight: bolder;
+    background: url(../../img/background.png) center;
+    background-repeat: no-repeat;
+}
+
+.app-title:first-child {
+    margin-top: 60px;
+}
+
+.tec-title {
+    color: #26408B;
+    font-family: 'Staatliches', sans-serif;
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+.title-port {
+    color: #ffffff;
+    font-family: 'Staatliches', sans-serif;
+    font-size: 20pt;
+    font-weight: bolder;
+    text-align: left;
+    padding-top: 30px;
+}
+
+.title-port::before {
+    content: '>';
+    color: #ffffff21;
+    padding-right: 10px;
+}
+
+/* ABOUT */
+#comport-about {
+    display: table;
+}
+
+/* CONTENT PAGE */
+.content-page {
+    padding: 15px;
+}
+
+.content-page p {
+    color: #ffffff;
+    line-height: 22px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* PRESENT PAGE */
+#comport-present {
+    display: table;
+    padding-left: 15px;
+}
+
+.present-content {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 38px;
+    line-height: 44px;
+    font-weight: bolder;
+}
+
+.present-content h6 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.present-content h3 {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    line-height: 50px;
+}
+
+/* CONTACT PAGE */
+.icontact {
+    font-size: 120px;
+    color: #ffffff;
+}
+
+.icontact:hover {
+    color: #26408B;
+    transition: 0.3s;
+}
+
+/* BUTTONS */
+.buttons-page {
+    background-color: #26408B;
+    color: #ffffff;
+    font-size: 14pt;
+    font-family: 'Staatliches', sans-serif;
+    font-weight: bolder;
+    border: none;
+    box-shadow: 2px 2px 4px #000000;
+    padding: 18px;
+    border-radius: 50px;
+}
+
+.buttons-page:first-child {
+    margin-right: 6px;
+}
+
+.buttons-page:hover {
+    background-color: #ffffff;
+    color: #26408B;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/* IMAGES */
+.img-config {
+    border-radius: 5px;
+    border: none;
+    box-shadow: 3px 3px 3px #000000;
+}
+
+.img-config:hover {
+    box-shadow: 3px 3px 3px #ffffff;
+    transition: 0.3s;
+}
+
+.img2 {
+    display: none;
+}
+
+/* LAYOUT ALL */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#portfolio-max {
+    display: none;
+}
+
+#link-max {
+    display: none;
+}
+
+#botao-max {
+    display: none;
+}
+
+#markdown {
+    display: none;
+}
+
+/* MEDIA QUERIES */
+@media(min-width: 580px) {
+
+    .md {
+        padding: 30px;
+    }
+
+    .main-menu__btn {
+        top: 30px;
+        right: 30px;
+    }
+
+    .present-content {
+        padding-left: 30px;
+    }
+
+}
+
+@media(min-width: 620px) {
+
+    .img1 {
+        display: none;
+    }
+
+    .img2 {
+        display: block;
+    }
+
+}
+
+@media(max-width: 1024px) {
+
+    .main-menu__btn--close {
+        background-position: 6px 6px;
+    }
+
+    .main-menu_list--close {
+        margin: 0;
+    }
+
+    .main-menu__item--close {
+        margin: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+}
+
+@media(min-width: 1024px) {
+
+    /* PORTFOLIO */
+    #portfolio {
+        display: none;
+    }
+
+    #portfolio-max {
+        display: block;
+        padding-top: 30px;
+    }
+
+    /* LINKS */
+    #link-min {
+        display: none;
+    }
+
+    #link-max {
+        display: block;
+    }
+
+    /* BUTTONS */
+    #b2two {
+        display: none;
+    }
+
+    #botao-min {
+        display: none;
+    }
+
+    #botao-max {
+        display: block;
+    }
+
+    /* MENU */
+    .soon {
+        float: left;
+        margin-left: 45px;
+    }
+
+    .menu {
+        box-shadow: 1px 1px 2px #000000;
+        padding-bottom: 4px;
+        padding-top: 20px;
+        position: fixed;
+        width: 100%;
+        margin-top: -1px;
+    }
+
+    .main-menu__btn {
+        display: none;
+    }
+
+    .main-menu__list {
+        float: right;
+        margin: 0px 45px 0px 0px;
+    }
+
+    .main-menu__list li {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .main-menu__list li:first-child {
+        margin-right: -12px;
+    }
+
+    /* PRESENTE PAGE */
+    .present-content{
+        margin-top: 0px;
+        height: 100vh;
+    }
+
+    #comport-present {
+        margin-left: 38px;
+    }
+
+    #markdown {
+        display: block;
+        position: absolute;
+        left: 50%;
+        bottom: 10px;
+    }
+
+    /* ABOUT PAGE */
+    #about {
+        display: table;
+        height: 100vh;
+        margin-right: 150px;
+        margin-left: 150px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+    #comport-about {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    #p-sub {
+        margin-top: 10px;
+    }
+
+    #ajust-p {
+        margin-top: 5%;
+    }
+
+    #ajust-first-p {
+        margin-top: 6%;
+    }
+
+    .content-page {
+        margin-right: 45px;
+        margin-left: 45px;
+        max-width: 100%;
+    }
+
+    /* TABLES */
+    table {
+        margin-left: 45px;
+        margin-right: 45px;
+    }
+
+    td {
+        width: 50%;
+        padding: 30px;
+        vertical-align: center;
+    }
+
+    /* TITLES */
+    .title-port {
+        padding-top: 0px;
+    }
+
+    .app-title {
+        margin-bottom: 0px;
+    }
+
+    /* CONTACT PAGE */
+    #contact {
+        height: 94vh;
+        display: table;
+        margin: 0 auto;
+    }
+
+    #comport-contact {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    #contact h2 {
+        margin-bottom: 10px;
+    }
+
+    #contact p {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    /* FOOTER */
+    #foot-style {
+        height: 6vh;
+    }
+
+}

@@ -1,0 +1,119 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Hossein | Developer</title>
+        <script src="https://kit.fontawesome.com/cc2118f4fe.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static 'css/portfolio_normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/portfolio_view.css' %}">
+        <link rel="shortcut icon" href="{% static 'images/favicons/glipico.ico' %}" type="image/x-icon">
+    </head>
+    <body id="app">
+        <header class="menu md">
+            <a href="#app"><h1 class="soon">soon</h1></a>
+            <nav class="main-menu">
+                <button class="main-menu__btn main-menu__btn--close ">menu</button>
+                <ul class="main-menu__list main-menu__list--close">
+                    <li><a class="main-menu__item main-menu__item--close" id="b1one" href="#about">ABOUT</a></li>
+                    <li><a class="main-menu__item main-menu__item--close" id="b2two" href="#portfolio" id="link-min">PORTFOLIO</a></li>
+                    <li><a class="main-menu__item main-menu__item--close" href="#portfolio-max" id="link-max">PORTFOLIO</a></li>
+                    <li><a class="main-menu__item main-menu__item--close" id="b3three" href="#contact">CONTACT</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section class="present-content container">
+                <div id="comport-present">
+                    <h3>Hi!</br>I'm Hossein</br></h3>
+                    <h6>I'm a Web Developer, doing cool stuff, and coding.</h6>
+                    <a href="#portfolio" id="botao-min"><button class="buttons-page">PORTFOLIO</button></a>
+                    <a href="#portfolio-max" id="botao-max"><button class="buttons-page">PORTFOLIO</button></a>
+                    <i class="fas fa-angle-down" id="markdown"> </i>
+                </div>
+            </section>
+            <div class="content-page text-center container md" id="about">
+                <div id="comport-about">
+                    <article>
+                        <header>
+                            <h2 class="app-title">ABOUT ME</h2>
+                        </header>
+                        <p id="p-sub">If you wanna know who I am...</p>
+                        <p id="ajust-first-p">I press keyboard buttons really enthusiastically.</p>
+                        <p>My keyboard button pressing usually results in a huge amount of 0's and 1's that collectively, help a website operate. I started learning which buttons to press all by myself, I liked when others did it in movies. Starting with HTML and CSS, I built a static one-page Facebook clone that I was really, really proud of. Then I learned PHP as per almost every web developer, and did my first paid project for a company. I then participated in a Python workshop and it really helped me expand my knowledge and get a grip on basics of programming. Using Udemy and YouTube, I learned Django and fell in love with it. To apply my knowledge, I made <a id="glip_link" href="glipsite.com">Glip</a>, a simple hub for watching Twitch clips (try it, I'm sure if you like gaming and streaming, you will find a couple of clips that you will like.)</p>
+                        <p id="ajust-p">My current knowledge in languages / technologies is:</p>
+                        <h1 class="tec-title">PYTHON - DJANGO - POSTGRESQL - CELERY - DOCKER - HTML - CSS - JAVASCRIPT - GIT</h1>
+                        <a href="https://github.com/HosseinMirjalali"><button class="buttons-page">GITHUB <i class="fab fa-github"></i></button></a>
+                    </article>
+                </div>
+            </div>
+            <!-- <section class="content-page text-center md" id="portfolio">
+                <header>
+                    <h2 class="app-title text-center">PORTFOLIO</h2>
+                </header>
+                <div>
+                    <h3 class="title-port">Ral Offshore Internal Invoice System</h3>
+                    <p>This was my first project. An internal lightweight web-app built with PHP, Codeigniter, for company's internal communications, such as invoices, paperwork, and signing paperworks. </p>
+                    <h1 class="tec-title text-center">PHP - CODEIGNITER - HTML5 - CSS3</h1>
+                </div>
+            </section> -->
+            <section id="portfolio-max" id="portfolio">
+                <header>
+                    <h2 class="app-title text-center">PORTFOLIO</h2>
+                </header>
+                <div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="" alt="Ral Offshore web-app" class="img-config">
+                                </td>
+                                <td>
+                                    <h3 class="title-port">Ral Offshore Internal Invoice System</h3>
+                                    <p>This was my first project. An internal lightweight web-app built with PHP, Codeigniter, for company's internal communications, such as invoices, paperwork, and signing paperworks. </p>
+                                    <h1 class="tec-title">PHP - CODEIGNITER - HTML5 - CSS3</h1>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h3 class="title-port">Glip</h3>
+                                    <p>
+                                        A hub where you can watch your favorite Twitch streamers' top clips, and get updated on all the fuss.
+                                        Powered by Django, fetching data using Celery tasks, and running the whole thing with Docker on an Ubuntu server.
+                                    </p>
+                                    <h1 class="tec-title">PYTHON - DJANGO - CELERY - DOCKER - HTML - CSS</h1>
+                                    <a href="https://www.glipsite.com/" target="_blank"><button class="buttons-page">VISIT <i class="fas fa-link"></i></button></a>
+                                </td>
+                                <td>
+                                    <img src="{% static 'images/glip-homepage.png' %}" alt="website created to easily and quickly calculate the ICMS tax" class="img-config">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="content-page text-center md" id="contact">
+                <div id="comport-contact">
+                    <header>
+                        <h2 class="app-title text-center">CONTACT</h2>
+                    </header>
+                    <p>If you wanna talk to me. Or hire me :) </p>
+                    <a href="https://www.linkedin.com/in/hossein-mirjalali/" target="_blank"><h1 class="text-center icontact"><i class="fas fa-address-card"></i></h1></a>
+                </div>
+            </section>
+        </main>
+        <footer class="foot" id="foot-style">
+            COPYRIGHT &copy; 2021 | <a href="https://www.linkedin.com/in/hossein-mirjalali/" target="_blank">Hossein</a>
+        </footer>
+    </body>
+</html>

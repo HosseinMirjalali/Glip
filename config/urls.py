@@ -8,6 +8,7 @@ from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
 
 from glip.clips.views import feed_view
+from glip.users.views import portfolio
 
 urlpatterns = [
     # path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -24,6 +25,7 @@ urlpatterns = [
     path("games/", include("glip.games.urls", namespace="games")),
     path("channels/", include("glip.channels.urls", namespace="channels")),
     path("accounts/", include("allauth.urls")),
+    path("me", view=portfolio, name="portfolio"),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
