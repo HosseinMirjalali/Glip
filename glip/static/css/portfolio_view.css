@@ -43,7 +43,6 @@ body {
 }
 
 .soon {
-    /* background-image: url(../../img/soon-paulo-white-128.png); */
     background-repeat: no-repeat;
     display: block;
     width: 128px;
@@ -57,7 +56,6 @@ body {
     width: 32px;
     height: 32px;
     text-indent: -9999px;
-    /* background-image: url(../../img/main-menu-btn-bg-40.png); */
     background-repeat: no-repeat;
     background-position: -18px 6px;
     border-color: #000000;
@@ -118,7 +116,6 @@ body {
     color: #26408B;
     font-size: 52px;
     font-weight: bolder;
-    /* background: url(../../img/background.png) center; */
     background-repeat: no-repeat;
 }
 
