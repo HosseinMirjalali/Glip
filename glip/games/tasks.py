@@ -93,8 +93,8 @@ def get_feed(past_x: int):
     # Game.objects.all().update(last_tried_query=datetime.now() - timedelta(minutes=31))
     not_updated_games = (
         Game.objects.filter(last_queried_clips__lt=past_x_hours(past_x))
-        .filter(last_tried_query__lt=past_x_minutes(30))
-        .order_by("game_id")
+            .filter(last_tried_query__lt=past_x_minutes(30))
+            .order_by("game_id")
     )
     top_games = TopGame.objects.all()
     top_games_ids = []
@@ -146,12 +146,12 @@ def get_and_set_top_games():
 @celery_app.task()
 def get_feed_from_last(past_x: int):
     not_updated_games = (
-        list(
-            Game.objects.filter(last_queried_clips__lt=past_x_hours(past_x))
-            .filter(last_tried_query__lt=past_x_minutes(30))
-            .order_by("id")
-        )
-    )[:-1]
+                            list(
+                                Game.objects.filter(last_queried_clips__lt=past_x_hours(past_x))
+                                    .filter(last_tried_query__lt=past_x_minutes(30))
+                                    .order_by("id")
+                            )
+                        )[:-1]
     not_updated_games_ids = []
     count = 0
     for game in not_updated_games:
@@ -172,12 +172,26 @@ def add_top_clips_to_TopClip_model():
     end = datetime.now()
     top_clips = (
         Clip.objects.filter(created_at__range=[start, end])
-        .annotate(comment_count=Count("comments"))
-        .exclude(disabled=True)
-        .order_by("-twitch_view_count")[:5000]
+            .annotate(comment_count=Count("comments"))
+            .exclude(disabled=True)
+            .order_by("-twitch_view_count")[:5000]
     )
     objs = []
     for clip in top_clips:
         objs.append(TopClip(clip=clip))
 
     TopClip.objects.bulk_create(objs, ignore_conflicts=True)
+
+
+@celery_app.task()
+def delete_old_clips():
+    old_clips = Clip.objects.filter(
+        created_at__lte=datetime.now() - timedelta(hours=25)
+    )
+    old_clips.delete()
+
+
+@celery_app.task()
+def asserting_top_clips():
+    if TopClip.objects.count() < 90:
+        add_top_clips_to_TopClip_model()
